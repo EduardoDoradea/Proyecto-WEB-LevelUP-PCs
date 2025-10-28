@@ -1,14 +1,21 @@
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import SidebarMenu from "../components/SidebarMenu";
 import HeroSection from "../components/HeroSection";
+import FeaturedProducts from "../components/FeaturedProducts";
+import FlashDeals from "../components/FlashDeals";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <Navbar />
-      <SidebarMenu />
+      <Navbar onMenuToggle={() => setMenuOpen(true)} />
+      <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <HeroSection />
+      <FeaturedProducts />
+      <FlashDeals />
       <Footer />
     </>
   );
