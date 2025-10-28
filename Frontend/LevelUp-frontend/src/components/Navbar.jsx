@@ -1,5 +1,6 @@
 import "../styles/navbar.css";
-import logo from "../assets/logo.svg";
+
+const logoURL = "https://i.ibb.co/S4WhTBDd/Logo.png";
 
 export default function Navbar({ onMenuToggle }) {
   return (
@@ -12,12 +13,17 @@ export default function Navbar({ onMenuToggle }) {
         </button>
         
         <a href="/" className="navbar-logo-link">
-          <img src={logo} alt="LevelUP PCs" className="navbar-logo" />
+          <img src={logoURL} alt="LevelUP PCs" className="navbar-logo" />
         </a>
         
         <div className="navbar-actions">
-          <button className="btn-login">Login</button>
-          <button className="btn-cart">
+          <a href="/login" className="btn-user" title="Iniciar Sesión">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </a>
+          <button className="btn-cart" title="Carrito de Compras">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1"/>
               <circle cx="20" cy="21" r="1"/>
