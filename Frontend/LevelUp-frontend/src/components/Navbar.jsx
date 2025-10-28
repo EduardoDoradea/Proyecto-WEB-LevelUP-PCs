@@ -16,8 +16,13 @@ export default function Navbar({ onMenuToggle }) {
         </a>
         
         <div className="navbar-actions">
-          <button className="btn-login">Login</button>
-          <button className="btn-cart">
+          <button className="btn-user" title="Iniciar Sesión">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </button>
+          <button className="btn-cart" title="Carrito de Compras">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1"/>
               <circle cx="20" cy="21" r="1"/>
