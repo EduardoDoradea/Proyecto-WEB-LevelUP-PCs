@@ -1,9 +1,10 @@
 import "../styles/hero.css";
-import banner from "../assets/banners/hero-bg.jpg";
+
+const bannerURL = "https://i.ibb.co/8nR8tKCb/hero-bg.jpg";
 
 export default function HeroSection() {
   return (
-    <section className="hero" style={{ backgroundImage: `url(${banner})` }}>
+    <section className="hero" style={{ backgroundImage: `url(${bannerURL})` }}>
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <h1>Rendimiento sin límites</h1>
