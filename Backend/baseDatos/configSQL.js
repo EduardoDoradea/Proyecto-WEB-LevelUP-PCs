@@ -1,11 +1,11 @@
 //importando el paquete de mssql para utilizar la conexion de sql 
-import mssql from "mssql";
+import sql from "mssql";
 
 const conexionConfig = {
     server: "localhost",
     database: "DB_ProyectoWeb",
-    user: "admin_seguro",
-    password: "12345678",
+    user: "admin_seguro", //cambiarlo dependiendo del usuario de la base
+    password: "12345678", //contrasenia del usuario 
     options: {
         encrypt: true,
         trustServerCertificate: true
@@ -14,10 +14,10 @@ const conexionConfig = {
 
 export async function getConexion() {
     try{
-        return await mssql.connect(conexionConfig);
+        return await sql.connect(conexionConfig);
     }catch(error){
         console.error(error);
     }
 }
 
-export { mssql };
+export { sql };
