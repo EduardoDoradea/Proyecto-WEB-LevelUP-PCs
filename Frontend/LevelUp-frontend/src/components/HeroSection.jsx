@@ -9,7 +9,7 @@ export default function HeroSection() {
       <div className="hero-content">
         <h1>Rendimiento sin límites</h1>
         <p>Descubre lo mejor en hardware para llevar tu PC al siguiente nivel</p>
-        <a href="/productos" className="hero-btn">Explorar productos</a>
+        <a href="/catalogo" className="hero-btn">Explorar productos</a>
       </div>
     </section>
   );

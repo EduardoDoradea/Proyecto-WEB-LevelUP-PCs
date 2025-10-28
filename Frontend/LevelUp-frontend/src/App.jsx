@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import CatalogPage from "./pages/Catalogpage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -12,6 +13,8 @@ export default function App() {
       setCurrentPage("login");
     } else if (path === "/registro") {
       setCurrentPage("register");
+    } else if (path === "/catalogo") {
+      setCurrentPage("catalog");
     } else {
       setCurrentPage("home");
     }
@@ -23,6 +26,8 @@ export default function App() {
         setCurrentPage("login");
       } else if (path === "/registro") {
         setCurrentPage("register");
+      } else if (path === "/catalogo") {
+        setCurrentPage("catalog");
       } else {
         setCurrentPage("home");
       }
@@ -39,6 +44,10 @@ export default function App() {
 
   if (currentPage === "register") {
     return <RegisterPage />;
+  }
+
+  if (currentPage === "catalog") {
+    return <CatalogPage />;
   }
 
   return <HomePage />;
