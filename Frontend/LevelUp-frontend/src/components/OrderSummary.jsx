@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/ordersummary.css";
 import CartItem from "./CartItem";
 

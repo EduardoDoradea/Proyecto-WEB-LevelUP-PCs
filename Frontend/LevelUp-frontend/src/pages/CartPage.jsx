@@ -30,11 +30,9 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {/* Navigation and Sidebar */}
       <Navbar onMenuToggle={() => setMenuOpen(true)} cartCount={cartItems.length} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
-      {/* Main Checkout Section */}
       <main className="checkout-main">
         <div className="checkout-container">
           <div className="checkout-grid">
@@ -53,7 +51,6 @@ export default function CheckoutPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
     </>
   );

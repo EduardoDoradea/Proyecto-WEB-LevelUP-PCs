@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/paymentForm.css";
 
 export default function PaymentForm() {

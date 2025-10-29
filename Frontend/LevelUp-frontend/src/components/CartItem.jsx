@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/cartitem.css";
 
 export default function CartItem({ item, isEditing, updateQuantity, removeItem }) {

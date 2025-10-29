@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/billingForm.css";
 
 export default function BillingForm() {
