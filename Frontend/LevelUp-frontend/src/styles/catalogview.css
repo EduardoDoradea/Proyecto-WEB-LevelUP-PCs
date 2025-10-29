@@ -56,6 +56,20 @@ body {
   font-weight: 500;
 }
 
+select {
+  background-color: #1a1f2e; 
+  color: white; 
+  border: 1px solid #3a3f50;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+
+select option {
+  background-color: white; 
+  color: black; 
+}
+
 .select-dropdown {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import CatalogPage from "./pages/Catalogpage";
+import CatalogPage from "./pages/CatalogPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
