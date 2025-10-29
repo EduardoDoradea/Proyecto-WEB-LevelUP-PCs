@@ -1,17 +1,60 @@
-import React from "react";
+import { useState } from "react";
+import Navbar from "../components/Navbar";
 import SidebarMenu from "../components/SidebarMenu";
 import Footer from "../components/Footer";
-import CheckoutForm from "../components/CheckoutForm";
-import ShoppingCart from "../components/ShoppingCart";
-import "../styles/CartPage.css";
+import BillingForm from "../components/BillingForm";
+import PaymentForm from "../components/PaymentForm";
+import OrderSummary from "../components/OrderSummary";
+import "../styles/checkoutpage.css";
 
-export default function CartPage() {
-    return (
-        <>
-            <Navbar onMenuToggle={() => setMenuOpen(true)} />
-            <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-            
-            <Footer />
-        </>
+export default function CheckoutPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: "Laptop ASUS", quantity: 1, price: 999.99, image: "💻" },
+    { id: 2, name: "Mouse Gamer", quantity: 2, price: 49.99, image: "🖱️" },
+  ]);
+  const [isEditingCart, setIsEditingCart] = useState(false);
+
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity < 1) return;
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
     );
+  };
+
+  const removeItem = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  return (
+    <>
+      {/* Navigation and Sidebar */}
+      <Navbar onMenuToggle={() => setMenuOpen(true)} cartCount={cartItems.length} />
+      <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {/* Main Checkout Section */}
+      <main className="checkout-main">
+        <div className="checkout-container">
+          <div className="checkout-grid">
+            <div className="forms-column">
+              <BillingForm />
+              <PaymentForm />
+            </div>
+            <OrderSummary
+              cartItems={cartItems}
+              isEditing={isEditingCart}
+              setIsEditing={setIsEditingCart}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+            />
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </>
+  );
 }
