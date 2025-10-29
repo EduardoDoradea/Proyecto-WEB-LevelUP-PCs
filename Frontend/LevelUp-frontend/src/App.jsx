@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CatalogPage from "./pages/CatalogPage";
+import CartPage from "./pages/CartPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -15,6 +16,8 @@ export default function App() {
       setCurrentPage("register");
     } else if (path === "/catalogo") {
       setCurrentPage("catalog");
+    } else if (path === "/carrito") {
+      setCurrentPage("cart");
     } else {
       setCurrentPage("home");
     }
@@ -28,6 +31,8 @@ export default function App() {
         setCurrentPage("register");
       } else if (path === "/catalogo") {
         setCurrentPage("catalog");
+      } else if (path === "/carrito") {
+        setCurrentPage("cart");
       } else {
         setCurrentPage("home");
       }
@@ -48,6 +53,10 @@ export default function App() {
 
   if (currentPage === "catalog") {
     return <CatalogPage />;
+  }
+
+  if (currentPage === "cart") {
+    return <CartPage />;
   }
 
   return <HomePage />;

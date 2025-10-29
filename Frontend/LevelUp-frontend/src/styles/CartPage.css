@@ -1,0 +1,51 @@
+:root {
+  --bg-dark: #0b132b;
+  --bg-panel: #1c2541;
+  --bg-card: #1e2a4a;
+  --accent: #38bdf8;
+  --text-muted: #9ca3af;
+  --radius: 12px;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background: var(--bg-dark);
+  font-family: "Inter", sans-serif;
+  color: white;
+}
+
+.checkout-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 60px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.checkout-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 30px 40px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  width: 50%;
+  min-width: 420px;
+}
+
+.summary-card {
+  width: 35%;
+  min-width: 320px;
+}
+
+@media (max-width: 1024px) {
+  .checkout-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .checkout-card, .summary-card {
+    width: 100%;
+  }
+}
