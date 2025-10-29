@@ -95,9 +95,9 @@
 
 .btn-cart {
   background: transparent;
+  padding: 0.6rem 0.8rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  padding: 0.6rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -143,8 +143,7 @@
     height: 40px;
   }
   
-  .btn-user,
-  .btn-cart {
+  .btn-user {
     padding: 0.5rem 0.6rem;
   }
 
@@ -160,8 +159,7 @@
     height: 35px;
   }
 
-  .btn-user,
-  .btn-cart {
+  .btn-user{
     padding: 0.4rem 0.5rem;
   }
 

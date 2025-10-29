@@ -14,6 +14,7 @@ export default function CheckoutPage() {
     { id: 2, name: "Mouse Gamer", quantity: 2, price: 49.99, image: "🖱️" },
   ]);
   const [isEditingCart, setIsEditingCart] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
@@ -28,9 +29,10 @@ export default function CheckoutPage() {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+
   return (
     <>
-      <Navbar onMenuToggle={() => setMenuOpen(true)} cartCount={cartItems.length} />
+      <Navbar onMenuToggle={() => setMenuOpen(true)} cartCount={cartItems} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="checkout-main">

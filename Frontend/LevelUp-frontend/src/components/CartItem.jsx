@@ -22,7 +22,7 @@ export default function CartItem({ item, isEditing, updateQuantity, removeItem }
       </div>
 
       {isEditing && (
-        <button className="remove-btn" onClick={() => removeItem(item.id)}>X</button>
+        <button className="remove-btn" onClick={() => removeItem(item.id)}>Quitar</button>
       )}
     </div>
   );
