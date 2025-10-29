@@ -7,22 +7,24 @@ import ProductOverview from "../components/ProductOverview";
 import "../styles/catalogpage.css";
 
 export default function CatalogPage() {
-    return (
-        <>
-            <Navbar />
-            <SidebarMenu />
+  const [menuOpen, setMenuOpen] = useState(false);
 
-            <main className="catalog-layout">
-                <aside className="catalog-filters">
-                    <FilterComponent />
-                </aside>
+  return (
+    <>
+      <Navbar onMenuToggle={() => setMenuOpen(true)} />
+      <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
-                <section className="catalog-products">
-                    <ProductOverview />
-                </section>
-            </main>
+      <main className="catalog-layout">
+        <aside className="catalog-filters">
+          <FilterComponent />
+        </aside>
 
-            <Footer />
-        </>
-    );
+        <section className="catalog-products">
+          <ProductOverview />
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
 }
