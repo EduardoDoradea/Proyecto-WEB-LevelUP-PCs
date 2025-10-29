@@ -5,7 +5,7 @@ import { getConexion, sql } from "../configSQL.js"
 //Este archivo tendra la autenticacion y la informacion del cliente
 export const registroCliente = async (cliente) => {
     try {
-        // 
+        // desestructurando el objeto
         const { correo, edad, nombreUsuario, contrasenia, nombre, telefono } = cliente
 
         //Objeto para poder utilizar la base de datos
