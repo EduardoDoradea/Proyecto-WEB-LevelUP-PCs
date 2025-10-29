@@ -28,6 +28,19 @@ export const registroCliente = async (cliente) => {
     }
 }
 
+export const obtenerTodosClientes = async() => {
+    try {
+        const pool = await getConexion();
+
+        const resultado = await pool.request()
+        .query(`SELECT * FROM Cliente`);
+
+        return resultado.recordset;
+    } catch (error) {
+        console.error("Error en obtener los clientes. " + error)
+    }
+}
+
 /*Pensando si dejar esta funcion*/
 export const obtenerClienteId = async (id_cliente) => {
     try {
@@ -61,26 +74,45 @@ try {
     }
 }
 
-export const actualizarClientePerfil = async (id_cliente, datos) => {
+export const actualizarClientePerfil = async (idCliente, datos) => {
     try {
         // UNICAMENTE ESTOS CAMPOS SE ACTUALIZARAN 
-        const { correo, edad, nombreUsuario, telefono } = datos
+        const { correo, edad, nombreUsuario, contrasenia, telefono } = datos
 
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
         
         //Insertando los datos del objeto en la base de datos
         const resultado = await pool.request()
-            .input("id_cliente", sql.BigInt, id_cliente)
+            .input("idCliente", sql.BigInt, idCliente)
             .input("correo", sql.NVarChar, correo)
             .input("edad", sql.Int, edad)
             .input("nombreUsuario", sql.NVarChar, nombreUsuario)
+            .input("contrasenia", sql.NVarChar, contrasenia)
             .input("telefono", sql.Int, telefono)
-            .query("UPDATE INTO Cliente (correo, edad, nombreUsuario, nombre, telefono) "
-                + " VALUES (@correo, @edad, @nombreUsuario, @nombre, @telefono)");
+            .query(`UPDATE Cliente 
+                SET correo = @correo,
+                edad = @edad,
+                nombreUsuario = @nombreUsuario,
+                contrasenia = @contrasenia,
+                telefono = @telefono
+                WHERE idCliente = @idCliente)`);
         //Mostrando las lineas afectadas 
         console.log(resultado.rowsAffected);
     } catch (error) {
         console.error("Error en la actualizacion de datos del cliente" + error);
+    }
+}
+
+export const eliminarCliente = async (nombreUsuario) => {
+    try {
+        const pool = await getConexion();
+        const resultado = await pool.request()
+        .input("nombreUsuario", sql.NVarChar, nombreUsuario)
+        .query(`DELETE FROM Cliente WHERE nombreUsuario = @nombreUsuario`);
+
+        console.log(resultado.rowsAffected);
+    } catch (error) {
+        console.error("No se ha logrado eliminar el producto con ese nombre. " + error);
     }
 }
