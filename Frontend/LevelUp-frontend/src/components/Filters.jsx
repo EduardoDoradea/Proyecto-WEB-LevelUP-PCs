@@ -48,7 +48,6 @@ const FilterComponent = () => {
         </button>
       </div>
 
-      {/* Filtro de Precio */}
       <div className="filter-section">
         <h3 className="section-title">Precio</h3>
         <div className="price-inputs">
@@ -72,11 +71,8 @@ const FilterComponent = () => {
             />
           </div>
         </div>
-
-        
       </div>
 
-      {/* Filtro de Marcas */}
       <div className="filter-section">
         <h3 className="section-title">MARCAS</h3>
         <div className="brands-list">
@@ -94,12 +90,10 @@ const FilterComponent = () => {
         </div>
       </div>
 
-      {/* Botón Aplicar */}
       <button className="apply-btn" onClick={applyFilters}>
         Aplicar Filtros
       </button>
 
-      {/* Filtros activos */}
       {selectedBrands.length > 0 && (
         <div className="active-filters">
           <p className="active-title">Filtros activos:</p>

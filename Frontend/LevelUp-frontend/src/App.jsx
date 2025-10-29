@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CatalogPage from "./pages/CatalogPage";
+import CartPage from "./pages/CartPage";
 import ProductPage from "./pages/ProductPage";
 
 export default function App() {
@@ -15,6 +16,8 @@ export default function App() {
       setCurrentPage("register");
     } else if (path === "/catalogo") {
       setCurrentPage("catalog");
+    } else if (path === "/carrito") {
+      setCurrentPage("cart");
     } else if (path.startsWith("/producto/")) {
       setCurrentPage("product");
     } else {
@@ -28,6 +31,8 @@ export default function App() {
         setCurrentPage("register");
       } else if (path === "/catalogo") {
         setCurrentPage("catalog");
+      } else if (path === "/carrito") {
+        setCurrentPage("cart");
       } else if (path.startsWith("/producto/")) {
         setCurrentPage("product");
       } else {
@@ -49,6 +54,10 @@ export default function App() {
 
   if (currentPage === "catalog") {
     return <CatalogPage />;
+  }
+
+  if (currentPage === "cart") {
+    return <CartPage />;
   }
 
   if (currentPage === "product") {
