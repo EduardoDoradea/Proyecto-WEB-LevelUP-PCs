@@ -23,13 +23,18 @@ const ProductOverview = () => {
     { id: 14, name: 'LOQ 15APH8', brand: 'LENOVO', price: 1149.99, image: imagePlaceholder },
   ];
 
-  const handleAddToCart = (product) => {
+  const handleProductClick = (productId) => {
+    window.history.pushState({}, '', `/producto/${productId}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
+  const handleAddToCart = (product, event) => {
+    event.stopPropagation(); 
     console.log('Añadido al carrito:', product);
   };
 
   return (
     <div className="catalog-container">
-      {/* Header de Resultados */}
       <div className="results-header">
         <div className="results-count">
           Se han encontrado <span>{products.length}</span> productos
@@ -72,11 +77,14 @@ const ProductOverview = () => {
           </div>
         </div>
       </div>
-
-      {/* Grid de Productos */}
       <div className="products-grid">
         {products.slice(0, itemsPerPage).map((product, index) => (
-          <div key={product.id} className="product-card" style={{ animationDelay: `${index * 0.05}s` }}>
+          <div 
+            key={product.id} 
+            className="product-card" 
+            style={{ animationDelay: `${index * 0.05}s` }}
+            onClick={() => handleProductClick(product.id)}
+          >
             <div className="product-image-container">
               <img src={product.image} alt={product.name} className="product-image" />
               {index < 3 && <span className="product-badge">Nuevo</span>}
@@ -88,7 +96,10 @@ const ProductOverview = () => {
 
               <div className="product-footer">
                 <div className="product-price">${product.price}</div>
-                <button className="add-to-cart-btn" onClick={() => handleAddToCart(product)}>
+                <button 
+                  className="add-to-cart-btn" 
+                  onClick={(e) => handleAddToCart(product, e)}
+                >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M5 1L3 4V14C3 14.5304 3.21071 15.0391 3.58579 15.4142C3.96086 15.7893 4.46957 16 5 16H11C11.5304 16 12.0391 15.7893 12.4142 15.4142C12.7893 15.0391 13 14.5304 13 14V4L11 1H5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M3 4H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

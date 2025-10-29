@@ -3,10 +3,10 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CatalogPage from "./pages/CatalogPage";
+import ProductPage from "./pages/ProductPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
-
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/login") {
@@ -15,11 +15,11 @@ export default function App() {
       setCurrentPage("register");
     } else if (path === "/catalogo") {
       setCurrentPage("catalog");
+    } else if (path.startsWith("/producto/")) {
+      setCurrentPage("product");
     } else {
       setCurrentPage("home");
     }
-
-    // Listener para cambios en la URL (navegación manual)
     const handleLocationChange = () => {
       const path = window.location.pathname;
       if (path === "/login") {
@@ -28,6 +28,8 @@ export default function App() {
         setCurrentPage("register");
       } else if (path === "/catalogo") {
         setCurrentPage("catalog");
+      } else if (path.startsWith("/producto/")) {
+        setCurrentPage("product");
       } else {
         setCurrentPage("home");
       }
@@ -37,7 +39,6 @@ export default function App() {
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
-  // Renderizar la página correspondiente
   if (currentPage === "login") {
     return <LoginPage />;
   }
@@ -48,6 +49,10 @@ export default function App() {
 
   if (currentPage === "catalog") {
     return <CatalogPage />;
+  }
+
+  if (currentPage === "product") {
+    return <ProductPage />;
   }
 
   return <HomePage />;
