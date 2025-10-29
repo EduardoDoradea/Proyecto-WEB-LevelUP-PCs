@@ -20,6 +20,7 @@
 
 .item-details {
   flex: 1;
+  padding: 0.5rem;
 }
 
 .item-price {
@@ -34,15 +35,31 @@
 }
 
 .quantity-controls button {
-  background: rgba(255, 255, 255, 0.2);
-  width: 1.5rem;
-  height: 1.5rem;
+  background: white;
+  border-color: transparent;
+  width: 1rem;
+  height: 1rem;
   border-radius: 0.25rem;
+  border: 0;
+}
+
+.quantity-controls button:hover {
+  background-color: #06b6d4;
+  color: white;
+  border-color: inherit;
+  cursor: pointer;
 }
 
 .remove-btn {
-  color: #fca5a5;
+  width: 3.5rem;
+  height: 1.5rem;
+  border: 0;
+  border-radius: 0.5rem;
+  border-color: transparent;
 }
 .remove-btn:hover {
-  color: red;
+  background-color: red;
+  color: white;
+  border-color: inherit;
+  cursor: pointer;
 }

@@ -23,6 +23,11 @@
   border-radius: 0.25rem;
 }
 
+.edit-btn:hover {
+  background: #f0f0f0;
+  cursor: pointer;
+}
+
 .items-list {
   margin: 1rem 0;
   display: flex;
@@ -59,6 +64,7 @@
 
 .pay-btn:hover {
   background: #f0f0f0;
+  cursor: pointer;
 }
 
 .secure-text {
