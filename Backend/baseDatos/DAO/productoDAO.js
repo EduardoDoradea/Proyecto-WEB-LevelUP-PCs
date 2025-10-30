@@ -25,25 +25,6 @@ export const registrarProducto = async (producto) => {
     }
 }
 
-// ACTUALIZAR STOCK DEL NOMBRE
-export const actualizarStockPorNombre = async (nombreProducto, cantidadProducto) => {
-    try {
-
-        const pool = await getConexion();
-
-        const resultado = await pool.request()
-            .input("cantidad", sql.Int, cantidadProducto)
-            .input("nombre", sql.NVarChar, nombreProducto)
-            .query(`UPDATE Producto
-            SET cantidad = @cantidad
-            WHERE nombre = @nombre`)
-
-        console.log("La actualizacion ha sido exitosa " + resultado.rowsAffected);
-    } catch (error) {
-        console.error("No se pudo actualizar el stock del producto. " + error);
-    }
-}
-
 // MOSTRAR TODOS LOS PRODUCTOS
 export const obtenerTodosProductos = async () => {
     try {
@@ -68,6 +49,25 @@ export const obtenerProductoPorNombre = async (nombreProducto) => {
         return resultado.recordset;
     } catch (error) {
         console.error("No se ha encontrado el producto con ese nombre. " + error);
+    }
+}
+
+// ACTUALIZAR STOCK DEL NOMBRE
+export const actualizarStockPorNombre = async (nombreProducto, cantidadProducto) => {
+    try {
+
+        const pool = await getConexion();
+
+        const resultado = await pool.request()
+            .input("cantidad", sql.Int, cantidadProducto)
+            .input("nombre", sql.NVarChar, nombreProducto)
+            .query(`UPDATE Producto
+            SET cantidad = @cantidad
+            WHERE nombre = @nombre`)
+
+        console.log("La actualizacion ha sido exitosa " + resultado.rowsAffected);
+    } catch (error) {
+        console.error("No se pudo actualizar el stock del producto. " + error);
     }
 }
 

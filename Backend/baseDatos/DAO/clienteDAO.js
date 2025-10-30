@@ -42,15 +42,15 @@ export const obtenerTodosClientes = async() => {
 }
 
 /*Pensando si dejar esta funcion*/
-export const obtenerClienteId = async (id_cliente) => {
+export const obtenerClienteId = async (idCliente) => {
     try {
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
         
         const resultado = await pool.request()
-            .input("id_cliente", sql.BigInt, id_cliente)
+            .input("id_cliente", sql.BigInt, idCliente)
             .query("(SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad) "
-                +"FROM Cliente WHERE idCliente = id_cliente");
+                +"FROM Cliente WHERE idCliente = @idCliente");
             
             return resultado.recordset;
     } catch (error) {
@@ -58,15 +58,16 @@ export const obtenerClienteId = async (id_cliente) => {
     }
 }
 
-export const obtenerClienteCorreo = async (correo_cliente) => {
+export const obtenerClienteCorreo = async (correoCliente, contrasenia) => {
 try {
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
         
         const resultado = await pool.request()
-            .input("correo_cliente", sql.NVarChar, correo_cliente)
-            .query("(SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad) "
-                +"FROM Cliente WHERE correo LIKE correo_cliente");
+            .input("correoCliente", sql.NVarChar, correoCliente)
+            .input("contrasenia", sql.NVarChar, contrasenia)
+            .query(`(SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad) 
+                FROM Cliente WHERE correo LIKE @correoCliente`);
             //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
             return resultado.recordset[0];
     } catch (error) {
@@ -97,7 +98,11 @@ export const actualizarClientePerfil = async (idCliente, datos) => {
                 contrasenia = @contrasenia,
                 telefono = @telefono
                 WHERE idCliente = @idCliente)`);
-        //Mostrando las lineas afectadas 
+        //Mostrando las lineas afectadas
+        if (resultado.rowsAffected[0] === 0) {
+            console.error("No se ha encontrado un usuario con ese id " + idCliente)
+        }
+        
         console.log(resultado.rowsAffected);
     } catch (error) {
         console.error("Error en la actualizacion de datos del cliente" + error);
