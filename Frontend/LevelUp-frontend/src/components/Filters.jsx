@@ -58,6 +58,7 @@ const FilterComponent = () => {
               value={priceMin}
               onChange={(e) => setPriceMin(e.target.value)}
               placeholder="0"
+              min = "0"
             />
           </div>
           <span className="separator">-</span>
@@ -68,6 +69,7 @@ const FilterComponent = () => {
               value={priceMax}
               onChange={(e) => setPriceMax(e.target.value)}
               placeholder="1000"
+              min = "0"
             />
           </div>
         </div>
