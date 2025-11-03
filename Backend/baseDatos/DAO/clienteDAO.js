@@ -1,123 +1,151 @@
 
 //Importamos el metodo para la conexion a la base de datos y tambien el paquete de mssql, de la carpeta de configuracion
-import { getConexion, sql } from "../configSQL.js"
+import { getConexion, sql } from "../configSQL.js";
+import bycript from "bcrypt";
 
 //Este archivo tendra la autenticacion y la informacion del cliente
+
+//REGISTRO DEL CLIENTE
 export const registroCliente = async (cliente) => {
     try {
         // desestructurando el objeto
-        const { correo, edad, nombreUsuario, contrasenia, nombre, telefono } = cliente
+        const { correo, nombreUsuario, contrasenia, nombre, telefono } = cliente
+
+        const hashedContrasenia = await bycript.hash(String(contrasenia), 10);
 
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
-        
+
         //Insertando los datos del objeto en la base de datos
         const resultado = await pool.request()
             .input("correo", sql.NVarChar, correo)
-            .input("edad", sql.Int, edad)
             .input("nombreUsuario", sql.NVarChar, nombreUsuario)
-            .input("contrasenia", sql.NVarChar, contrasenia)
+            .input("contrasenia", sql.NVarChar, hashedContrasenia)
             .input("nombre", sql.NVarChar, nombre)
             .input("telefono", sql.Int, telefono)
-            .query("INSERT INTO Cliente (correo, edad, nombreUsuario, constrasenia, nombre, telefono) "
-                + " VALUES (@correo, @edad, @nombreUsuario, @constrasenia, @nombre, @telefono)");
+            .query(`INSERT INTO Cliente (correo, nombreUsuario, contrasenia, nombre, telefono)
+                VALUES (@correo, @nombreUsuario, @contrasenia, @nombre, @telefono)`);
         //Mostrando las lineas afectadas 
-        console.log(resultado.rowsAffected);
+        console.log("Se ha logrado insertar el nuevo cliente con exito! " + resultado.rowsAffected);
     } catch (error) {
         console.error("Error en el registro del cliente" + error);
     }
 }
 
-export const obtenerTodosClientes = async() => {
+//MOSTRAR TODOS LOS CLIENTES 
+export const mostrarClientes = async () => {
     try {
+        //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
 
         const resultado = await pool.request()
-        .query(`SELECT * FROM Cliente`);
+            .query(`SELECT * FROM Cliente`);
 
         return resultado.recordset;
     } catch (error) {
-        console.error("Error en obtener los clientes. " + error)
+        console.error("Error en mostrar los clientes" + error);
     }
 }
 
 /*Pensando si dejar esta funcion*/
-export const obtenerClienteId = async (idCliente) => {
+export const mostrarClienteId = async (idCliente) => {
     try {
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
-        
+
         const resultado = await pool.request()
-            .input("id_cliente", sql.BigInt, idCliente)
-            .query("(SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad) "
-                +"FROM Cliente WHERE idCliente = @idCliente");
-            
-            return resultado.recordset;
+            .input("idCliente", sql.BigInt, idCliente)
+            .query(`SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono "
+                    FROM Cliente WHERE idCliente = @idCliente`);
+
+        return resultado.recordset;
     } catch (error) {
         console.error("Error en obtener el id del cliente" + error);
     }
 }
 
-export const obtenerClienteCorreo = async (correoCliente, contrasenia) => {
-try {
+//MOSTRAR EL CLIENTE POR CORREO
+export const mostrarClienteCorreo = async (correoCliente) => {
+    try {
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
-        
+
         const resultado = await pool.request()
             .input("correoCliente", sql.NVarChar, correoCliente)
-            .input("contrasenia", sql.NVarChar, contrasenia)
-            .query(`(SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad) 
-                FROM Cliente WHERE correo LIKE @correoCliente`);
-            //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
-            return resultado.recordset[0];
+            .query(`SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad)
+                FROM Cliente WHERE correo = @correoCliente`);
+        //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
+        return resultado.recordset[0];
     } catch (error) {
         console.error("Error en la busqueda del cliente por correo." + error);
     }
 }
 
+//ACTUALIZAR UN CLIENTE
 export const actualizarClientePerfil = async (idCliente, datos) => {
     try {
         // UNICAMENTE ESTOS CAMPOS SE ACTUALIZARAN 
-        const { correo, edad, nombreUsuario, contrasenia, telefono } = datos
+        const { correo, nombreUsuario, contrasenia, telefono } = datos
 
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
-        
-        //Insertando los datos del objeto en la base de datos
-        const resultado = await pool.request()
-            .input("idCliente", sql.BigInt, idCliente)
-            .input("correo", sql.NVarChar, correo)
-            .input("edad", sql.Int, edad)
-            .input("nombreUsuario", sql.NVarChar, nombreUsuario)
-            .input("contrasenia", sql.NVarChar, contrasenia)
-            .input("telefono", sql.Int, telefono)
-            .query(`UPDATE Cliente 
-                SET correo = @correo,
-                edad = @edad,
-                nombreUsuario = @nombreUsuario,
-                contrasenia = @contrasenia,
+
+        if (contrasenia) {
+
+            const hashedContrasenia = await bycript.hash(String(contrasenia), 10);
+
+            //Insertando los datos del objeto en la base de datos
+            const resultado = await pool.request()
+                .input("idCliente", sql.BigInt, idCliente)
+                .input("correo", sql.NVarChar, correo)
+                .input("nombreUsuario", sql.NVarChar, nombreUsuario)
+                .input("contrasenia", sql.NVarChar, hashedContrasenia)
+                .input("telefono", sql.Int, telefono)
+                .query(`UPDATE Cliente 
+                SET correo = @correo
+                nombreUsuario = @nombreUsuario
+                contrasenia = @contrasenia
                 telefono = @telefono
-                WHERE idCliente = @idCliente)`);
-        //Mostrando las lineas afectadas
-        if (resultado.rowsAffected[0] === 0) {
-            console.error("No se ha encontrado un usuario con ese id " + idCliente)
+                WHERE idCliente = @idCliente
+                `);
+            console.log("Se ha logrado actualizar al cliente. " + resultado.recordset);
+        } else {
+            //Insertando los datos del objeto en la base de datos
+            const resultado = await pool.request()
+                .input("idCliente", sql.BigInt, idCliente)
+                .input("correo", sql.NVarChar, correo)
+                .input("nombreUsuario", sql.NVarChar, nombreUsuario)
+                .input("telefono", sql.Int, telefono)
+                .query(`UPDATE Cliente 
+                SET correo = @correo
+                nombreUsuario = @nombreUsuario
+                telefono = @telefono
+                WHERE idCliente = @idCliente
+                `);
+            console.log("Se ha logrado actualizar al cliente. " + resultado.recordset);
         }
-        
-        console.log(resultado.rowsAffected);
+
     } catch (error) {
         console.error("Error en la actualizacion de datos del cliente" + error);
     }
 }
 
-export const eliminarCliente = async (nombreUsuario) => {
+//ELIMINAR UN CLIENTE
+export const eliminarClientePerfil = async (idCliente) => {
     try {
-        const pool = await getConexion();
-        const resultado = await pool.request()
-        .input("nombreUsuario", sql.NVarChar, nombreUsuario)
-        .query(`DELETE FROM Cliente WHERE nombreUsuario = @nombreUsuario`);
+        // UNICAMENTE ESTOS CAMPOS SE ACTUALIZARAN 
 
+        //Objeto para poder utilizar la base de datos
+        const pool = await getConexion();
+
+        //Insertando los datos del objeto en la base de datos
+        const resultado = await pool.request()
+            .input("idCliente", sql.BigInt, idCliente)
+            .query(`DELETE FROM Cliente 
+                WHERE idCliente = @idCliente`);
+        //Mostrando las lineas afectadas  
         console.log(resultado.rowsAffected);
     } catch (error) {
-        console.error("No se ha logrado eliminar el producto con ese nombre. " + error);
+        console.error("Error en la actualizacion de datos del cliente" + error);
     }
 }

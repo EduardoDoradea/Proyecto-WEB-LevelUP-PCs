@@ -1,7 +1,7 @@
 
 import { getConexion, sql } from "../configSQL.js"
 
-// CREAR PRODUCTO
+// REGISTRO PRODUCTO
 export const registrarProducto = async (producto) => {
     try {
 
@@ -52,7 +52,7 @@ export const obtenerProductoPorNombre = async (nombreProducto) => {
     }
 }
 
-// ACTUALIZAR STOCK DEL NOMBRE
+// ACTUALIZAR STOCK POR EL NOMBRE
 export const actualizarStockPorNombre = async (nombreProducto, cantidadProducto) => {
     try {
 
@@ -84,4 +84,3 @@ export const eliminarProductoPorNombre = async (nombreProducto) => {
         console.error("No se ha logrado eliminar el producto con ese nombre. " + error);
     }
 }
-

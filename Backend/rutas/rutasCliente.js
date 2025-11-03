@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import * as controladorCliente from "../controladores/clienteControlador";
+import * as controladorCliente from "../controladores/clienteControlador.js";
 
 const router = Router();
 
