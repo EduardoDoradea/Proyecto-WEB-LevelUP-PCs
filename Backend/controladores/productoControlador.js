@@ -6,7 +6,7 @@ export const crearNuevoProducto = async (req, res) => {
     try {
         const nuevoProducto = req.body;
         
-        await productoDAO.crearNuevoProducto(nuevoProducto);
+        await productoDAO.registrarProducto(nuevoProducto);
         res.status(201).json({ mensaje: "Producto registrado exitosamente." });
 
     } catch (error) {
@@ -17,7 +17,7 @@ export const crearNuevoProducto = async (req, res) => {
 //MOSTRAR PRODUCTO 
 export const mostrarProductos = async (req, res) => {
     try {
-        const productos = await productoDAO.mostrarProductos();
+        const productos = await productoDAO.obtenerTodosProductos();
         res.json({ productos })
     } catch (error) {
         res.status(500).json({ errror: "No se pudo mostrar todos los productos en existencia. " })
@@ -29,7 +29,7 @@ export const mostrarProductoPorNombre = async (req, res) => {
     try {
         const nombreProducto = req.body;
 
-        const productosNombre = await productoDAO.mostrarProductoPorNombre(nombreProducto)
+        const productosNombre = await productoDAO.obtenerProductoPorNombre(nombreProducto)
         res.json({ productosNombre })
     } catch (error) {
         res.status(500).json({ errror: "No se pudo mostrar el producto con ese nombre. " })
@@ -42,7 +42,7 @@ export const actualizarStockProducto = async (req, res) => {
         const idProducto = parseInt(req.params.idProducto)
         const cantidadProducto = req.body;
 
-        await productoDAO.crearNuevoProducto(idProducto, cantidadProducto);
+        await productoDAO.actualizarStockPorNombre(idProducto, cantidadProducto);
         res.status(201).json({ mensaje: "Se ha actualizado el producto exitosamente." });
 
     } catch (error) {
@@ -55,7 +55,7 @@ export const eliminarProducto = async (req, res) => {
     try {
         const nombreProducto = req.body;
         
-        await productoDAO.eliminarProducto(nombreProducto);
+        await productoDAO.eliminarProductoPorNombre(nombreProducto);
         res.status(201).json({ mensaje: "Se ha eliminado el producto exitosamente." });
 
     } catch (error) {
