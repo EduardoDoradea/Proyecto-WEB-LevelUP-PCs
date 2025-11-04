@@ -53,14 +53,15 @@ export const obtenerProductoPorNombre = async (nombreProducto) => {
 }
 
 // ACTUALIZAR STOCK POR EL NOMBRE
-export const actualizarStockPorNombre = async (nombreProducto, cantidadProducto) => {
+export const actualizarStockPorNombre = async (idProducto, cantidadProducto) => {
     try {
+        const { cantidad } = cantidadProducto
 
         const pool = await getConexion();
 
         const resultado = await pool.request()
-            .input("cantidad", sql.Int, cantidadProducto)
-            .input("nombre", sql.NVarChar, nombreProducto)
+            .input("idProducto", sql.BigInt, idProducto)
+            .input("cantidad", sql.Int, cantidad)
             .query(`UPDATE Producto
             SET cantidad = @cantidad
             WHERE nombre = @nombre`)
