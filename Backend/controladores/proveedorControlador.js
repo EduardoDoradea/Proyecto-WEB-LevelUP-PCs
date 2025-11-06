@@ -1,5 +1,5 @@
 
-import proveedorDAO from "../baseDatos/DAO/proveedorDAO.js";
+import * as proveedorDAO from "../baseDatos/DAO/proveedorDAO.js";
 
 //CREACION DE PROVEEDORES 
 export const crearNuevoProveedor = async (req, res) => {

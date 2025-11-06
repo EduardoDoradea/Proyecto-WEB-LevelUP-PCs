@@ -1,5 +1,5 @@
 
-import productoDAO from "../baseDatos/DAO/productoDAO.js";
+import * as productoDAO from "../baseDatos/DAO/productoDAO.js";
 
 //CREACION DE PRODUCTO 
 export const crearNuevoProducto = async (req, res) => {

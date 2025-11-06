@@ -1,5 +1,5 @@
 
-import detalleCarritoDAO from "../baseDatos/DAO/detalleCarritoDAO.js";
+import * as detalleCarritoDAO from "../baseDatos/DAO/detalleCarritoDAO.js";
 
 //CREACION CARRITO 
 export const crearNuevoCarrito = async (req, res) => {
