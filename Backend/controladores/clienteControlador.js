@@ -52,7 +52,7 @@ export const actualizarClientePerfil = async (req, res) => {
         const cliente = req.body;
 
         await clienteDAO.actualizarClientePerfil(idCliente, cliente);
-        res.status(200).json({ mensaje: "Se ha actualizado con exito el cliente." })
+        res.status(201).json({ mensaje: "Se ha actualizado con exito el cliente." })
     } catch (error) {
         res.status(500).json({ errror: "No se pudo actualizar el cliente. " })
     }
@@ -63,7 +63,7 @@ export const eliminarClienteNombreUsuario = async (req, res) => {
         const nombreUsuario = req.params.nombreUsuario;
 
         await clienteDAO.eliminarCliente(nombreUsuario);
-        res.status(200).json({ mensaje: "Se ha eliminado con exito el cliente." })
+        res.status(201).json({ mensaje: "Se ha eliminado con exito el cliente." })
     } catch (error) {
         res.status(500).json({ errror: "No se pudo eliminar el cliente. " })
     }
