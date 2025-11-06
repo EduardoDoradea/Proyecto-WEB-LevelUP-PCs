@@ -47,7 +47,7 @@ export const mostrarPedidosPorId = async (req, res) => {
 }
 
 //ACTUALIZAR EL PEDIDO
-export const actualizarStockProducto = async (req, res) => {
+export const actualizarPedido = async (req, res) => {
     try {
         const datosBuscar = {
             nombreUsuario: req.body.nombreUsuario,
