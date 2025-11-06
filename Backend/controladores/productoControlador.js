@@ -46,7 +46,7 @@ export const actualizarStockProducto = async (req, res) => {
         res.status(201).json({ mensaje: "Se ha actualizado el producto exitosamente." });
 
     } catch (error) {
-        res.status(500).json({ error: "No se pudo actualizar el producto ." });
+        res.status(500).json({ error: "No se pudo actualizar el producto." });
     }
 }
 
