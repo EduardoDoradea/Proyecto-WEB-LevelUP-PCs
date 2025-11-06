@@ -40,7 +40,7 @@ export const actualizarCantidadCarrito = async (req, res) => {
 }
 
 //ELIMINAR CARRITO 
-export const mostrarProductos = async (req, res) => {
+export const eliminarCarrito = async (req, res) => {
     try {
         const idCarrito = parseInt(req.params.idDetalleCarrito);
 
