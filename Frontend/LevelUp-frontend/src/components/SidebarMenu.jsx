@@ -64,6 +64,16 @@ export default function SidebarMenu({ isOpen, onClose }) {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
+  const handleItemClick = (item, index) => {
+    if (item.link) {
+      // Si tiene un link directo, navegar
+      window.location.href = item.link;
+    } else {
+      // Si no, expandir/colapsar subitems
+      toggleItem(index);
+    }
+  };
+
   return (
     <div className={`sidebar-overlay ${isOpen ? "open" : ""}`} onClick={onClose}>
       <div className={`sidebar ${isOpen ? "open" : ""}`} onClick={(e) => e.stopPropagation()}>
@@ -74,24 +84,26 @@ export default function SidebarMenu({ isOpen, onClose }) {
             <div key={index} className="sidebar-item">
               <button 
                 className={`sidebar-link ${expandedItem === index ? "active" : ""}`}
-                onClick={() => toggleItem(index)}
+                onClick={() => handleItemClick(item, index)}
               >
                 <span className="sidebar-icon">{item.icon}</span>
                 <span className="sidebar-text">{item.title}</span>
-                <span className="sidebar-arrow">›</span>
+                {!item.link && <span className="sidebar-arrow">›</span>}
               </button>
               
-              <div className={`sidebar-submenu ${expandedItem === index ? "expanded" : ""}`}>
-                {item.subitems.map((subitem, subIndex) => (
-                  <a 
-                    key={subIndex} 
-                    href={`/${item.title.toLowerCase().replace(/ /g, '-')}/${subitem.toLowerCase().replace(/ /g, '-')}`} 
-                    className="sidebar-sublink"
-                  >
-                    {subitem}
-                  </a>
-                ))}
-              </div>
+              {!item.link && (
+                <div className={`sidebar-submenu ${expandedItem === index ? "expanded" : ""}`}>
+                  {item.subitems.map((subitem, subIndex) => (
+                    <a 
+                      key={subIndex} 
+                      href={`/${item.title.toLowerCase().replace(/ /g, '-')}/${subitem.toLowerCase().replace(/ /g, '-')}`} 
+                      className="sidebar-sublink"
+                    >
+                      {subitem}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </nav>
