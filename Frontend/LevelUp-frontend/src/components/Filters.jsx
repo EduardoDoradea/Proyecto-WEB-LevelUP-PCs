@@ -5,7 +5,6 @@ const FilterComponent = ({ onFiltersChange }) => {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const [isSticky, setIsSticky] = useState(false);
 
   const brands = [
     { name: 'ACER', count: 2 },
@@ -16,16 +15,6 @@ const FilterComponent = ({ onFiltersChange }) => {
     { name: 'LENOVO', count: 1 },
     { name: 'MSI', count: 5 }
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const shouldStick = window.scrollY > 100;
-      setIsSticky(shouldStick);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const toggleBrand = (brandName) => {
     setSelectedBrands(prev =>
@@ -52,15 +41,7 @@ const FilterComponent = ({ onFiltersChange }) => {
   }, [priceMin, priceMax, selectedBrands, onFiltersChange]);
 
   return (
-    <div 
-      className={`filter-container ${isSticky ? 'sticky' : ''}`}
-      style={{
-        position: isSticky ? 'sticky' : 'relative',
-        top: isSticky ? '100px' : 'auto',
-        maxHeight: isSticky ? 'calc(100vh - 120px)' : 'none',
-        overflowY: isSticky ? 'auto' : 'visible'
-      }}
-    >
+    <div className="filter-container">
       <div className="filter-header">
         <h2 className="filter-title">FILTROS</h2>
         <button className="clear-btn" onClick={clearFilters}>
