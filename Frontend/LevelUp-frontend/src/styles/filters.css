@@ -26,7 +26,6 @@ body {
   overflow-y: auto;
 }
 
-/* Scrollbar personalizado para cuando esté sticky */
 .filter-container.sticky::-webkit-scrollbar {
   width: 6px;
 }
@@ -129,14 +128,12 @@ body {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* Ocultar flechas de número en Chrome, Safari, Edge */
 .input-group input[type="number"]::-webkit-inner-spin-button,
 .input-group input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Ocultar flechas de número en Firefox */
 .input-group input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -235,7 +232,6 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .filter-container {
     max-width: 100%;

@@ -17,7 +17,6 @@ const FilterComponent = ({ onFiltersChange }) => {
     { name: 'MSI', count: 5 }
   ];
 
-  // Detectar scroll para sticky
   useEffect(() => {
     const handleScroll = () => {
       const shouldStick = window.scrollY > 100;
@@ -42,7 +41,6 @@ const FilterComponent = ({ onFiltersChange }) => {
     setSelectedBrands([]);
   };
 
-  // Auto-aplicar filtros cuando cambian
   useEffect(() => {
     if (onFiltersChange) {
       onFiltersChange({
