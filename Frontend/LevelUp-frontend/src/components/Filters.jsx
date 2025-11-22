@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/filters.css';
 
-const FilterComponent = () => {
+const FilterComponent = ({ onFiltersChange }) => {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [isSticky, setIsSticky] = useState(false);
 
   const brands = [
     { name: 'ACER', count: 2 },
@@ -15,6 +16,17 @@ const FilterComponent = () => {
     { name: 'LENOVO', count: 1 },
     { name: 'MSI', count: 5 }
   ];
+
+  // Detectar scroll para sticky
+  useEffect(() => {
+    const handleScroll = () => {
+      const shouldStick = window.scrollY > 100;
+      setIsSticky(shouldStick);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleBrand = (brandName) => {
     setSelectedBrands(prev =>
@@ -30,17 +42,27 @@ const FilterComponent = () => {
     setSelectedBrands([]);
   };
 
-  const applyFilters = () => {
-    const filters = {
-      priceMin,
-      priceMax,
-      brands: selectedBrands
-    };
-    console.log('Aplicando filtros:', filters);
-  };
+  // Auto-aplicar filtros cuando cambian
+  useEffect(() => {
+    if (onFiltersChange) {
+      onFiltersChange({
+        priceMin: priceMin ? parseFloat(priceMin) : null,
+        priceMax: priceMax ? parseFloat(priceMax) : null,
+        brands: selectedBrands
+      });
+    }
+  }, [priceMin, priceMax, selectedBrands, onFiltersChange]);
 
   return (
-    <div className="filter-container">
+    <div 
+      className={`filter-container ${isSticky ? 'sticky' : ''}`}
+      style={{
+        position: isSticky ? 'sticky' : 'relative',
+        top: isSticky ? '100px' : 'auto',
+        maxHeight: isSticky ? 'calc(100vh - 120px)' : 'none',
+        overflowY: isSticky ? 'auto' : 'visible'
+      }}
+    >
       <div className="filter-header">
         <h2 className="filter-title">FILTROS</h2>
         <button className="clear-btn" onClick={clearFilters}>
@@ -58,7 +80,7 @@ const FilterComponent = () => {
               value={priceMin}
               onChange={(e) => setPriceMin(e.target.value)}
               placeholder="0"
-              min = "0"
+              min="0"
             />
           </div>
           <span className="separator">-</span>
@@ -69,7 +91,7 @@ const FilterComponent = () => {
               value={priceMax}
               onChange={(e) => setPriceMax(e.target.value)}
               placeholder="1000"
-              min = "0"
+              min="0"
             />
           </div>
         </div>
@@ -91,10 +113,6 @@ const FilterComponent = () => {
           ))}
         </div>
       </div>
-
-      <button className="apply-btn" onClick={applyFilters}>
-        Aplicar Filtros
-      </button>
 
       {selectedBrands.length > 0 && (
         <div className="active-filters">

@@ -14,9 +14,35 @@ body {
   padding: 24px;
   border-radius: 12px;
   max-width: 400px;
-  max-height: 1200px;
   color: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.filter-container.sticky {
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+/* Scrollbar personalizado para cuando esté sticky */
+.filter-container.sticky::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-container.sticky::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.filter-container.sticky::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.filter-container.sticky::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .filter-header {
@@ -24,7 +50,6 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  margin-top: 50px;
 }
 
 .filter-title {
@@ -42,11 +67,12 @@ body {
   cursor: pointer;
   font-size: 13px;
   transition: all 0.3s ease;
+  border: none;
+  font-weight: 600;
 }
 
 .clear-btn:hover {
   background: #00b4d8;
-  border: transparent;
   color: white;
 }
 
@@ -103,6 +129,18 @@ body {
   color: rgba(255, 255, 255, 0.4);
 }
 
+/* Ocultar flechas de número en Chrome, Safari, Edge */
+.input-group input[type="number"]::-webkit-inner-spin-button,
+.input-group input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ocultar flechas de número en Firefox */
+.input-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .separator {
   color: #FFF;
   font-size: 18px;
@@ -146,25 +184,6 @@ body {
   color: #FFF;
   font-size: 14px;
   font-weight: 600;
-}
-
-.apply-btn {
-  width: 100%;
-  background: #FFF;
-  color: #000;
-  border: none;
-  padding: 14px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(30, 136, 229, 0.3);
-}
-
-.apply-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
 }
 
 .active-filters {
@@ -214,4 +233,18 @@ body {
 
 .filter-tag button:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filter-container {
+    max-width: 100%;
+  }
+  
+  .filter-container.sticky {
+    position: relative;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
 }

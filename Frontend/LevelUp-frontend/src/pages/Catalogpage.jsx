@@ -8,6 +8,15 @@ import "../styles/catalogpage.css";
 
 export default function CatalogPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    priceMin: null,
+    priceMax: null,
+    brands: []
+  });
+
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
   return (
     <>
@@ -16,11 +25,11 @@ export default function CatalogPage() {
 
       <main className="catalog-layout">
         <aside className="catalog-filters">
-          <FilterComponent />
+          <FilterComponent onFiltersChange={handleFiltersChange} />
         </aside>
 
         <section className="catalog-products">
-          <ProductOverview />
+          <ProductOverview filters={filters} />
         </section>
       </main>
 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import '../styles/catalogview.css'; 
+import '../styles/catalogview.css';
 
-const ProductOverview = () => {
+const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [] } }) => {
   const [sortBy, setSortBy] = useState('todos');
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const imagePlaceholder = 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=300&fit=crop';
 
-  const products = [
+  const allProducts = [
     { id: 1, name: 'Laptop LOQ 15IRH8', brand: 'LENOVO', price: 1299.99, image: imagePlaceholder },
     { id: 2, name: 'ROG Strix G15', brand: 'ASUS', price: 1599.99, image: imagePlaceholder },
     { id: 3, name: 'TUF Gaming A15', brand: 'ASUS', price: 999.99, image: imagePlaceholder },
@@ -21,7 +21,59 @@ const ProductOverview = () => {
     { id: 12, name: 'TUF Dash F15', brand: 'ASUS', price: 1099.99, image: imagePlaceholder },
     { id: 13, name: 'Cyborg 15', brand: 'MSI', price: 949.99, image: imagePlaceholder },
     { id: 14, name: 'LOQ 15APH8', brand: 'LENOVO', price: 1149.99, image: imagePlaceholder },
+    { id: 15, name: 'Pavilion Gaming', brand: 'HP', price: 849.99, image: imagePlaceholder },
+    { id: 16, name: 'Omen 16', brand: 'HP', price: 1399.99, image: imagePlaceholder },
+    { id: 17, name: 'Victus 15', brand: 'HP', price: 999.99, image: imagePlaceholder },
+    { id: 18, name: 'Nitro 5', brand: 'ACER', price: 899.99, image: imagePlaceholder },
+    { id: 19, name: 'Predator Helios', brand: 'ACER', price: 1599.99, image: imagePlaceholder },
+    { id: 20, name: 'Core i9-14900K', brand: 'INTEL', price: 589.99, image: imagePlaceholder },
   ];
+
+  // Aplicar filtros con validación
+  const filteredProducts = allProducts.filter(product => {
+    // Filtro de precio mínimo
+    if (filters.priceMin !== null && filters.priceMin !== undefined && product.price < filters.priceMin) {
+      return false;
+    }
+    
+    // Filtro de precio máximo
+    if (filters.priceMax !== null && filters.priceMax !== undefined && product.price > filters.priceMax) {
+      return false;
+    }
+    
+    // Filtro de marca
+    if (filters.brands && filters.brands.length > 0 && !filters.brands.includes(product.brand)) {
+      return false;
+    }
+    
+    return true;
+  });
+
+  // Aplicar ordenamiento
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case 'precio-asc':
+        return a.price - b.price;
+      case 'precio-desc':
+        return b.price - a.price;
+      case 'nombre-asc':
+        return a.name.localeCompare(b.name);
+      case 'nombre-desc':
+        return b.name.localeCompare(a.name);
+      case 'marca':
+        return a.brand.localeCompare(b.brand);
+      case 'mas-vendidos':
+        // Simulación - en producción vendría del backend
+        return 0;
+      case 'nuevos':
+        // Simulación - en producción vendría del backend
+        return b.id - a.id;
+      default:
+        return 0;
+    }
+  });
+
+  const displayProducts = sortedProducts.slice(0, itemsPerPage);
 
   const handleProductClick = (productId) => {
     window.history.pushState({}, '', `/producto/${productId}`);
@@ -29,15 +81,16 @@ const ProductOverview = () => {
   };
 
   const handleAddToCart = (product, event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     console.log('Añadido al carrito:', product);
+    // Aquí iría la lógica para añadir al carrito
   };
 
   return (
     <div className="catalog-container">
       <div className="results-header">
         <div className="results-count">
-          Se han encontrado <span>{products.length}</span> productos
+          Se han encontrado <span>{filteredProducts.length}</span> productos
         </div>
 
         <div className="results-controls">
@@ -77,41 +130,56 @@ const ProductOverview = () => {
           </div>
         </div>
       </div>
-      <div className="products-grid">
-        {products.slice(0, itemsPerPage).map((product, index) => (
-          <div 
-            key={product.id} 
-            className="product-card" 
-            style={{ animationDelay: `${index * 0.05}s` }}
-            onClick={() => handleProductClick(product.id)}
-          >
-            <div className="product-image-container">
-              <img src={product.image} alt={product.name} className="product-image" />
-              {index < 3 && <span className="product-badge">Nuevo</span>}
-            </div>
 
-            <div className="product-info">
-              <div className="product-brand">{product.brand}</div>
-              <h3 className="product-name">{product.name}</h3>
+      {filteredProducts.length === 0 ? (
+        <div style={{
+          textAlign: 'center',
+          padding: '60px 20px',
+          color: '#aaa'
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>🔍</div>
+          <h3 style={{ fontSize: '24px', marginBottom: '10px', color: 'white' }}>
+            No se encontraron productos
+          </h3>
+          <p>Intenta ajustar los filtros para ver más resultados</p>
+        </div>
+      ) : (
+        <div className="products-grid">
+          {displayProducts.map((product, index) => (
+            <div 
+              key={product.id} 
+              className="product-card" 
+              style={{ animationDelay: `${index * 0.05}s` }}
+              onClick={() => handleProductClick(product.id)}
+            >
+              <div className="product-image-container">
+                <img src={product.image} alt={product.name} className="product-image" />
+                {index < 3 && <span className="product-badge">Nuevo</span>}
+              </div>
 
-              <div className="product-footer">
-                <div className="product-price">${product.price}</div>
-                <button 
-                  className="add-to-cart-btn" 
-                  onClick={(e) => handleAddToCart(product, e)}
-                >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M5 1L3 4V14C3 14.5304 3.21071 15.0391 3.58579 15.4142C3.96086 15.7893 4.46957 16 5 16H11C11.5304 16 12.0391 15.7893 12.4142 15.4142C12.7893 15.0391 13 14.5304 13 14V4L11 1H5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M3 4H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M10.5 7C10.5 7.79565 10.1839 8.55871 9.62132 9.12132C9.05871 9.68393 8.29565 10 7.5 10C6.70435 10 5.94129 9.68393 5.37868 9.12132C4.81607 8.55871 4.5 7.79565 4.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Añadir
-                </button>
+              <div className="product-info">
+                <div className="product-brand">{product.brand}</div>
+                <h3 className="product-name">{product.name}</h3>
+
+                <div className="product-footer">
+                  <div className="product-price">${product.price}</div>
+                  <button 
+                    className="add-to-cart-btn" 
+                    onClick={(e) => handleAddToCart(product, e)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M5 1L3 4V14C3 14.5304 3.21071 15.0391 3.58579 15.4142C3.96086 15.7893 4.46957 16 5 16H11C11.5304 16 12.0391 15.7893 12.4142 15.4142C12.7893 15.0391 13 14.5304 13 14V4L11 1H5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M3 4H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M10.5 7C10.5 7.79565 10.1839 8.55871 9.62132 9.12132C9.05871 9.68393 8.29565 10 7.5 10C6.70435 10 5.94129 9.68393 5.37868 9.12132C4.81607 8.55871 4.5 7.79565 4.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Añadir
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
