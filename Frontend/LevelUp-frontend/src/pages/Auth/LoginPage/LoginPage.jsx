@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Navbar from "../components/layout/Navbar/Navbar";
-import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
-import Footer from "../components/layout/Footer/Footer";
-import "../styles/auth.css";
+import Navbar from "../../../components/layout/Navbar/Navbar";
+import SidebarMenu from "../../../components/layout/SidebarMenu/SidebarMenu";
+import Footer from "../../../components/layout/Footer/Footer";
+import "./auth.css";
 
 export default function LoginPage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí irá la lógica de autenticación cuando conectes el backend
+    // Aquí irá la lógica de autenticación cuando se conecte el backend
     console.log("Login attempt:", formData);
   };
 
