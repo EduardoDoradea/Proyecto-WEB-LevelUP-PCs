@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Navbar from "../components/layout/Navbar/Navbar.jsx";
-import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu.jsx";
-import Footer from "../components/layout/Footer/Footer.jsx";
-import "../styles/about.css";
+import Navbar from "../../components/layout/Navbar/Navbar.jsx";
+import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu.jsx";
+import Footer from "../../components/layout/Footer/Footer.jsx";
+import "./about.css";
 
 export default function AboutPage() {
   const [menuOpen, setMenuOpen] = useState(false);

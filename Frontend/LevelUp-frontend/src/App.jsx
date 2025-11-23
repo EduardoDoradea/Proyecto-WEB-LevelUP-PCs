@@ -5,7 +5,7 @@ import RegisterPage from "./pages/Auth/RegisterPage/RegisterPage";
 import CatalogPage from "./pages/Catalog/Catalogpage";
 import CartPage from "./pages/Cart/CartPage";
 import ProductPage from "./pages/Product/ProductPage";
-import AboutPage from "./pages/AboutPage";
+import AboutPage from "./pages/About/AboutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
