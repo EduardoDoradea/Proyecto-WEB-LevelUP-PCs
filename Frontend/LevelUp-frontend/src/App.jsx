@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/producto/:id" element={<ProductPage />} />
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/categorias" element={<CategoriesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

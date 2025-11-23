@@ -82,7 +82,7 @@ export default function CategoriesPage() {
 
       <main className="categories-page">
         <section className="categories-hero">
-          <h1>Explora Nuestras Categorías</h1>
+          <h1>Explora Nuestros Productos</h1>
           <p>Encuentra los mejores componentes para tu PC</p>
         </section>
 
