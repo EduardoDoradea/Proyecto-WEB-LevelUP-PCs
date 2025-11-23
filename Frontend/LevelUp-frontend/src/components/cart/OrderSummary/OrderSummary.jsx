@@ -1,5 +1,5 @@
-import "../styles/ordersummary.css";
-import CartItem from "./cart/CartItem/CartItem";
+import "./ordersummary.css";
+import CartItem from "../CartItem/CartItem";
 
 export default function OrderSummary({ cartItems, isEditing, setIsEditing, updateQuantity, removeItem }) {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);

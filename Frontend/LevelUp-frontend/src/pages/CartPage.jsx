@@ -4,7 +4,7 @@ import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../components/layout/Footer/Footer";
 import BillingForm from "../components/BillingForm";
 import PaymentForm from "../components/PaymentForm";
-import OrderSummary from "../components/OrderSummary";
+import OrderSummary from "../components/cart/OrderSummary/OrderSummary.jsx";
 import "../styles/checkoutpage.css";
 
 export default function CheckoutPage() {
