@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import Navbar from "../components/layout/Navbar/Navbar";
-import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
-import Footer from "../components/layout/Footer/Footer";
-import "../styles/productpage.css";
+import Navbar from "../../components/layout/Navbar/Navbar";
+import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
+import Footer from "../../components/layout/Footer/Footer";
+import "./productpage.css";
 
 export default function ProductPage() {
   const [menuOpen, setMenuOpen] = useState(false);

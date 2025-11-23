@@ -4,7 +4,7 @@ import LoginPage from "./pages/Auth/LoginPage/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage/RegisterPage";
 import CatalogPage from "./pages/Catalog/Catalogpage";
 import CartPage from "./pages/CartPage";
-import ProductPage from "./pages/ProductPage";
+import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/AboutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
