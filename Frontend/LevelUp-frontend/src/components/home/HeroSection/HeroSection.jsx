@@ -1,4 +1,4 @@
-import "../styles/hero.css";
+import "./hero.css";
 
 const bannerURL = "https://i.ibb.co/8nR8tKCb/hero-bg.jpg";
 
