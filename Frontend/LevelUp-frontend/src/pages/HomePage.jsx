@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/layout/Navbar/Navbar";
-import SidebarMenu from "../components/SidebarMenu";
+import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
 import HeroSection from "../components/HeroSection";
 import FeaturedProducts from "../components/FeaturedProducts";
 import FlashDeals from "../components/FlashDeals";

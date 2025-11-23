@@ -1,4 +1,4 @@
-import "../styles/sidebar.css";
+import "./sidebar.css";
 import { useState } from "react";
 
 export default function SidebarMenu({ isOpen, onClose }) {
