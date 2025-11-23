@@ -1,4 +1,4 @@
-import "../styles/navbar.css";
+import "./navbar.css";
 
 const logoURL = "https://i.ibb.co/S4WhTBDd/Logo.png";
 
