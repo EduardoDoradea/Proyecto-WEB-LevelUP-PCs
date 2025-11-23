@@ -1,12 +1,9 @@
-/* catalogpage.css actualizado */
-
 .catalog-layout {
   min-height: 100vh;
   background: #000;
   padding-top: 80px;
 }
 
-/* Header del catálogo */
 .catalog-header {
   max-width: 1400px;
   margin: 0 auto;
@@ -49,7 +46,6 @@
   margin: 0;
 }
 
-/* Contenido del catálogo */
 .catalog-content {
   display: flex;
   gap: 20px;
