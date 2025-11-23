@@ -1,4 +1,4 @@
-import "../styles/featured.css";
+import "./featured.css";
 
 export default function FeaturedProducts() {
   const products = [
