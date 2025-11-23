@@ -30,7 +30,6 @@ const FilterComponent = ({ onFiltersChange }) => {
     setSelectedBrands([]);
   };
 
-  // Memorizar la función de callback para evitar renders infinitos
   const applyFilters = useCallback(() => {
     if (onFiltersChange) {
       onFiltersChange({
@@ -42,7 +41,6 @@ const FilterComponent = ({ onFiltersChange }) => {
   }, [priceMin, priceMax, selectedBrands, onFiltersChange]);
 
   useEffect(() => {
-    // Usar un timeout para evitar llamadas excesivas mientras el usuario escribe
     const timeoutId = setTimeout(() => {
       applyFilters();
     }, 300);

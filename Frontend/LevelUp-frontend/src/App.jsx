@@ -20,11 +20,15 @@ export default function App() {
         <Route path="/componentes" element={<CategoriesPage />} />
         
         <Route path="/catalogo" element={<CatalogPage />} />
+        
         <Route path="/componentes/:category" element={<CatalogPage />} />
         
+        <Route path="/componentes/:category/:productId" element={<ProductPage />} />
+        
         <Route path="/carrito" element={<CartPage />} />
-        <Route path="/componentes/:id" element={<ProductPage />} />
+        
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
+        
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

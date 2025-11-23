@@ -37,7 +37,6 @@ export default function CatalogPage() {
     });
   }, [category]);
 
-  // Memorizar la función para evitar renders infinitos
   const handleFiltersChange = useCallback((newFilters) => {
     setFilters(newFilters);
   }, []);

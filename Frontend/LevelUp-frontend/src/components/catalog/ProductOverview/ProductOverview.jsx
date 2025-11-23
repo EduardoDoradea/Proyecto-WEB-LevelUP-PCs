@@ -90,8 +90,11 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
     }
   };
 
-  const handleProductClick = (productId) => {
-    navigate(`/producto/${productId}`);
+  const handleProductClick = (product) => {
+    console.log('Click en producto:', product.name, 'ID:', product.id, 'Categoría:', product.category);
+    const url = `/componentes/${product.category}/${product.id}`;
+    console.log('Navegando a:', url);
+    navigate(url);
   };
 
   const handleAddToCart = (product, event) => {
@@ -165,7 +168,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                 key={product.id} 
                 className="product-card" 
                 style={{ animationDelay: `${index * 0.05}s` }}
-                onClick={() => handleProductClick(product.id)}
+                onClick={() => handleProductClick(product)}
               >
                 <div className="product-image-container">
                   <img src={product.image} alt={product.name} className="product-image" />

@@ -7,7 +7,7 @@ import { getProductById, productsDatabase } from "../../data/productsData";
 import "./productpage.css";
 
 export default function ProductPage() {
-  const { id } = useParams();
+  const { category, productId } = useParams();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -16,56 +16,48 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  useEffect(() => {
-    // Obtener el producto por ID
-    const foundProduct = getProductById(id);
-    
-    if (!foundProduct) {
-      // Si no se encuentra el producto, redirigir a 404
-      navigate('/404');
-      return;
-    }
+useEffect(() => {
+  console.log('ProductPage - Categoría:', category, 'ProductID:', productId);
 
-    setProduct(foundProduct);
+  const foundProduct = getProductById(productId);
 
-    // Obtener productos relacionados de la misma categoría
-    const related = productsDatabase
-      .filter(p => p.category === foundProduct.category && p.id !== foundProduct.id)
-      .slice(0, 3);
-    
-    setRelatedProducts(related);
-
-    // Resetear estados cuando cambia el producto
-    setSelectedImage(0);
-    setQuantity(1);
-    setSelectedTab('specs');
-    
-    // Scroll al inicio
-    window.scrollTo(0, 0);
-  }, [id, navigate]);
-
-  // Mostrar loading mientras se carga el producto
-  if (!product) {
-    return (
-      <>
-        <Navbar onMenuToggle={() => setMenuOpen(true)} />
-        <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-        <div style={{ 
-          minHeight: '100vh', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          background: '#000',
-          color: '#fff'
-        }}>
-          <p>Cargando producto...</p>
-        </div>
-        <Footer />
-      </>
-    );
+  if (!foundProduct) {
+    console.log('Producto no encontrado, ID:', productId);
+    navigate('*');
+    return;
   }
 
-  // Crear un array de imágenes (si solo hay una, repetirla)
+  if (foundProduct.category !== category) {
+    console.log(
+      'La categoría no coincide. Esperado:',
+      category,
+      'Recibido:',
+      foundProduct.category
+    );
+    navigate(`/componentes/${foundProduct.category}/${productId}`);
+    return;
+  }
+
+  console.log('Producto encontrado:', foundProduct);
+  setProduct(foundProduct);
+
+  const related = productsDatabase
+    .filter((p) => p.category === foundProduct.category && p.id !== foundProduct.id)
+    .slice(0, 3);
+
+  setRelatedProducts(related);
+
+  setSelectedImage(0);
+  setQuantity(1);
+  setSelectedTab('specs');
+
+  window.scrollTo(0, 0);
+}, [productId, category, navigate]);
+
+if (!product) {
+  return null;
+}
+
   const productImages = Array.isArray(product.image) 
     ? product.image 
     : [product.image, product.image, product.image, product.image];
@@ -107,7 +99,6 @@ export default function ProductPage() {
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="product-page">
-        {/* Breadcrumb */}
         <div className="breadcrumb">
           <div className="breadcrumb-container">
             <Link to="/">Inicio</Link>
@@ -120,9 +111,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Contenido Principal */}
         <div className="product-container">
-          {/* Galería de Imágenes */}
           <div className="product-gallery">
             <div className="gallery-main">
               <img src={productImages[selectedImage]} alt={product.name} />
@@ -140,7 +129,6 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Información del Producto */}
           <div className="product-info">
             <div className="product-header">
               <span className="product-brand">{product.brand}</span>
@@ -160,7 +148,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Descripción generada basada en el producto */}
             <div className="product-description">
               <p>
                 {product.brand} {product.name} - Un componente de alta calidad para tu PC. 
@@ -170,7 +157,6 @@ export default function ProductPage() {
               </p>
             </div>
 
-            {/* Selector de Cantidad */}
             <div className="quantity-section">
               <label>Cantidad</label>
               <div className="quantity-controls">
@@ -180,7 +166,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Botones de Acción */}
             <div className="action-buttons">
               <button className="btn-add-cart" onClick={handleAddToCart}>
                 Añadir al Carrito
@@ -190,7 +175,6 @@ export default function ProductPage() {
               </button>
             </div>
 
-            {/* Features Destacados - Si existen specs */}
             {product.specs && Object.keys(product.specs).length > 0 && (
               <div className="product-highlights">
                 <h3>Características Destacadas</h3>
@@ -204,7 +188,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Tabs de Información Detallada */}
         <div className="product-details">
           <div className="details-container">
             <div className="tabs-header">
@@ -284,14 +267,13 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Productos Relacionados */}
         {relatedProducts.length > 0 && (
           <div className="related-products">
             <div className="related-container">
               <h2>También te puede interesar</h2>
               <div className="related-grid">
                 {relatedProducts.map(item => (
-                  <Link key={item.id} to={`/producto/${item.id}`} className="related-card">
+                  <Link key={item.id} to={`/componentes/${item.category}/${item.id}`} className="related-card">
                     <div className="related-image">
                       <img src={item.image} alt={item.name} />
                     </div>

@@ -35,7 +35,7 @@ export default function NotFoundPage() {
         <div className="footer-section">
           <p className="footer-text">
             ¿Necesitas ayuda? Visita nuestro{" "}
-            <button onClick={() => navigate("/categorias")} className="footer-link">
+            <button onClick={() => navigate("/componentes")} className="footer-link">
               catálogo de productos
             </button>
           </p>
