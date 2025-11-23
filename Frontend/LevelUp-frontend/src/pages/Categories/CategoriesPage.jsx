@@ -15,7 +15,7 @@ export default function CategoriesPage() {
       icon: "🔲",
       description: "Intel, AMD y más",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      path: "/catalogo/procesadores"
+      path: "/componentes/procesadores"
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ export default function CategoriesPage() {
       icon: "🎮",
       description: "NVIDIA, AMD Radeon",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      path: "/catalogo/tarjetas-graficas"
+      path: "/componentes/tarjetas-graficas"
     },
     {
       id: 3,
@@ -31,7 +31,7 @@ export default function CategoriesPage() {
       icon: "💾",
       description: "DDR4, DDR5",
       gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-      path: "/catalogo/memoria-ram"
+      path: "/componentes/memoria-ram"
     },
     {
       id: 4,
@@ -39,7 +39,7 @@ export default function CategoriesPage() {
       icon: "💿",
       description: "SSD, HDD, NVMe",
       gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-      path: "/catalogo/almacenamiento"
+      path: "/componentes/almacenamiento"
     },
     {
       id: 5,
@@ -47,7 +47,7 @@ export default function CategoriesPage() {
       icon: "⚡",
       description: "Intel, AMD Socket",
       gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      path: "/catalogo/placas-madre"
+      path: "/componentes/placas-madre"
     },
     {
       id: 6,
@@ -55,7 +55,7 @@ export default function CategoriesPage() {
       icon: "🔌",
       description: "Modular, 80+ Certified",
       gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
-      path: "/catalogo/fuentes-poder"
+      path: "/componentes/fuentes-poder"
     },
     {
       id: 7,
@@ -63,7 +63,7 @@ export default function CategoriesPage() {
       icon: "📦",
       description: "ATX, Micro-ATX, Mini-ITX",
       gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-      path: "/catalogo/gabinetes"
+      path: "/componentes/gabinetes"
     },
     {
       id: 8,
@@ -71,7 +71,7 @@ export default function CategoriesPage() {
       icon: "❄️",
       description: "Aire, Líquida, Ventiladores",
       gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-      path: "/catalogo/refrigeracion"
+      path: "/componentes/refrigeracion"
     }
   ];
 

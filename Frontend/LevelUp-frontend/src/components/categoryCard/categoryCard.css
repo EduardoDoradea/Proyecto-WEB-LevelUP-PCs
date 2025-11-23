@@ -1,5 +1,3 @@
-/* Category Card Styles */
-
 .category-card {
   position: relative;
   background: rgba(15, 15, 15, 0.8);
@@ -17,7 +15,6 @@
   border-color: rgba(0, 180, 216, 0.3);
 }
 
-/* Gradient Background */
 .category-gradient {
   position: absolute;
   top: 0;
@@ -33,7 +30,6 @@
   opacity: 0.3;
 }
 
-/* Category Content */
 .category-content {
   position: relative;
   padding: 3rem 2rem;
@@ -94,7 +90,6 @@
   box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
-/* Hover Indicator */
 .category-indicator {
   position: absolute;
   bottom: 0;
@@ -110,7 +105,6 @@
   transform: scaleX(1);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .category-content {
     padding: 2.5rem 1.5rem;
