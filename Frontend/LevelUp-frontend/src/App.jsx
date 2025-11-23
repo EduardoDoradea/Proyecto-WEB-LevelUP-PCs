@@ -7,6 +7,7 @@ import CartPage from "./pages/Cart/CartPage";
 import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/About/AboutPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
+import CategoriesPage from "./pages/Categories/CategoriesPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/producto/:id" element={<ProductPage />} />
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
