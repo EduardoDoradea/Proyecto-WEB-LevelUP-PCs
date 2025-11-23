@@ -6,7 +6,7 @@ import CatalogPage from "./pages/Catalog/Catalogpage";
 import CartPage from "./pages/Cart/CartPage";
 import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/About/AboutPage";
-import NotFoundPage from "./pages/NotFoundPage";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
 export default function App() {
   return (
