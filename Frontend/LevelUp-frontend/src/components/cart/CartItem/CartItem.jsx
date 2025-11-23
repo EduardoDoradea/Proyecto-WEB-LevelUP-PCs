@@ -1,4 +1,4 @@
-import "../styles/cartitem.css";
+import "./cartitem.css";
 
 export default function CartItem({ item, isEditing, updateQuantity, removeItem }) {
   return (
