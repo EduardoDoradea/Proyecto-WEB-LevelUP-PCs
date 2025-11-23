@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../styles/filters.css';
+import './filters.css';
 
 const FilterComponent = ({ onFiltersChange }) => {
   const [priceMin, setPriceMin] = useState('');
