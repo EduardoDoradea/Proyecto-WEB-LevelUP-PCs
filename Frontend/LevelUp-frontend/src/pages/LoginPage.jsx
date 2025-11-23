@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/layout/Navbar/Navbar";
 import SidebarMenu from "../components/SidebarMenu";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer/Footer";
 import "../styles/auth.css";
 
 export default function LoginPage() {

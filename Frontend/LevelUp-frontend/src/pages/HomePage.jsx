@@ -4,7 +4,7 @@ import SidebarMenu from "../components/SidebarMenu";
 import HeroSection from "../components/HeroSection";
 import FeaturedProducts from "../components/FeaturedProducts";
 import FlashDeals from "../components/FlashDeals";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer/Footer";
 
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
