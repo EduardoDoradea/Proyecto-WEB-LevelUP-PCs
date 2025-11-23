@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../styles/catalogview.css';
+import './catalogview.css';
 
 const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [] } }) => {
   const [sortBy, setSortBy] = useState('todos');
