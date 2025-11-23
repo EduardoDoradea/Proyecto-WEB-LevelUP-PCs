@@ -8,7 +8,6 @@ import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/About/AboutPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import CategoriesPage from "./pages/Categories/CategoriesPage";
-
 export default function App() {
   return (
     <BrowserRouter>
