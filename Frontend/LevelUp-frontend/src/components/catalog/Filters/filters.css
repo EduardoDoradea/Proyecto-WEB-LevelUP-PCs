@@ -9,29 +9,10 @@
   width: 100%;
   color: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  position: sticky;
   top: 100px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   align-self: flex-start;
-}
-
-.filter-container.sticky::-webkit-scrollbar {
-  width: 6px;
-}
-
-.filter-container.sticky::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.filter-container.sticky::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-}
-
-.filter-container.sticky::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
 }
 
 .filter-header {
@@ -116,16 +97,6 @@
 
 .input-group input::placeholder {
   color: rgba(255, 255, 255, 0.4);
-}
-
-.input-group input[type="number"]::-webkit-inner-spin-button,
-.input-group input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.input-group input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 .separator {
