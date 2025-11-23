@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './filters.css';
 
 const FilterComponent = ({ onFiltersChange }) => {
@@ -30,7 +30,8 @@ const FilterComponent = ({ onFiltersChange }) => {
     setSelectedBrands([]);
   };
 
-  useEffect(() => {
+  // Memorizar la función de callback para evitar renders infinitos
+  const applyFilters = useCallback(() => {
     if (onFiltersChange) {
       onFiltersChange({
         priceMin: priceMin ? parseFloat(priceMin) : null,
@@ -39,6 +40,15 @@ const FilterComponent = ({ onFiltersChange }) => {
       });
     }
   }, [priceMin, priceMax, selectedBrands, onFiltersChange]);
+
+  useEffect(() => {
+    // Usar un timeout para evitar llamadas excesivas mientras el usuario escribe
+    const timeoutId = setTimeout(() => {
+      applyFilters();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [applyFilters]);
 
   return (
     <div className="filter-container">

@@ -1,71 +1,74 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../components/layout/Footer/Footer";
+import { getProductById, productsDatabase } from "../../data/productsData";
 import "./productpage.css";
 
 export default function ProductPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState('specs');
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Simulación de datos del producto - esto vendría del backend/API
-  const product = {
-    id: 1,
-    name: "NVIDIA GeForce RTX 4090",
-    brand: "NVIDIA",
-    category: "Tarjetas Gráficas",
-    price: 1899.99,
-    stock: 15,
-    images: [
-      "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=800&h=600&fit=crop"
-    ],
-    description: "La tarjeta gráfica más potente del mercado. Diseñada para gaming extremo, creación de contenido profesional y workloads de IA. Equipada con arquitectura Ada Lovelace y 24GB GDDR6X.",
-    specifications: {
-      "GPU": "NVIDIA Ada Lovelace",
-      "Núcleos CUDA": "16,384",
-      "Memoria": "24GB GDDR6X",
-      "Ancho de banda": "1,008 GB/s",
-      "TDP": "450W",
-      "Conectores": "3x DisplayPort 1.4a, 1x HDMI 2.1",
-      "Dimensiones": "304 x 137 x 61 mm",
-      "Refrigeración": "Triple ventilador"
-    },
-    features: [
-      "Ray Tracing de tercera generación",
-      "DLSS 3 con generación de frames por IA",
-      "Compatible con DirectX 12 Ultimate",
-      "NVIDIA Reflex para latencia ultra baja",
-      "Overclocking automático con GPU Boost",
-      "Backplate de aluminio premium"
-    ]
-  };
-
-  const relatedProducts = [
-    {
-      id: 2,
-      name: "AMD Ryzen 9 7950X",
-      price: 699.99,
-      image: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=400&h=300&fit=crop"
-    },
-    {
-      id: 3,
-      name: "DDR5 64GB 6000MHz",
-      price: 349.99,
-      image: "https://images.unsplash.com/photo-1562976540-1502c2145186?w=400&h=300&fit=crop"
-    },
-    {
-      id: 4,
-      name: "PSU 1000W 80+ Gold",
-      price: 189.99,
-      image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=300&fit=crop"
+  useEffect(() => {
+    // Obtener el producto por ID
+    const foundProduct = getProductById(id);
+    
+    if (!foundProduct) {
+      // Si no se encuentra el producto, redirigir a 404
+      navigate('/404');
+      return;
     }
-  ];
+
+    setProduct(foundProduct);
+
+    // Obtener productos relacionados de la misma categoría
+    const related = productsDatabase
+      .filter(p => p.category === foundProduct.category && p.id !== foundProduct.id)
+      .slice(0, 3);
+    
+    setRelatedProducts(related);
+
+    // Resetear estados cuando cambia el producto
+    setSelectedImage(0);
+    setQuantity(1);
+    setSelectedTab('specs');
+    
+    // Scroll al inicio
+    window.scrollTo(0, 0);
+  }, [id, navigate]);
+
+  // Mostrar loading mientras se carga el producto
+  if (!product) {
+    return (
+      <>
+        <Navbar onMenuToggle={() => setMenuOpen(true)} />
+        <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+        <div style={{ 
+          minHeight: '100vh', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          background: '#000',
+          color: '#fff'
+        }}>
+          <p>Cargando producto...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  // Crear un array de imágenes (si solo hay una, repetirla)
+  const productImages = Array.isArray(product.image) 
+    ? product.image 
+    : [product.image, product.image, product.image, product.image];
 
   const handleQuantityChange = (value) => {
     const newQty = quantity + value;
@@ -75,8 +78,27 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    console.log(`Añadiendo ${quantity} unidad(es) al carrito`);
-    // Aquí iría la lógica para añadir al carrito
+    console.log(`Añadiendo ${quantity} unidad(es) de ${product.name} al carrito`);
+    alert(`Se añadieron ${quantity} unidad(es) de ${product.name} al carrito`);
+  };
+
+  const handleBuyNow = () => {
+    console.log(`Comprando ${quantity} unidad(es) de ${product.name}`);
+    navigate('/carrito');
+  };
+
+  const getCategoryDisplayName = () => {
+    const categoryNames = {
+      'procesadores': 'Procesadores',
+      'tarjetas-graficas': 'Tarjetas Gráficas',
+      'memoria-ram': 'Memoria RAM',
+      'almacenamiento': 'Almacenamiento',
+      'placas-madre': 'Placas Madre',
+      'fuentes-poder': 'Fuentes de Poder',
+      'gabinetes': 'Gabinetes',
+      'refrigeracion': 'Refrigeración'
+    };
+    return categoryNames[product.category] || product.category;
   };
 
   return (
@@ -88,11 +110,11 @@ export default function ProductPage() {
         {/* Breadcrumb */}
         <div className="breadcrumb">
           <div className="breadcrumb-container">
-            <a href="/">Inicio</a>
+            <Link to="/">Inicio</Link>
             <span>/</span>
-            <a href="/catalogo">Catálogo</a>
+            <Link to="/categorias">Categorías</Link>
             <span>/</span>
-            <a href={`/catalogo/${product.category.toLowerCase()}`}>{product.category}</a>
+            <Link to={`/componentes/${product.category}`}>{getCategoryDisplayName()}</Link>
             <span>/</span>
             <span className="current">{product.name}</span>
           </div>
@@ -103,10 +125,10 @@ export default function ProductPage() {
           {/* Galería de Imágenes */}
           <div className="product-gallery">
             <div className="gallery-main">
-              <img src={product.images[selectedImage]} alt={product.name} />
+              <img src={productImages[selectedImage]} alt={product.name} />
             </div>
             <div className="gallery-thumbnails">
-              {product.images.map((img, index) => (
+              {productImages.map((img, index) => (
                 <button
                   key={index}
                   className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
@@ -123,12 +145,12 @@ export default function ProductPage() {
             <div className="product-header">
               <span className="product-brand">{product.brand}</span>
               <h1 className="product-title">{product.name}</h1>
-              <p className="product-category">{product.category}</p>
+              <p className="product-category">{getCategoryDisplayName()}</p>
             </div>
 
             <div className="product-price-section">
               <div className="price-main">
-                <span className="price-amount">${product.price}</span>
+                <span className="price-amount">${product.price.toFixed(2)}</span>
                 <span className="price-tax">IVA incluido</span>
               </div>
               <div className="stock-info">
@@ -138,8 +160,14 @@ export default function ProductPage() {
               </div>
             </div>
 
+            {/* Descripción generada basada en el producto */}
             <div className="product-description">
-              <p>{product.description}</p>
+              <p>
+                {product.brand} {product.name} - Un componente de alta calidad para tu PC. 
+                {product.specs && Object.keys(product.specs).length > 0 && 
+                  ` Con especificaciones premium que garantizan el mejor rendimiento.`
+                }
+              </p>
             </div>
 
             {/* Selector de Cantidad */}
@@ -157,20 +185,22 @@ export default function ProductPage() {
               <button className="btn-add-cart" onClick={handleAddToCart}>
                 Añadir al Carrito
               </button>
-              <button className="btn-buy-now">
+              <button className="btn-buy-now" onClick={handleBuyNow}>
                 Comprar Ahora
               </button>
             </div>
 
-            {/* Features Destacados */}
-            <div className="product-highlights">
-              <h3>Características Destacadas</h3>
-              <ul>
-                {product.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div>
+            {/* Features Destacados - Si existen specs */}
+            {product.specs && Object.keys(product.specs).length > 0 && (
+              <div className="product-highlights">
+                <h3>Características Destacadas</h3>
+                <ul>
+                  {Object.entries(product.specs).slice(0, 4).map(([key, value]) => (
+                    <li key={key}>{key}: {value}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
@@ -201,34 +231,49 @@ export default function ProductPage() {
             <div className="tabs-content">
               {selectedTab === 'specs' && (
                 <div className="specs-grid">
-                  {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="spec-item">
-                      <span className="spec-label">{key}</span>
-                      <span className="spec-value">{value}</span>
+                  {product.specs && Object.keys(product.specs).length > 0 ? (
+                    Object.entries(product.specs).map(([key, value]) => (
+                      <div key={key} className="spec-item">
+                        <span className="spec-label">{key}</span>
+                        <span className="spec-value">{value}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="spec-item">
+                      <span className="spec-label">Marca</span>
+                      <span className="spec-value">{product.brand}</span>
                     </div>
-                  ))}
+                  )}
+                  <div className="spec-item">
+                    <span className="spec-label">Precio</span>
+                    <span className="spec-value">${product.price.toFixed(2)}</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Stock Disponible</span>
+                    <span className="spec-value">{product.stock} unidades</span>
+                  </div>
                 </div>
               )}
 
               {selectedTab === 'compatibility' && (
                 <div className="compatibility-content">
-                  <h3>Requisitos del Sistema</h3>
+                  <h3>Requisitos y Compatibilidad</h3>
+                  <p>Este producto es compatible con la mayoría de configuraciones modernas.</p>
                   <ul>
-                    <li>Fuente de poder mínima de 850W recomendada</li>
-                    <li>Slot PCIe 4.0 x16 (compatible con 3.0)</li>
-                    <li>Espacio libre de 304mm en el gabinete</li>
-                    <li>Sistema operativo: Windows 10/11 64-bit</li>
-                    <li>Procesador Intel Core i7 o AMD Ryzen 7 (recomendado)</li>
+                    <li>Compatible con sistemas recientes</li>
+                    <li>Instalación sencilla y directa</li>
+                    <li>Incluye todas las conexiones necesarias</li>
+                    <li>Soporte para las últimas tecnologías</li>
                   </ul>
                 </div>
               )}
 
               {selectedTab === 'warranty' && (
                 <div className="warranty-content">
-                  <h3>Garantía de 3 Años</h3>
-                  <p>Todos nuestros productos incluyen garantía del fabricante. Soporte técnico disponible 24/7.</p>
+                  <h3>Garantía y Soporte</h3>
+                  <p>Todos nuestros productos incluyen garantía del fabricante. Soporte técnico disponible.</p>
                   <ul>
-                    <li>Garantía del fabricante de 3 años</li>
+                    <li>Garantía del fabricante incluida</li>
                     <li>Soporte técnico especializado</li>
                     <li>Cambio inmediato en caso de defecto de fábrica</li>
                     <li>Asistencia en instalación y configuración</li>
@@ -240,24 +285,26 @@ export default function ProductPage() {
         </div>
 
         {/* Productos Relacionados */}
-        <div className="related-products">
-          <div className="related-container">
-            <h2>También te puede interesar</h2>
-            <div className="related-grid">
-              {relatedProducts.map(item => (
-                <a key={item.id} href={`/producto/${item.id}`} className="related-card">
-                  <div className="related-image">
-                    <img src={item.image} alt={item.name} />
-                  </div>
-                  <div className="related-info">
-                    <h3>{item.name}</h3>
-                    <p className="related-price">${item.price}</p>
-                  </div>
-                </a>
-              ))}
+        {relatedProducts.length > 0 && (
+          <div className="related-products">
+            <div className="related-container">
+              <h2>También te puede interesar</h2>
+              <div className="related-grid">
+                {relatedProducts.map(item => (
+                  <Link key={item.id} to={`/producto/${item.id}`} className="related-card">
+                    <div className="related-image">
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="related-info">
+                      <h3>{item.name}</h3>
+                      <p className="related-price">${item.price.toFixed(2)}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
 
       <Footer />

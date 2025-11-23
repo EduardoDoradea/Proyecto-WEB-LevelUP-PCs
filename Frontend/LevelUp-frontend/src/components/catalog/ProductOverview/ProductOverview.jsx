@@ -97,6 +97,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
   const handleAddToCart = (product, event) => {
     event.stopPropagation();
     console.log('Añadido al carrito:', product);
+    alert(`${product.name} añadido al carrito`);
   };
 
   return (
@@ -177,7 +178,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                   <h3 className="product-name">{product.name}</h3>
 
                   <div className="product-footer">
-                    <div className="product-price">${product.price}</div>
+                    <div className="product-price">${product.price.toFixed(2)}</div>
                     <button 
                       className="add-to-cart-btn" 
                       onClick={(e) => handleAddToCart(product, e)}

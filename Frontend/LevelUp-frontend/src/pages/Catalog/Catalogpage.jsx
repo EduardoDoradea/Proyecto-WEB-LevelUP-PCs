@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
@@ -37,9 +37,10 @@ export default function CatalogPage() {
     });
   }, [category]);
 
-  const handleFiltersChange = (newFilters) => {
+  // Memorizar la función para evitar renders infinitos
+  const handleFiltersChange = useCallback((newFilters) => {
     setFilters(newFilters);
-  };
+  }, []);
 
   const getCategoryTitle = () => {
     const titles = {

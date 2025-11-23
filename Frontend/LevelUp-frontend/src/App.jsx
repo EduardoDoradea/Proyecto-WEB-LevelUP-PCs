@@ -17,13 +17,13 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registro" element={<RegisterPage />} />
         
-        <Route path="/categorias" element={<CategoriesPage />} />
+        <Route path="/componentes" element={<CategoriesPage />} />
         
         <Route path="/catalogo" element={<CatalogPage />} />
         <Route path="/componentes/:category" element={<CatalogPage />} />
         
         <Route path="/carrito" element={<CartPage />} />
-        <Route path="/producto/:id" element={<ProductPage />} />
+        <Route path="/componentes/:id" element={<ProductPage />} />
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
