@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "../styles/billingForm.css";
+import "./billingForm.css";
 
 export default function BillingForm() {
   const [firstName, setFirstName] = useState('');
