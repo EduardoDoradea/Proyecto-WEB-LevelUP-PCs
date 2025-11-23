@@ -1,4 +1,4 @@
-import NotFoundPage from "../components/NotFound";
+import NotFoundPage from "../components/shared/NotFound/NotFound";
 import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
 import Navbar from "../components/layout/Navbar/Navbar";
 import Footer from "../components/layout/Footer/Footer";
