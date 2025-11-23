@@ -1,4 +1,4 @@
-import "../styles/flashdeals.css";
+import "./flashdeals.css";
 import { useState, useEffect } from "react";
 
 export default function FlashDeals() {
