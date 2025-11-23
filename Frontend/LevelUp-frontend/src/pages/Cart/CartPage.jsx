@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Navbar from "../components/layout/Navbar/Navbar";
-import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
-import Footer from "../components/layout/Footer/Footer";
-import BillingForm from "../components/cart/BillingForm/BillingForm.jsx";
-import PaymentForm from "../components/cart/PaymentForm/PaymentForm.jsx";
-import OrderSummary from "../components/cart/OrderSummary/OrderSummary.jsx";
-import "../styles/checkoutpage.css";
+import Navbar from "../../components/layout/Navbar/Navbar.jsx";
+import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu.jsx";
+import Footer from "../../components/layout/Footer/Footer.jsx";
+import BillingForm from "../../components/cart/BillingForm/BillingForm.jsx";
+import PaymentForm from "../../components/cart/PaymentForm/PaymentForm.jsx";
+import OrderSummary from "../../components/cart/OrderSummary/OrderSummary.jsx";
+import "./checkoutpage.css";
 
 export default function CheckoutPage() {
   const [menuOpen, setMenuOpen] = useState(false);
