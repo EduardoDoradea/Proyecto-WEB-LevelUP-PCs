@@ -17,30 +17,20 @@ export default function CategoryCard({ category }) {
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
-      {/* Gradient Background */}
-      <div 
-        className="category-gradient" 
+      <div
+        className="category-gradient"
         style={{ background: category.gradient }}
       />
 
-      {/* Content */}
       <div className="category-content">
-        {/* Icon */}
         <div className="category-icon">{category.icon}</div>
-
-        {/* Name */}
         <h3 className="category-name">{category.name}</h3>
-
-        {/* Description */}
         <p className="category-description">{category.description}</p>
-
-        {/* Button */}
         <button className="category-btn">Ver Productos</button>
       </div>
 
-      {/* Hover Indicator */}
-      <div 
-        className="category-indicator" 
+      <div
+        className="category-indicator"
         style={{ background: category.gradient }}
       />
     </div>

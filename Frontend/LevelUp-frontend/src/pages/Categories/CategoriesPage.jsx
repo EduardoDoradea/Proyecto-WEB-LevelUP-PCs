@@ -81,13 +81,11 @@ export default function CategoriesPage() {
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="categories-page">
-        {/* Hero Section */}
         <section className="categories-hero">
           <h1>Explora Nuestras Categorías</h1>
           <p>Encuentra los mejores componentes para tu PC</p>
         </section>
 
-        {/* Categories Grid */}
         <section className="categories-section">
           <div className="categories-grid">
             {categories.map((category) => (
@@ -96,7 +94,6 @@ export default function CategoriesPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="categories-cta">
           <h2>¿No sabes qué elegir?</h2>
           <p>Nuestros expertos pueden ayudarte a armar el PC perfecto para tus necesidades</p>
