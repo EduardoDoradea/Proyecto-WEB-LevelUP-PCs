@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./categorycard.css";
+import "./categoryCard.css";
 
 export default function CategoryCard({ category }) {
   const navigate = useNavigate();

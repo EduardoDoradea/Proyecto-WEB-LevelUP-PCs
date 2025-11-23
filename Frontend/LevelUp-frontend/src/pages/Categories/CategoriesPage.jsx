@@ -3,7 +3,8 @@ import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../components/layout/Footer/Footer";
 import CategoryCard from "../../components/categoryCard/categoryCard";
-import "../../components/categoryCard/categorycard.css";
+import "./categoriespage.css";
+
 export default function CategoriesPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
