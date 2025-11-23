@@ -3,7 +3,7 @@ import Navbar from "../components/layout/Navbar/Navbar";
 import SidebarMenu from "../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../components/layout/Footer/Footer";
 import BillingForm from "../components/cart/BillingForm/BillingForm.jsx";
-import PaymentForm from "../components/PaymentForm";
+import PaymentForm from "../components/cart/PaymentForm/PaymentForm.jsx";
 import OrderSummary from "../components/cart/OrderSummary/OrderSummary.jsx";
 import "../styles/checkoutpage.css";
 

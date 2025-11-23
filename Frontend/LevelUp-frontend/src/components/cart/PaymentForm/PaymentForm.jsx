@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/paymentForm.css";
+import "./paymentForm.css";
 
 export default function PaymentForm() {
   const [cardNumber, setCardNumber] = useState('');
