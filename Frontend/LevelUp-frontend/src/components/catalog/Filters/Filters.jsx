@@ -1,20 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import './filters.css';
 
-const FilterComponent = ({ onFiltersChange }) => {
+const FilterComponent = ({ onFiltersChange, availableBrands = [] }) => {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [selectedBrands, setSelectedBrands] = useState([]);
 
-  const brands = [
-    { name: 'ACER', count: 2 },
-    { name: 'AMD', count: 5 },
-    { name: 'ASUS', count: 3 },
-    { name: 'HP', count: 3 },
-    { name: 'INTEL', count: 1 },
-    { name: 'LENOVO', count: 1 },
-    { name: 'MSI', count: 5 }
-  ];
+  // Resetear marcas seleccionadas cuando cambien las marcas disponibles
+  useEffect(() => {
+    setSelectedBrands([]);
+  }, [availableBrands]);
 
   const toggleBrand = (brandName) => {
     setSelectedBrands(prev =>
@@ -84,22 +79,24 @@ const FilterComponent = ({ onFiltersChange }) => {
         </div>
       </div>
 
-      <div className="filter-section">
-        <h3 className="section-title">MARCAS</h3>
-        <div className="brands-list">
-          {brands.map(brand => (
-            <label key={brand.name} className="brand-item">
-              <input
-                type="checkbox"
-                checked={selectedBrands.includes(brand.name)}
-                onChange={() => toggleBrand(brand.name)}
-              />
-              <span className="brand-name">{brand.name}</span>
-              <span className="brand-count">{brand.count}</span>
-            </label>
-          ))}
+      {availableBrands.length > 0 && (
+        <div className="filter-section">
+          <h3 className="section-title">MARCAS</h3>
+          <div className="brands-list">
+            {availableBrands.map((brand, index) => (
+              <label key={`${brand.name}-${index}`} className="brand-item">
+                <input
+                  type="checkbox"
+                  checked={selectedBrands.includes(brand.name)}
+                  onChange={() => toggleBrand(brand.name)}
+                />
+                <span className="brand-name">{brand.name}</span>
+                <span className="brand-count">{brand.count}</span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {selectedBrands.length > 0 && (
         <div className="active-filters">

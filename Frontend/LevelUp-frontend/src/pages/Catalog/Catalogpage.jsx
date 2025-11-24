@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import FilterComponent from "../../components/catalog/Filters/Filters";
 import Footer from "../../components/layout/Footer/Footer";
 import ProductOverview from "../../components/catalog/ProductOverview/ProductOverview";
-import { getProductsByCategory, getBrandsByCategory } from "../../data/productsData";
+import { getProductsByCategory } from "../../data/productsData";
 import "./catalogpage.css";
 
 export default function CatalogPage() {
@@ -17,25 +17,38 @@ export default function CatalogPage() {
     brands: []
   });
   const [products, setProducts] = useState([]);
-  const [availableBrands, setAvailableBrands] = useState([]);
 
   useEffect(() => {
     if (category) {
       const categoryProducts = getProductsByCategory(category);
       setProducts(categoryProducts);
-      
-      const brands = getBrandsByCategory(category);
-      setAvailableBrands(brands);
     } else {
       setProducts([]);
     }
 
+    // Resetear filtros al cambiar de categoría
     setFilters({
       priceMin: null,
       priceMax: null,
       brands: []
     });
   }, [category]);
+
+  // Calcular marcas disponibles dinámicamente con su conteo
+  const availableBrands = useMemo(() => {
+    if (!products.length) return [];
+    
+    const brandCounts = {};
+    products.forEach(product => {
+      if (product.brand) {
+        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + 1;
+      }
+    });
+
+    return Object.entries(brandCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [products]);
 
   const handleFiltersChange = useCallback((newFilters) => {
     setFilters(newFilters);
