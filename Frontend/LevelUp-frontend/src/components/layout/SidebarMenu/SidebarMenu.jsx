@@ -10,20 +10,19 @@ export default function SidebarMenu({ isOpen, onClose }) {
       icon: "🖥️",
       subitems: [
         "Procesadores", 
-        "Tarjetas Gráficas", 
+        "Tarjetas Graficas", 
         "Memoria RAM", 
         "Almacenamiento", 
         "Placas Madre",
-        "Fuentes de Poder",
+        "Fuentes Poder",
         "Gabinetes",
-        "Refrigeración"
+        "Refrigeracion"
       ]
     },
     {
       title: "Arma tu PC",
       icon: "⚙️",
       subitems: [
-        "Configurador Pieza por Pieza", 
         "Guía de Compatibilidad",
         "Calculadora de Watts"
       ]
@@ -41,8 +40,7 @@ export default function SidebarMenu({ isOpen, onClose }) {
       title: "Soporte",
       icon: "🛠️",
       subitems: [
-        "Garantías", 
-        "Instalación y Ensamblaje", 
+        "Garantías",  
         "Mantenimiento", 
         "FAQ",
         "Asesoría Técnica"
