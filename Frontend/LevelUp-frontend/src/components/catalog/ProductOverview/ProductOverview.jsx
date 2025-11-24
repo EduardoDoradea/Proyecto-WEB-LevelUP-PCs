@@ -1,40 +1,18 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './catalogview.css';
 
-const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [] } }) => {
+const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [] }, products = [], category }) => {
+  const navigate = useNavigate();
   const [sortBy, setSortBy] = useState('todos');
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [currentPage, setCurrentPage] = useState(1);
-  const imagePlaceholder = 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=300&fit=crop';
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters, sortBy, itemsPerPage]);
+  }, [filters, sortBy, itemsPerPage, category]);
 
-  const allProducts = [
-    { id: 1, name: 'Laptop LOQ 15IRH8', brand: 'LENOVO', price: 1299.99, image: imagePlaceholder },
-    { id: 2, name: 'ROG Strix G15', brand: 'ASUS', price: 1599.99, image: imagePlaceholder },
-    { id: 3, name: 'TUF Gaming A15', brand: 'ASUS', price: 999.99, image: imagePlaceholder },
-    { id: 4, name: 'Katana 15 B13V', brand: 'MSI', price: 1199.99, image: imagePlaceholder },
-    { id: 5, name: 'Legion 5 Pro', brand: 'LENOVO', price: 1499.99, image: imagePlaceholder },
-    { id: 6, name: 'Zephyrus G14', brand: 'ASUS', price: 1799.99, image: imagePlaceholder },
-    { id: 7, name: 'Raider GE78', brand: 'MSI', price: 2299.99, image: imagePlaceholder },
-    { id: 8, name: 'IdeaPad Gaming 3', brand: 'LENOVO', price: 899.99, image: imagePlaceholder },
-    { id: 9, name: 'ROG Flow X13', brand: 'ASUS', price: 1399.99, image: imagePlaceholder },
-    { id: 10, name: 'Stealth 14', brand: 'MSI', price: 1699.99, image: imagePlaceholder },
-    { id: 11, name: 'Legion Slim 7', brand: 'LENOVO', price: 1899.99, image: imagePlaceholder },
-    { id: 12, name: 'TUF Dash F15', brand: 'ASUS', price: 1099.99, image: imagePlaceholder },
-    { id: 13, name: 'Cyborg 15', brand: 'MSI', price: 949.99, image: imagePlaceholder },
-    { id: 14, name: 'LOQ 15APH8', brand: 'LENOVO', price: 1149.99, image: imagePlaceholder },
-    { id: 15, name: 'Pavilion Gaming', brand: 'HP', price: 849.99, image: imagePlaceholder },
-    { id: 16, name: 'Omen 16', brand: 'HP', price: 1399.99, image: imagePlaceholder },
-    { id: 17, name: 'Victus 15', brand: 'HP', price: 999.99, image: imagePlaceholder },
-    { id: 18, name: 'Nitro 5', brand: 'ACER', price: 899.99, image: imagePlaceholder },
-    { id: 19, name: 'Predator Helios', brand: 'ACER', price: 1599.99, image: imagePlaceholder },
-    { id: 20, name: 'Core i9-14900K', brand: 'INTEL', price: 589.99, image: imagePlaceholder },
-  ];
-
-  const filteredProducts = allProducts.filter(product => {
+  const filteredProducts = products.filter(product => {
     if (filters.priceMin !== null && filters.priceMin !== undefined && product.price < filters.priceMin) {
       return false;
     }
@@ -112,14 +90,17 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
     }
   };
 
-  const handleProductClick = (productId) => {
-    window.history.pushState({}, '', `/producto/${productId}`);
-    window.dispatchEvent(new PopStateEvent('popstate'));
+  const handleProductClick = (product) => {
+    console.log('Click en producto:', product.name, 'ID:', product.id, 'Categoría:', product.category);
+    const url = `/componentes/${product.category}/${product.id}`;
+    console.log('Navegando a:', url);
+    navigate(url);
   };
 
   const handleAddToCart = (product, event) => {
     event.stopPropagation();
     console.log('Añadido al carrito:', product);
+    alert(`${product.name} añadido al carrito`);
   };
 
   return (
@@ -187,10 +168,11 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                 key={product.id} 
                 className="product-card" 
                 style={{ animationDelay: `${index * 0.05}s` }}
-                onClick={() => handleProductClick(product.id)}
+                onClick={() => handleProductClick(product)}
               >
                 <div className="product-image-container">
                   <img src={product.image} alt={product.name} className="product-image" />
+                  {product.stock < 10 && <span className="product-badge">Stock Bajo</span>}
                   {index < 3 && currentPage === 1 && <span className="product-badge">Nuevo</span>}
                 </div>
 
@@ -199,7 +181,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                   <h3 className="product-name">{product.name}</h3>
 
                   <div className="product-footer">
-                    <div className="product-price">${product.price}</div>
+                    <div className="product-price">${product.price.toFixed(2)}</div>
                     <button 
                       className="add-to-cart-btn" 
                       onClick={(e) => handleAddToCart(product, e)}

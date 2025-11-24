@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './filters.css';
 
 const FilterComponent = ({ onFiltersChange }) => {
@@ -30,7 +30,7 @@ const FilterComponent = ({ onFiltersChange }) => {
     setSelectedBrands([]);
   };
 
-  useEffect(() => {
+  const applyFilters = useCallback(() => {
     if (onFiltersChange) {
       onFiltersChange({
         priceMin: priceMin ? parseFloat(priceMin) : null,
@@ -39,6 +39,14 @@ const FilterComponent = ({ onFiltersChange }) => {
       });
     }
   }, [priceMin, priceMax, selectedBrands, onFiltersChange]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      applyFilters();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [applyFilters]);
 
   return (
     <div className="filter-container">

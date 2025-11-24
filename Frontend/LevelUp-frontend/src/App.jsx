@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Auth/LoginPage/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage/RegisterPage";
-import CatalogPage from "./pages/Catalog/Catalogpage";
+import CategoriesPage from "./pages/Categories/CategoriesPage";
+import CatalogPage from "./pages/Catalog/CatalogPage";
 import CartPage from "./pages/Cart/CartPage";
 import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/About/AboutPage";
@@ -18,10 +19,19 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registro" element={<RegisterPage />} />
+        
+        <Route path="/componentes" element={<CategoriesPage />} />
+        
         <Route path="/catalogo" element={<CatalogPage />} />
+        
+        <Route path="/componentes/:category" element={<CatalogPage />} />
+        
+        <Route path="/componentes/:category/:productId" element={<ProductPage />} />
+        
         <Route path="/carrito" element={<CartPage />} />
-        <Route path="/producto/:id" element={<ProductPage />} />
+        
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
+        
         <Route path="/nosotros/ubicación" element={<LocationPage />} />
         <Route path="/nosotros/contacto" element={<ContactPage />} />
         <Route path="/nosotros/políticas-de-envío" element={<ShippingPage />} /> {/* Nueva ruta */}
