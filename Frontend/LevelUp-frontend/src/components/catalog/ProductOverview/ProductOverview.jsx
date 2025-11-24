@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../../contexts/CartContext';
 import './catalogview.css';
 
 const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [] }, products = [], category }) => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [sortBy, setSortBy] = useState('todos');
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [currentPage, setCurrentPage] = useState(1);
+  const [addedProducts, setAddedProducts] = useState({});
 
   useEffect(() => {
     setCurrentPage(1);
@@ -91,16 +94,25 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
   };
 
   const handleProductClick = (product) => {
-    console.log('Click en producto:', product.name, 'ID:', product.id, 'Categoría:', product.category);
     const url = `/componentes/${product.category}/${product.id}`;
-    console.log('Navegando a:', url);
     navigate(url);
   };
 
   const handleAddToCart = (product, event) => {
     event.stopPropagation();
-    console.log('Añadido al carrito:', product);
-    alert(`${product.name} añadido al carrito`);
+    addToCart(product, 1);
+    
+    // Mostrar feedback visual
+    setAddedProducts(prev => ({ ...prev, [product.id]: true }));
+    
+    // Remover feedback después de 2 segundos
+    setTimeout(() => {
+      setAddedProducts(prev => {
+        const newState = { ...prev };
+        delete newState[product.id];
+        return newState;
+      });
+    }, 2000);
   };
 
   return (
@@ -183,7 +195,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                   <div className="product-footer">
                     <div className="product-price">${product.price.toFixed(2)}</div>
                     <button 
-                      className="add-to-cart-btn" 
+                      className={`add-to-cart-btn ${addedProducts[product.id] ? 'added' : ''}`}
                       onClick={(e) => handleAddToCart(product, e)}
                     >
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -191,7 +203,7 @@ const ProductOverview = ({ filters = { priceMin: null, priceMax: null, brands: [
                         <path d="M3 4H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M10.5 7C10.5 7.79565 10.1839 8.55871 9.62132 9.12132C9.05871 9.68393 8.29565 10 7.5 10C6.70435 10 5.94129 9.68393 5.37868 9.12132C4.81607 8.55871 4.5 7.79565 4.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                      Añadir
+                      {addedProducts[product.id] ? '✓ Añadido' : 'Añadir'}
                     </button>
                   </div>
                 </div>
