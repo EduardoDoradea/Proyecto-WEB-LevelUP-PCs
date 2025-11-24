@@ -3,7 +3,7 @@ import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import HeroSection from "../../components/home/HeroSection/HeroSection";
 import FeaturedProducts from "../../components/home/FeaturedProducts/FeaturedProducts";
-import FlashDeals from "../../components/home/FlashDeals/FlashDeals";
+import ComingSoon from "../../components/home/ComingSoon/ComingSoon";
 import Footer from "../../components/layout/Footer/Footer";
 
 export default function HomePage() {
@@ -15,7 +15,7 @@ export default function HomePage() {
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <HeroSection />
       <FeaturedProducts />
-      <FlashDeals />
+      <ComingSoon />
       <Footer />
     </>
   );
