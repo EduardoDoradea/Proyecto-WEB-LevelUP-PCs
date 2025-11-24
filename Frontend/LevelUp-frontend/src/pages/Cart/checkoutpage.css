@@ -1,0 +1,35 @@
+.checkout-main {
+  margin-top: 5%;
+}
+
+.forms-column {
+  position: sticky;
+  align-self: flex-start;
+  top: 100px;
+}
+
+.checkout-page {
+  min-height: 100vh;
+  background: black;
+  color: white;
+}
+
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+
+@media (min-width: 1024px) {
+  .checkout-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
