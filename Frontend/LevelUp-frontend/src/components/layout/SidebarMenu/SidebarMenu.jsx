@@ -5,58 +5,49 @@ export default function SidebarMenu({ isOpen, onClose }) {
   const [expandedItem, setExpandedItem] = useState(null);
 
   const menuItems = [
-    {
-      title: "Componentes",
-      icon: "🖥️",
-      subitems: [
-        "Procesadores", 
-        "Tarjetas Graficas", 
-        "Memoria RAM", 
-        "Almacenamiento", 
-        "Placas Madre",
-        "Fuentes Poder",
-        "Gabinetes",
-        "Refrigeracion"
-      ]
-    },
-    {
-      title: "Arma tu PC",
-      icon: "⚙️",
-      subitems: [
-        "Guía de Compatibilidad",
-        "Calculadora de Watts"
-      ]
-    },
-    {
-      title: "Ofertas Flash",
-      icon: "⚡",
-      subitems: [
-        "Descuentos del Día", 
-        "Liquidación", 
-        "Ofertas por Categoría"
-      ]
-    },
-    {
-      title: "Soporte",
-      icon: "🛠️",
-      subitems: [
-        "Garantías",  
-        "Mantenimiento", 
-        "FAQ",
-        "Asesoría Técnica"
-      ]
-    },
-    {
-      title: "Nosotros",
-      icon: "ℹ️",
-      subitems: [
-        "Quiénes Somos", 
-        "Ubicación", 
-        "Contacto",
-        "Políticas de Envío"
-      ]
-    }
-  ];
+  {
+    title: "Componentes",
+    icon: "🖥️",
+    subitems: [
+      "Procesadores", 
+      "Tarjetas Graficas", 
+      "Memoria RAM", 
+      "Almacenamiento", 
+      "Placas Madre",
+      "Fuentes Poder",
+      "Gabinetes",
+      "Refrigeracion"
+    ]
+  },
+  {
+    title: "Arma tu PC",
+    icon: "⚙️",
+    subitems: [
+      "Guía de Compatibilidad",
+      "Calculadora de Watts"
+    ]
+  },
+  {
+    title: "Soporte",
+    icon: "🛠️",
+    subitems: [
+      "Garantías",  
+      "Mantenimiento", 
+      "FAQ",
+      "Asesoría Técnica"
+    ]
+  },
+  {
+    title: "Nosotros",
+    icon: "ℹ️",
+    subitems: [
+      "Quiénes Somos", 
+      "Ubicación", 
+      "Contacto",
+      "Políticas de Envío"
+    ]
+  }
+];
 
   const toggleItem = (index) => {
     setExpandedItem(expandedItem === index ? null : index);
