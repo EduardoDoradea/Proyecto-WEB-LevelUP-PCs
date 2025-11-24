@@ -3,9 +3,8 @@
 import { getConexion, sql } from "../configSQL.js";
 import hash from "../../utils/funcionHash.js"
 
-//Este archivo tendra la autenticacion y la informacion del cliente
 
-//REGISTRO DEL CLIENTE
+
 export const registroCliente = async (cliente) => {
     try {
         // desestructurando el objeto
@@ -35,15 +34,14 @@ export const registroCliente = async (cliente) => {
 //INICIO DE SESION PARA EL CLIENTE
 export const inicioSesionCliente = async (datos) => {
     try {
-        const { nombreUsuario, contrasenia } = datos;
+        const { correo } = datos;
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
 
         const resultado = await pool.request()
-            .input("nombreUsuario", sql.NVarChar, nombreUsuario)
-            .input("contrasenia", sql.NVarChar, contrasenia)
-            .query(`SELECT *
-                FROM Cliente WHERE nombreUsuario = @nombreUsuario AND contrasenia = @contrasenia`);
+            .input("correo", sql.NVarChar, correo)
+            .query(`SELECT nombreUsuario, contrasenia
+                FROM Cliente WHERE correo = @correo`);
         //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
         return resultado.recordset[0];
     } catch (error) {

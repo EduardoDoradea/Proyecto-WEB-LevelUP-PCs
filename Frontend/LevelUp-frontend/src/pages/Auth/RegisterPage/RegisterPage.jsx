@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../../components/layout/Footer/Footer";
+import api from "../../../utils/api.js"; 
 import "../LoginPage/auth.css";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // Estados de carga y error
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const [formData, setFormData] = useState({
     nombre: "",
     apodo: "",
@@ -22,43 +30,56 @@ export default function RegisterPage() {
       ...formData,
       [e.target.name]: value
     });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Validación básica
-    if (formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-
-    if (!formData.acceptTerms) {
-      alert("Debes aceptar los términos y condiciones");
-      return;
-    }
-
-    // Aquí irá la lógica de registro cuando conectes el backend
-    console.log("Register attempt:", formData);
+    if (error) setError(null);
   };
 
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
-    
-    if (value.length > 8) {
-      value = value.slice(0, 8);
-    }
-    
-    if (value.length <= 4) {
-      value = value;
-    } else {
+    if (value.length > 8) value = value.slice(0, 8);
+    if (value.length > 4) {
       value = value.slice(0, 4) + "-" + value.slice(4, 8);
     }
-    
-    setFormData({
-      ...formData,
-      telefono: value
-    });
+    setFormData({ ...formData, telefono: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      setError("Debes aceptar los términos y condiciones");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { confirmPassword, acceptTerms, ...datosBase } = formData;
+
+    const datosParaBackend = {
+        nombre: datosBase.nombre,
+        nombreUsuario: datosBase.apodo,
+        correo: datosBase.email, 
+        password: datosBase.password,
+        telefono: parseInt(datosBase.telefono.replace(/-/g, ""), 10) // Limpiamos el guion
+      };
+      await api.post("/api/clientes/registroCliente", datosParaBackend);
+
+      console.log("Registro exitoso");
+      navigate("/login"); 
+      
+    } catch (err) {
+      console.error("Error de registro:", err);
+      const errorMsg = err.response?.data?.message || "Error al intentar registrarse. Intenta nuevamente.";
+      setError(errorMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,6 +103,21 @@ export default function RegisterPage() {
               <p>Regístrate en LevelUP PCs</p>
             </div>
 
+            {/* Mensaje de Error */}
+            {error && (
+              <div style={{ 
+                backgroundColor: "#ffebee", 
+                color: "#c62828", 
+                padding: "10px", 
+                borderRadius: "4px", 
+                marginBottom: "15px",
+                textAlign: "center",
+                fontSize: "0.9rem"
+              }}>
+                {error}
+              </div>
+            )}
+
             <form className="auth-form" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
@@ -94,6 +130,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     placeholder="Tu nombre completo"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -107,6 +144,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     placeholder="Tu apodo de usuario"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -121,6 +159,7 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   placeholder="ejemplo@correo.com"
                   required
+                  disabled={loading}
                 />
               </div>
               
@@ -134,6 +173,7 @@ export default function RegisterPage() {
                   onChange={handlePhoneChange}
                   placeholder="1234-5678"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -149,6 +189,7 @@ export default function RegisterPage() {
                     placeholder="••••••••"
                     required
                     minLength="8"
+                    disabled={loading}
                   />
                 </div>
 
@@ -163,6 +204,7 @@ export default function RegisterPage() {
                     placeholder="••••••••"
                     required
                     minLength="8"
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -175,6 +217,7 @@ export default function RegisterPage() {
                     checked={formData.acceptTerms}
                     onChange={handleChange}
                     required
+                    disabled={loading}
                   />
                   <span>
                     Acepto los{" "}
@@ -185,8 +228,8 @@ export default function RegisterPage() {
                 </label>
               </div>
 
-              <button type="submit" className="auth-btn">
-                Crear Cuenta
+              <button type="submit" className="auth-btn" disabled={loading}>
+                {loading ? "Creando cuenta..." : "Crear Cuenta"}
               </button>
             </form>
 

@@ -1,13 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 1. IMPORTANTE: Importar navegación
 import Navbar from "../../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../../components/layout/Footer/Footer";
-import api from "../../../utils/api.js"
+import api from "../../../utils/api.js";
 import "./auth.css";
 
 export default function LoginPage() {
+  const navigate = useNavigate(); // 2. Inicializar el hook de navegación
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Estados para manejo de carga y errores
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -18,30 +24,49 @@ export default function LoginPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
-    if (error) setError(null);
+    if (error) setError(null); // Limpiar error al escribir
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí irá la lógica de autenticación cuando se conecte el backend
-    try {
-      const response = await api.post("/api/clientes/iniciarSesionCliente", formData);
+    setLoading(true);
+    setError(null);
 
-      // b. Verificar la respuesta (asumiendo que el backend devuelve un token)
-      // NOTA: Ajusta 'response.data.token' según lo que devuelva tu backend
-      const { token } = response.data; 
+    try {
+      const datosLogin = {
+        correo: formData.email, 
+        password: formData.password
+      };
+
+      console.log("Enviando datos al backend:", datosLogin);
+
+      const response = await api.post("/api/clientes/iniciarSesionCliente", datosLogin);
+
+      console.log("Respuesta del servidor:", response.data);
+
+      const token = response.data.token || response.data.data?.token;
 
       if (token) {
         localStorage.setItem("token", token);
-
-        console.log("Login exitoso");
+        
+        console.log("Login exitoso, redirigiendo...");
         navigate("/"); 
+      } else {
+        throw new Error("El servidor respondió pero no envió un token.");
       }
+
     } catch (err) {
-      // e. Manejo de errores
-      console.error("Error de login:", err);
-      const errorMsg = err.response?.data?.message || "Credenciales incorrectas o error en el servidor.";
+      console.error("Error completo:", err);
+      
+      const errorMsg = 
+        err.response?.data?.message || 
+        err.response?.data?.error ||   
+        err.message ||                 
+        "Error al iniciar sesión.";
+        
       setError(errorMsg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,7 +74,7 @@ export default function LoginPage() {
     <>
       <Navbar onMenuToggle={() => setMenuOpen(true)} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-      
+
       <div className="auth-container">
         <div className="auth-wrapper">
           <div className="auth-content">
@@ -57,6 +82,21 @@ export default function LoginPage() {
               <h1>Iniciar Sesión</h1>
               <p>Accede a tu cuenta de LevelUP PCs</p>
             </div>
+
+            {/* --- 3. PARTE VISUAL CORREGIDA: Mensaje de Error --- */}
+            {error && (
+              <div style={{
+                backgroundColor: "#ffebee",
+                color: "#c62828",
+                padding: "10px",
+                borderRadius: "4px",
+                marginBottom: "15px",
+                textAlign: "center",
+                fontSize: "0.9rem"
+              }}>
+                {error}
+              </div>
+            )}
 
             <form className="auth-form" onSubmit={handleSubmit}>
               <div className="form-group">
@@ -69,6 +109,7 @@ export default function LoginPage() {
                   onChange={handleChange}
                   placeholder="ejemplo@correo.com"
                   required
+                  disabled={loading} // Bloquear input si carga
                 />
               </div>
 
@@ -82,12 +123,13 @@ export default function LoginPage() {
                   onChange={handleChange}
                   placeholder="••••••••"
                   required
+                  disabled={loading} // Bloquear input si carga
                 />
               </div>
 
               <div className="form-options">
                 <label className="checkbox-container">
-                  <input type="checkbox" />
+                  <input type="checkbox" disabled={loading} />
                   <span>Recordarme</span>
                 </label>
                 <a href="/recuperar-contrasena" className="forgot-link">
@@ -95,8 +137,9 @@ export default function LoginPage() {
                 </a>
               </div>
 
-              <button type="submit" className="auth-btn">
-                Iniciar Sesión
+              {/* Botón con estado de carga */}
+              <button type="submit" className="auth-btn" disabled={loading}>
+                {loading ? "Conectando..." : "Iniciar Sesión"}
               </button>
             </form>
 
