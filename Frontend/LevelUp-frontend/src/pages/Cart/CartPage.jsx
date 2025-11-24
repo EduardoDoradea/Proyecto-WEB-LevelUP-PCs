@@ -18,10 +18,10 @@ export default function CheckoutPage() {
     name: item.name,
     quantity: item.quantity,
     price: item.price,
-    image: item.image || "💻"
+    image: item.image 
   }));
 
-  return (
+ return (
     <>
       <Navbar onMenuToggle={() => setMenuOpen(true)} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

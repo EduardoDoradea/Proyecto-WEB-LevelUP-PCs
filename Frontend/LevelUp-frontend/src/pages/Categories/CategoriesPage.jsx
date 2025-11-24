@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../components/layout/Footer/Footer";
@@ -97,7 +98,7 @@ export default function CategoriesPage() {
         <section className="categories-cta">
           <h2>¿No sabes qué elegir?</h2>
           <p>Nuestros expertos pueden ayudarte a armar el PC perfecto para tus necesidades</p>
-          <button className="cta-btn">Contactar Asesor</button>
+          <button className="cta-btn"> Contactar Asesor</button>
         </section>
       </main>
 
