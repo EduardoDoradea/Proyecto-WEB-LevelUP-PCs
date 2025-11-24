@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useCart } from "../../contexts/CartContext";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../components/layout/Footer/Footer";
@@ -9,54 +10,46 @@ import "./productpage.css";
 export default function ProductPage() {
   const { category, productId } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState('specs');
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [showAddedMessage, setShowAddedMessage] = useState(false);
 
-useEffect(() => {
-  console.log('ProductPage - Categoría:', category, 'ProductID:', productId);
+  useEffect(() => {
+    const foundProduct = getProductById(productId);
 
-  const foundProduct = getProductById(productId);
+    if (!foundProduct) {
+      navigate('*');
+      return;
+    }
 
-  if (!foundProduct) {
-    console.log('Producto no encontrado, ID:', productId);
-    navigate('*');
-    return;
+    if (foundProduct.category !== category) {
+      navigate(`/componentes/${foundProduct.category}/${productId}`);
+      return;
+    }
+
+    setProduct(foundProduct);
+
+    const related = productsDatabase
+      .filter((p) => p.category === foundProduct.category && p.id !== foundProduct.id)
+      .slice(0, 3);
+
+    setRelatedProducts(related);
+
+    setSelectedImage(0);
+    setQuantity(1);
+    setSelectedTab('specs');
+
+    window.scrollTo(0, 0);
+  }, [productId, category, navigate]);
+
+  if (!product) {
+    return null;
   }
-
-  if (foundProduct.category !== category) {
-    console.log(
-      'La categoría no coincide. Esperado:',
-      category,
-      'Recibido:',
-      foundProduct.category
-    );
-    navigate(`/componentes/${foundProduct.category}/${productId}`);
-    return;
-  }
-
-  console.log('Producto encontrado:', foundProduct);
-  setProduct(foundProduct);
-
-  const related = productsDatabase
-    .filter((p) => p.category === foundProduct.category && p.id !== foundProduct.id)
-    .slice(0, 3);
-
-  setRelatedProducts(related);
-
-  setSelectedImage(0);
-  setQuantity(1);
-  setSelectedTab('specs');
-
-  window.scrollTo(0, 0);
-}, [productId, category, navigate]);
-
-if (!product) {
-  return null;
-}
 
   const productImages = Array.isArray(product.image) 
     ? product.image 
@@ -70,12 +63,17 @@ if (!product) {
   };
 
   const handleAddToCart = () => {
-    console.log(`Añadiendo ${quantity} unidad(es) de ${product.name} al carrito`);
-    alert(`Se añadieron ${quantity} unidad(es) de ${product.name} al carrito`);
+    addToCart(product, quantity);
+    setShowAddedMessage(true);
+    
+    // Ocultar mensaje después de 3 segundos
+    setTimeout(() => {
+      setShowAddedMessage(false);
+    }, 3000);
   };
 
   const handleBuyNow = () => {
-    console.log(`Comprando ${quantity} unidad(es) de ${product.name}`);
+    addToCart(product, quantity);
     navigate('/carrito');
   };
 
@@ -97,6 +95,23 @@ if (!product) {
     <>
       <Navbar onMenuToggle={() => setMenuOpen(true)} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {showAddedMessage && (
+        <div style={{
+          position: 'fixed',
+          top: '100px',
+          right: '20px',
+          background: 'linear-gradient(135deg, #00b4d8 0%, #0077b6 100%)',
+          color: 'white',
+          padding: '1rem 1.5rem',
+          borderRadius: '8px',
+          boxShadow: '0 4px 15px rgba(0, 180, 216, 0.4)',
+          zIndex: 9999,
+          animation: 'slideInRight 0.3s ease-out'
+        }}>
+          ✓ Producto agregado al carrito
+        </div>
+      )}
 
       <main className="product-page">
         <div className="breadcrumb">

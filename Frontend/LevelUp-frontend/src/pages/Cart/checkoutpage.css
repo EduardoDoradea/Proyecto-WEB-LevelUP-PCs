@@ -2,6 +2,12 @@
   margin-top: 5%;
 }
 
+.forms-column {
+  position: sticky;
+  align-self: flex-start;
+  top: 100px;
+}
+
 .checkout-page {
   min-height: 100vh;
   background: black;

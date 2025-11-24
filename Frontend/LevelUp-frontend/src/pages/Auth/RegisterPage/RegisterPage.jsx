@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     nombre: "",
-    apellido: "",
+    apodo: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -42,6 +42,25 @@ export default function RegisterPage() {
     console.log("Register attempt:", formData);
   };
 
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    
+    if (value.length > 8) {
+      value = value.slice(0, 8);
+    }
+    
+    if (value.length <= 4) {
+      value = value;
+    } else {
+      value = value.slice(0, 4) + "-" + value.slice(4, 8);
+    }
+    
+    setFormData({
+      ...formData,
+      telefono: value
+    });
+  };
+
   return (
     <>
       <Navbar onMenuToggle={() => setMenuOpen(true)} />
@@ -73,20 +92,20 @@ export default function RegisterPage() {
                     name="nombre"
                     value={formData.nombre}
                     onChange={handleChange}
-                    placeholder="Tu nombre"
+                    placeholder="Tu nombre completo"
                     required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="apellido">Apellido</label>
+                  <label htmlFor="apodo">Apodo de usuario</label>
                   <input
                     type="text"
-                    id="apellido"
-                    name="apellido"
-                    value={formData.apellido}
+                    id="apodo"
+                    name="apodo"
+                    value={formData.apodo}
                     onChange={handleChange}
-                    placeholder="Tu apellido"
+                    placeholder="Tu apodo de usuario"
                     required
                   />
                 </div>
@@ -104,16 +123,17 @@ export default function RegisterPage() {
                   required
                 />
               </div>
-
+              
               <div className="form-group">
-                <label htmlFor="telefono">Teléfono (Opcional)</label>
+                <label htmlFor="telefono">Teléfono</label>
                 <input
-                  type="tel"
+                  type="text"
                   id="telefono"
                   name="telefono"
                   value={formData.telefono}
-                  onChange={handleChange}
-                  placeholder="+503 1234-5678"
+                  onChange={handlePhoneChange}
+                  placeholder="1234-5678"
+                  required
                 />
               </div>
 

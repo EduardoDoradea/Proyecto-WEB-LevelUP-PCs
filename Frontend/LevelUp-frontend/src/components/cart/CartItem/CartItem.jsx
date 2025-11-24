@@ -3,7 +3,7 @@ import "./cartitem.css";
 export default function CartItem({ item, isEditing, updateQuantity, removeItem }) {
   return (
     <div className="cart-item">
-      <div className="item-image">{item.image}</div>
+      <div className="item-image"><img src = {item.image} /></div>
 
       <div className="item-details">
         <h3>{item.name}</h3>

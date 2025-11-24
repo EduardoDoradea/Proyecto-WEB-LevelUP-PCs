@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./contexts/CartContext";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Auth/LoginPage/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage/RegisterPage";
@@ -16,6 +17,32 @@ import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
 export default function App() {
   return (
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/registro" element={<RegisterPage />} />
+          
+          <Route path="/componentes" element={<CategoriesPage />} />
+          
+          <Route path="/catalogo" element={<CatalogPage />} />
+          
+          <Route path="/componentes/:category" element={<CatalogPage />} />
+          
+          <Route path="/componentes/:category/:productId" element={<ProductPage />} />
+          
+          <Route path="/carrito" element={<CartPage />} />
+          
+          <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
+          <Route path="/nosotros/ubicación" element={<LocationPage />} />
+          <Route path="/nosotros/contacto" element={<ContactPage />} />
+          <Route path="/nosotros/políticas-de-envío" element={<ShippingPage />} /> 
+          
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
