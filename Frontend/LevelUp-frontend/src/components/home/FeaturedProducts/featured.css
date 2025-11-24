@@ -34,11 +34,14 @@
 }
 
 .product-card {
+  display: block; /* asegurar que <a class="product-card"> se comporte como bloque */
   background: #0f0f0f;
   border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
   transition: all 0.4s ease;
   cursor: pointer;
+  text-decoration: none; /* quitar subrayado si es enlace */
+  color: inherit; /* heredar color */
 }
 
 .product-card:hover {
@@ -48,7 +51,9 @@
 }
 
 .product-image {
+  display: block; /* evitar colapso en elementos inline */
   height: 300px;
+  min-height: 200px; /* en pantallas pequeñas prevenir colapso */
   background-size: cover;
   background-position: center;
   position: relative;
