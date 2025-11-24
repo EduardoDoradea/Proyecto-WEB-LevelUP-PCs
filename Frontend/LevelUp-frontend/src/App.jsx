@@ -6,6 +6,9 @@ import CatalogPage from "./pages/Catalog/Catalogpage";
 import CartPage from "./pages/Cart/CartPage";
 import ProductPage from "./pages/Product/ProductPage";
 import AboutPage from "./pages/About/AboutPage";
+import LocationPage from "./pages/Location/LocationPage";
+import ContactPage from "./pages/Contact/ContactPage";
+import ShippingPage from "./pages/ShippingLaw/ShippingPage"; // Nueva importación
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
 export default function App() {
@@ -19,6 +22,9 @@ export default function App() {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/producto/:id" element={<ProductPage />} />
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
+        <Route path="/nosotros/ubicación" element={<LocationPage />} />
+        <Route path="/nosotros/contacto" element={<ContactPage />} />
+        <Route path="/nosotros/políticas-de-envío" element={<ShippingPage />} /> {/* Nueva ruta */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
