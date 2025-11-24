@@ -65,7 +65,7 @@ export default function CatalogPage() {
           <div className="catalog-breadcrumb">
             <a href="/">Inicio</a>
             <span>/</span>
-            <a href="/categorias">Categorías</a>
+            <a href="/componentes">Componentes</a>
             {category && (
               <>
                 <span>/</span>

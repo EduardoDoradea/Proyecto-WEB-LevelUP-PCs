@@ -103,7 +103,7 @@ if (!product) {
           <div className="breadcrumb-container">
             <Link to="/">Inicio</Link>
             <span>/</span>
-            <Link to="/categorias">Categorías</Link>
+            <Link to="/componentes">Componentes</Link>
             <span>/</span>
             <Link to={`/componentes/${product.category}`}>{getCategoryDisplayName()}</Link>
             <span>/</span>
