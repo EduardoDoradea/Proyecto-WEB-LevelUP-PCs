@@ -2,8 +2,8 @@
 
 .container {
   max-width: 1200px;
-  margin: 3.5rem auto;
-  padding: 0 1.25rem;
+  margin: 0 auto;
+  padding: 6rem 1.25rem 3.5rem;
 }
 
 .watt-page .watt-intro h1 {
