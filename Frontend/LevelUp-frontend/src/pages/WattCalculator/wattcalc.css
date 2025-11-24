@@ -1,0 +1,166 @@
+/* Estilos para la calculadora de watts - acorde al tema oscuro del proyecto */
+
+.container {
+  max-width: 1200px;
+  margin: 3.5rem auto;
+  padding: 0 1.25rem;
+}
+
+.watt-page .watt-intro h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.muted {
+  color: #bdbdbd;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.watt-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+/* Formulario */
+.watt-form {
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 1.25rem;
+  border-radius: 8px;
+}
+
+.watt-form h2 {
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.field.small {
+  max-width: 220px;
+}
+
+.field span {
+  color: #bdbdbd;
+  font-size: 0.9rem;
+}
+
+.field select,
+.field input[type="number"],
+.field input[type="range"] {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #fff;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+/* checkbox */
+.field.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.field.range input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(90deg, #00b4d8, #0077b6);
+  border-radius: 6px;
+  outline: none;
+}
+
+/* Resumen */
+.watt-summary {
+  background: linear-gradient(180deg, rgba(10,10,10,0.9), rgba(15,15,15,0.85));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 1rem;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.watt-summary h2 {
+  margin-bottom: 0.75rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  color: #e6e6e6;
+  border-bottom: 1px dashed rgba(255,255,255,0.03);
+}
+
+.summary-row.muted {
+  color: #bdbdbd;
+  font-size: 0.95rem;
+}
+
+.recommend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+}
+
+.psu-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #00b4d8, #0077b6);
+  color: #001217;
+  font-weight: 700;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  text-align: center;
+  width: 100%;
+}
+
+.notes {
+  margin-top: 0.75rem;
+  color: #bdbdbd;
+  font-size: 0.92rem;
+}
+
+.notes ul {
+  margin-top: 0.4rem;
+  padding-left: 1rem;
+}
+
+.cta {
+  margin-top: 0.9rem;
+  background: #00b4d8;
+  border: none;
+  color: #001217;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 968px) {
+  .watt-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .watt-summary {
+    margin-top: 1rem;
+  }
+
+  .container {
+    margin: 2rem auto;
+  }
+}

@@ -10,6 +10,8 @@ import AboutPage from "./pages/About/AboutPage";
 import LocationPage from "./pages/Location/LocationPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import ShippingPage from "./pages/ShippingLaw/ShippingPage";
+import CompatibilityPage from "./pages/Compatibility/CompatibilityPage";
+import WattCalculatorPage from "./pages/WattCalculator/WattCalculatorPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
 export default function App() {
@@ -29,6 +31,9 @@ export default function App() {
         <Route path="/componentes/:category/:productId" element={<ProductPage />} />
         
         <Route path="/carrito" element={<CartPage />} />
+
+        <Route path="/arma-tu-pc/guía-de-compatibilidad" element={<CompatibilityPage />} />
+        <Route path="/arma-tu-pc/calculadora-de-watts" element={<WattCalculatorPage />} />
         
         <Route path="/nosotros/quiénes-somos" element={<AboutPage />} />
         <Route path="/nosotros/ubicación" element={<LocationPage />} />
