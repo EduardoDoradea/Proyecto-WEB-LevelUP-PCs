@@ -41,6 +41,7 @@ export default function BillingForm() {
           <label>Nombre</label>
           <input 
             type="text"
+            placeholder="Juan"
             value={firstName}
             onChange={handleTextOnlyChange(setFirstName)}
           />
@@ -49,6 +50,7 @@ export default function BillingForm() {
           <label>Apellidos</label>
           <input 
             type="text"
+            placeholder="Pérez"
             value={lastName}
             onChange={handleTextOnlyChange(setLastName)}
           />
@@ -59,6 +61,7 @@ export default function BillingForm() {
         <label>Dirección</label>
         <input 
           type="text"
+          placeholder="Calle 123"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
@@ -69,6 +72,7 @@ export default function BillingForm() {
           <label>Casa / Apt</label>
           <input 
             type="text"
+            placeholder="##"
             value={apartment}
             onChange={handleApartmentChange}
           />
@@ -77,6 +81,7 @@ export default function BillingForm() {
           <label>Municipio</label>
           <input 
             type="text"
+            placeholder="Mejicanos"
             value={municipality}
             onChange={handleTextOnlyChange(setMunicipality)}
           />
@@ -88,6 +93,7 @@ export default function BillingForm() {
           <label>Departamento</label>
           <input 
             type="text"
+            placeholder="San Salvador"
             value={department}
             onChange={handleTextOnlyChange(setDepartment)}
           />
@@ -96,6 +102,7 @@ export default function BillingForm() {
           <label>Teléfono</label>
           <input 
             type="tel"
+            placeholder="#### - ####"
             value={phone}
             onChange={handlePhoneChange}
             maxLength={11}

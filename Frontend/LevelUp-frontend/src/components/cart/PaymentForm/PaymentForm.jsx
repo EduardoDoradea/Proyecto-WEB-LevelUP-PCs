@@ -71,6 +71,7 @@ export default function PaymentForm() {
           <label>CCV</label>
           <input 
             type="text"
+            placeholder="###"
             value={cvv}
             onChange={handleCvvChange}
             maxLength={3}
@@ -82,6 +83,7 @@ export default function PaymentForm() {
         <label>Titular</label>
         <input 
           type="text"
+          placeholder="Juan Pérez"
           value={cardHolder}
           onChange={handleCardHolderChange}
         />
