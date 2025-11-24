@@ -2,10 +2,12 @@ import { useState } from "react";
 import Navbar from "../../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../../components/layout/Footer/Footer";
+import api from "../../../utils/api.js"
 import "./auth.css";
 
 export default function LoginPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -16,12 +18,31 @@ export default function LoginPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Aquí irá la lógica de autenticación cuando se conecte el backend
-    console.log("Login attempt:", formData);
+    try {
+      const response = await api.post("/api/clientes/iniciarSesionCliente", formData);
+
+      // b. Verificar la respuesta (asumiendo que el backend devuelve un token)
+      // NOTA: Ajusta 'response.data.token' según lo que devuelva tu backend
+      const { token } = response.data; 
+
+      if (token) {
+        localStorage.setItem("token", token);
+
+        console.log("Login exitoso");
+        navigate("/"); 
+      }
+    } catch (err) {
+      // e. Manejo de errores
+      console.error("Error de login:", err);
+      const errorMsg = err.response?.data?.message || "Credenciales incorrectas o error en el servidor.";
+      setError(errorMsg);
+    }
   };
 
   return (
