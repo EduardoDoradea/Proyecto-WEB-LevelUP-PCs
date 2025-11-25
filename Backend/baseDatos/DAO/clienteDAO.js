@@ -1,17 +1,16 @@
 
 //Importamos el metodo para la conexion a la base de datos y tambien el paquete de mssql, de la carpeta de configuracion
 import { getConexion, sql } from "../configSQL.js";
-import bycript from "bcrypt";
+import hash from "../../utils/funcionHash.js"
 
-//Este archivo tendra la autenticacion y la informacion del cliente
 
-//REGISTRO DEL CLIENTE
+
 export const registroCliente = async (cliente) => {
     try {
         // desestructurando el objeto
         const { correo, nombreUsuario, contrasenia, nombre, telefono } = cliente
-
-        const hashedContrasenia = await bycript.hash(String(contrasenia), 10);
+        
+        const hashedContrasenia = await hash.hashPassword(contrasenia);
 
         //Objeto para poder utilizar la base de datos
         const pool = await getConexion();
@@ -29,6 +28,24 @@ export const registroCliente = async (cliente) => {
         console.log("Se ha logrado insertar el nuevo cliente con exito! " + resultado.rowsAffected);
     } catch (error) {
         console.error("Error en el registro del cliente" + error);
+    }
+}
+
+//INICIO DE SESION PARA EL CLIENTE
+export const inicioSesionCliente = async (datos) => {
+    try {
+        const { correo } = datos;
+        //Objeto para poder utilizar la base de datos
+        const pool = await getConexion();
+
+        const resultado = await pool.request()
+            .input("correo", sql.NVarChar, correo)
+            .query(`SELECT nombreUsuario, contrasenia
+                FROM Cliente WHERE correo = @correo`);
+        //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
+        return resultado.recordset[0];
+    } catch (error) {
+        console.error("Error en el nombre de usuario o contraseña es incorrecto." + error);
     }
 }
 
@@ -55,29 +72,12 @@ export const mostrarClienteId = async (idCliente) => {
 
         const resultado = await pool.request()
             .input("idCliente", sql.BigInt, idCliente)
-            .query(`SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono "
+            .query(`SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono 
                     FROM Cliente WHERE idCliente = @idCliente`);
 
         return resultado.recordset;
     } catch (error) {
         console.error("Error en obtener el id del cliente" + error);
-    }
-}
-
-//MOSTRAR EL CLIENTE POR CORREO
-export const mostrarClienteCorreo = async (correoCliente) => {
-    try {
-        //Objeto para poder utilizar la base de datos
-        const pool = await getConexion();
-
-        const resultado = await pool.request()
-            .input("correoCliente", sql.NVarChar, correoCliente)
-            .query(`SELECT idCliente, nombre, correo, nombreUsuario, contrasenia, telefono, edad)
-                FROM Cliente WHERE correo = @correoCliente`);
-        //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
-        return resultado.recordset[0];
-    } catch (error) {
-        console.error("Error en la busqueda del cliente por correo." + error);
     }
 }
 
@@ -92,7 +92,7 @@ export const actualizarClientePerfil = async (idCliente, datos) => {
 
         if (contrasenia) {
 
-            const hashedContrasenia = await bycript.hash(String(contrasenia), 10);
+            const hashedContrasenia = await hash.hashPassword(contrasenia);
 
             //Insertando los datos del objeto en la base de datos
             const resultado = await pool.request()
@@ -102,13 +102,13 @@ export const actualizarClientePerfil = async (idCliente, datos) => {
                 .input("contrasenia", sql.NVarChar, hashedContrasenia)
                 .input("telefono", sql.Int, telefono)
                 .query(`UPDATE Cliente 
-                SET correo = @correo
-                nombreUsuario = @nombreUsuario
-                contrasenia = @contrasenia
+                SET correo = @correo,
+                nombreUsuario = @nombreUsuario,
+                contrasenia = @contrasenia,
                 telefono = @telefono
                 WHERE idCliente = @idCliente
                 `);
-            console.log("Se ha logrado actualizar al cliente. " + resultado.recordset);
+            console.log("Se ha logrado actualizar al cliente. " + resultado.rowsAffected);
         } else {
             //Insertando los datos del objeto en la base de datos
             const resultado = await pool.request()
@@ -117,8 +117,8 @@ export const actualizarClientePerfil = async (idCliente, datos) => {
                 .input("nombreUsuario", sql.NVarChar, nombreUsuario)
                 .input("telefono", sql.Int, telefono)
                 .query(`UPDATE Cliente 
-                SET correo = @correo
-                nombreUsuario = @nombreUsuario
+                SET correo = @correo,
+                nombreUsuario = @nombreUsuario,
                 telefono = @telefono
                 WHERE idCliente = @idCliente
                 `);
@@ -126,12 +126,12 @@ export const actualizarClientePerfil = async (idCliente, datos) => {
         }
 
     } catch (error) {
-        console.error("Error en la actualizacion de datos del cliente" + error);
+        console.error("Error en la actualizacion de datos del cliente " + error);
     }
 }
 
 //ELIMINAR UN CLIENTE
-export const eliminarClientePerfil = async (idCliente) => {
+export const eliminarClientePerfil = async (nombreUsuario) => {
     try {
         // UNICAMENTE ESTOS CAMPOS SE ACTUALIZARAN 
 
@@ -140,9 +140,9 @@ export const eliminarClientePerfil = async (idCliente) => {
 
         //Insertando los datos del objeto en la base de datos
         const resultado = await pool.request()
-            .input("idCliente", sql.BigInt, idCliente)
+            .input("nombreUsuario", sql.NVarChar, nombreUsuario)
             .query(`DELETE FROM Cliente 
-                WHERE idCliente = @idCliente`);
+                WHERE nombreUsuario = @nombreUsuario`);
         //Mostrando las lineas afectadas  
         console.log(resultado.rowsAffected);
     } catch (error) {

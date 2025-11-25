@@ -1,5 +1,5 @@
 
-import pedidoDAO from "../baseDatos/DAO/pedidoDAO.js"
+import * as pedidoDAO from "../baseDatos/DAO/pedidoDAO.js"
 
 //REGISTRO DE PEDIDO
 export const crearNuevoPedido = async (req, res) => {
