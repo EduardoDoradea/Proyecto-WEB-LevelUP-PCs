@@ -8,7 +8,6 @@ const router = Router();
 // rutas para poder realizar operaciones http con el cliente-servidor (rutas para Cliente)
 router.post('/registroCliente', controladorCliente.registroCliente);
 router.post('/iniciarSesionCliente', controladorCliente.inicioSesionCliente);
-router.put('/actualizarContrasenia', verifyToken, controladorCliente.actualizarContrasenia)
-router.get('/perfil', verifyToken, controladorCliente.obtenerPerfil);
+router.post('/actualizarContra', controladorCliente.verificarCorreoExistente);
 
 export default router;

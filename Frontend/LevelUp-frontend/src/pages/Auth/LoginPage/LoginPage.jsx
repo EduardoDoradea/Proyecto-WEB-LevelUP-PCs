@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
     try {
       const datosLogin = {
         correo: formData.email, 
-        password: formData.password
+        contrasenia: formData.password
       };
 
       console.log("Enviando datos al backend:", datosLogin);
@@ -50,7 +50,7 @@ const handleSubmit = async (e) => {
         localStorage.setItem("token", token);
         
         console.log("Login exitoso, redirigiendo...");
-        navigate("/"); 
+        navigate("/componentes"); 
       } else {
         throw new Error("El servidor respondió pero no envió un token.");
       }

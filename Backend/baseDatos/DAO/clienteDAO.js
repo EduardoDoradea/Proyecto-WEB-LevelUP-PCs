@@ -49,34 +49,20 @@ export const inicioSesionCliente = async (datos) => {
         throw error;
     }
 }
+
 //ACTUALIZAR CONTRASENIA
-export const actualizarContrasenia = async (correo, nuevaContrasenia) => {
+export const verificarCorreoExistenteDAO = async (correo) => {
     try {
-        const pool = await getConexion();
-
-        const hashedContrasenia = await hash.hashPassword(nuevaContrasenia);
-
         const resultado = await pool.request()
             .input("correo", sql.NVarChar, correo)
-            .input("contrasenia", sql.NVarChar, hashedContrasenia)
-            .query(`
-                UPDATE Cliente 
-                SET contrasenia = @contrasenia
-                WHERE correo = @correo
-            `);
+            .query("SELECT telefono FROM Cliente WHERE correo = @correo");
 
-        if (resultado.rowsAffected[0] === 0) {
-            console.log("No se encontró ningún usuario con ese correo.");
-            return false;
-        }
-
-        console.log("Se ha logrado cambiar la contraseña.");
-        return true;
+        return resultado.recordset.length > 0 ? resultado.recordset[0] : null; 
     } catch (error) {
-        console.error("Error al actualizar contraseña:", error);
-        throw error;
+        throw new Error("Error al consultar la base de datos.");
     }
-}
+};
+
 
 //MOSTRAR LOS DATOS DEL CLIENTE LOGEADO
 export const mostrarDatosCliente = async (idCliente) => {
@@ -92,15 +78,14 @@ export const mostrarDatosCliente = async (idCliente) => {
             `);
 
         if (resultado.recordset.length === 0) {
-            console.log("Cliente no encontrado.");
             return null;
         }
 
-        console.log("Se ha encontrado el cliente.");
+        console.log("Se ha encontrado el cliente para el perfil.");
         return resultado.recordset[0];
 
     } catch (error) {
-        console.error("Error al buscar cliente: " + error);
+        console.error("Error al buscar cliente en DAO: " + error);
         throw error;
     }
 }

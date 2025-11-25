@@ -9,7 +9,6 @@ export const registroPedidoCompleto = async (datos) => {
         carrito 
     } = datos;
 
-    // Abrimos la conexión y la transacción
     const pool = await getConexion();
     const transaction = new sql.Transaction(pool);
 
@@ -61,7 +60,6 @@ export const registroPedidoCompleto = async (datos) => {
         return { idPedido: idPedidoNuevo, mensaje: "Pedido procesado correctamente" };
 
     } catch (error) {
-        // Si algo falla, revertimos todos los cambios
         if (transaction) await transaction.rollback();
         console.error("Error en registroPedidoCompleto:", error);
         throw error;
