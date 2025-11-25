@@ -21,7 +21,7 @@ export default function CheckoutPage() {
     image: item.image 
   }));
 
- return (
+return (
     <>
       <Navbar onMenuToggle={() => setMenuOpen(true)} />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

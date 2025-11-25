@@ -40,7 +40,7 @@ export const inicioSesionCliente = async (datos) => {
 
         const resultado = await pool.request()
             .input("correo", sql.NVarChar, correo)
-            .query(`SELECT nombreUsuario, contrasenia
+            .query(`SELECT idCliente, correo, contrasenia
                 FROM Cliente WHERE correo = @correo`);
         //devolvemos un arreglo de un solo objeto con el correo que se le pasa, y se muestran los atributos que tiene ese correo 
         return resultado.recordset[0];

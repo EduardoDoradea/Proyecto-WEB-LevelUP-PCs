@@ -7,18 +7,18 @@ import contraseniaUtil from "../utils/funcionHash.js";
 export const registroCliente = async (req, res) => {
     try {
         console.log("--- DEBUG REGISTRO ---");
-        
+
         const { password, ...restoDatos } = req.body;
 
         console.log("Password recibida del front:", password);
 
         const clienteParaDAO = {
             ...restoDatos,
-            contrasenia: password 
+            contrasenia: password
         };
 
         await clienteDAO.registroCliente(clienteParaDAO);
-        
+
         res.status(201).json({ mensaje: "Cliente registrado exitosamente." });
 
     } catch (error) {
@@ -29,7 +29,7 @@ export const registroCliente = async (req, res) => {
 
 export const inicioSesionCliente = async (req, res) => {
     try {
-        const { correo, password } = req.body;
+        const { correo, contrasenia } = req.body;
 
         const clienteEncontrado = await clienteDAO.inicioSesionCliente({ correo });
 
@@ -37,8 +37,7 @@ export const inicioSesionCliente = async (req, res) => {
             return res.status(404).json({ message: "Cliente no encontrado" });
         }
 
-        const contraseniaValida = await contraseniaUtil.comparePassword(password, clienteEncontrado.contrasenia);
-
+        const contraseniaValida = await contraseniaUtil.comparePassword(contrasenia, clienteEncontrado.contrasenia);
 
         if (!contraseniaValida) {
             return res.status(401).json({ message: "Contraseña incorrecta" });
@@ -64,18 +63,17 @@ export const inicioSesionCliente = async (req, res) => {
 export const actualizarContrasenia = async (req, res) => {
     try {
         console.log("--- DEBUG REGISTRO ---");
-        
-        const { password, ...restoDatos } = req.body;
 
-        console.log("Password recibida del front:", password);
+        const { correo, password } = req.body;
 
-        const clienteParaDAO = {
-            ...restoDatos,
-            contrasenia: password 
-        };
+        if (!correo || !password) {
+            return res.status(400).json({ error: "Faltan datos: correo y password son obligatorios" });
+        }
 
-        await clienteDAO.actualizarContrasenia(clienteParaDAO);
-        
+        console.log("Actualizando contrasenia para:", correo);
+
+        await clienteDAO.actualizarContrasenia(correo, password);
+
         res.status(201).json({ mensaje: "La contraseña del cliente ha sido actualizada." });
 
     } catch (error) {
@@ -86,18 +84,17 @@ export const actualizarContrasenia = async (req, res) => {
 
 export const obtenerPerfil = async (req, res) => {
     try {
-        const idDelUsuario = req.user.id; 
+        const { id } = req.params;
 
-        const cliente = await clienteDAO.obtenerClientePorId(idDelUsuario);
+        const datosCliente = await clienteDAO.mostrarDatosCliente(id);
 
-        if (!cliente) {
-            return res.status(404).json({ message: "Cliente no encontrado" });
+        if (!datosCliente) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
         }
 
-        res.status(200).json(cliente);
+        res.json(datosCliente);
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error al obtener perfil" });
+        res.status(500).json({ message: "Error del servidor" });
     }
 };
