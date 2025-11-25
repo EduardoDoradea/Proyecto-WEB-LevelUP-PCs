@@ -1,16 +1,23 @@
 import * as pedidoDAO from "../baseDatos/DAO/pedidoDAO.js"
 
-
 export const compraFacturacion = async (req, res) => {
     try { 
-        // Obtener el ID del cliente desde el token JWT
-        const idCliente = req.user.id;
+        // MODIFICACIÓN: Intentar obtener idCliente del body (bypass), si no, del token (backup)
+        const idCliente = req.body.idCliente || (req.user ? req.user.id : null);
 
         const { 
             direccion,
             tarjeta,
             carrito    
         } = req.body;
+
+        // MODIFICACIÓN: Validación explícita del ID
+        if (!idCliente) {
+            return res.status(400).json({ 
+                success: false,
+                message: "No se pudo identificar al usuario. Por favor inicie sesión nuevamente." 
+            });
+        }
 
         // Validaciones
         if (!direccion || direccion.trim() === '') {
