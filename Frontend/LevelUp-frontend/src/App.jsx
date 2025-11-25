@@ -15,7 +15,7 @@ import CompatibilityPage from "./pages/Compatibility/CompatibilityPage";
 import WattCalculatorPage from "./pages/WattCalculator/WattCalculatorPage";
 import WarrantyPage from "./pages/Warranty/WarrantyPage";
 import MaintenancePage from "./pages/Maintenance/MaintenancePage";
-import FAQPage from "./pages/FAQ/FAQPage";
+import FAQPage from "./pages/FAQ/FAQPage"; 
 import TechAdvisoryPage from "./pages/TechAdvisory/TechAdvisoryPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
