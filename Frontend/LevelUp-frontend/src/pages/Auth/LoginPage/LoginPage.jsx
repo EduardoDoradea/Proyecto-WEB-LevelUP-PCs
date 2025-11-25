@@ -53,7 +53,7 @@ export default function LoginPage() {
     try {
       const datosLogin = {
         correo: formData.email, 
-        password: formData.password
+        contrasenia: formData.password
       };
 
       console.log("Enviando datos al backend:", datosLogin);
@@ -68,10 +68,15 @@ export default function LoginPage() {
         localStorage.setItem("token", token);
         console.log("Token guardado:", token);
         
+<<<<<<< HEAD
         setTimeout(() => {
           console.log("Login exitoso, redirigiendo...");
           navigate("/"); 
         }, 100);
+=======
+        console.log("Login exitoso, redirigiendo...");
+        navigate("/componentes"); 
+>>>>>>> bb57c2ccd903c17098381b9bb927f92f80d7e7fb
       } else {
         throw new Error("El servidor respondió pero no envió un token.");
       }

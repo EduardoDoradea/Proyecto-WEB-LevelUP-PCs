@@ -59,42 +59,27 @@ export const inicioSesionCliente = async (req, res) => {
         res.status(500).json({ message: "Error en el servidor al iniciar sesión." });
     }
 }
+export const verificarCorreoExistente = async (req, res) => {
+    const { correo } = req.body;
 
-export const actualizarContrasenia = async (req, res) => {
-    try {
-        console.log("--- DEBUG REGISTRO ---");
-
-        const { correo, password } = req.body;
-
-        if (!correo || !password) {
-            return res.status(400).json({ error: "Faltan datos: correo y password son obligatorios" });
-        }
-
-        console.log("Actualizando contrasenia para:", correo);
-
-        await clienteDAO.actualizarContrasenia(correo, password);
-
-        res.status(201).json({ mensaje: "La contraseña del cliente ha sido actualizada." });
-
-    } catch (error) {
-        console.error("Error en actualizar:", error);
-        res.status(500).json({ error: "No se logro actualizar la contrasenia del cliente." });
+    if (!correo) {
+        return res.status(400).json({ message: "El campo 'correo' es requerido en el cuerpo de la solicitud." });
     }
-}
 
-export const obtenerPerfil = async (req, res) => {
     try {
-        const { id } = req.params;
+        const resultado = await clienteDAO.verificarCorreoExistenteDAO(correo);
 
-        const datosCliente = await clienteDAO.mostrarDatosCliente(id);
-
-        if (!datosCliente) {
-            return res.status(404).json({ message: "Usuario no encontrado" });
+        if (resultado) {
+            console.log(`Correo ${correo} encontrado.`);
+            return res.status(200).json({ 
+                message: "Instrucciones enviadas al teléfono asociado.",
+                telefono: resultado.telefono 
+            });
+        } else {
+            return res.status(404).json({ message: "Correo no registrado." });
         }
-
-        res.json(datosCliente);
-
     } catch (error) {
-        res.status(500).json({ message: "Error del servidor" });
+        console.error(`Error al procesar la solicitud para el correo ${correo}:`, error.message);
+        return res.status(500).json({ message: "Error interno del servidor al verificar el correo." });
     }
 };
