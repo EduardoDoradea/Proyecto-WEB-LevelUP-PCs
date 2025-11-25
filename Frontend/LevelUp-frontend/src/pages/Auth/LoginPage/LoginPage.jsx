@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 1. IMPORTANTE: Importar navegación
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../../components/layout/Footer/Footer";
@@ -7,10 +7,8 @@ import api from "../../../utils/api.js";
 import "./auth.css";
 
 export default function LoginPage() {
-  const navigate = useNavigate(); // 2. Inicializar el hook de navegación
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // Estados para manejo de carga y errores
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,15 +17,35 @@ export default function LoginPage() {
     password: ""
   });
 
+  // Verificar si ya hay sesión activa
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    // Solo redirigir si hay token Y no es la primera carga del login
+    if (token) {
+      // Validar que el token sea válido llamando al backend
+      const validarToken = async () => {
+        try {
+          await api.get("/api/clientes/verificarToken"); // Ajusta la ruta según tu backend
+          navigate("/"); // Si el token es válido, ir a home
+        } catch (err) {
+          // Si el token no es válido, limpiar y permitir login
+          localStorage.removeItem("token");
+          console.log("Token inválido, permitiendo login");
+        }
+      };
+      validarToken();
+    }
+  }, [navigate]);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-    if (error) setError(null); // Limpiar error al escribir
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -48,9 +66,12 @@ const handleSubmit = async (e) => {
 
       if (token) {
         localStorage.setItem("token", token);
+        console.log("Token guardado:", token);
         
-        console.log("Login exitoso, redirigiendo...");
-        navigate("/"); 
+        setTimeout(() => {
+          console.log("Login exitoso, redirigiendo...");
+          navigate("/"); 
+        }, 100);
       } else {
         throw new Error("El servidor respondió pero no envió un token.");
       }
@@ -83,7 +104,6 @@ const handleSubmit = async (e) => {
               <p>Accede a tu cuenta de LevelUP PCs</p>
             </div>
 
-            {/* --- 3. PARTE VISUAL CORREGIDA: Mensaje de Error --- */}
             {error && (
               <div style={{
                 backgroundColor: "#ffebee",
@@ -109,7 +129,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   placeholder="ejemplo@correo.com"
                   required
-                  disabled={loading} // Bloquear input si carga
+                  disabled={loading}
                 />
               </div>
 
@@ -123,7 +143,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   placeholder="••••••••"
                   required
-                  disabled={loading} // Bloquear input si carga
+                  disabled={loading}
                 />
               </div>
 
@@ -137,7 +157,6 @@ const handleSubmit = async (e) => {
                 </a>
               </div>
 
-              {/* Botón con estado de carga */}
               <button type="submit" className="auth-btn" disabled={loading}>
                 {loading ? "Conectando..." : "Iniciar Sesión"}
               </button>

@@ -93,6 +93,40 @@
   transform: scale(1.1);
 }
 
+/* Indicador de sesión activa */
+.btn-user.logged-in {
+  border-color: #00b4d8;
+  background: rgba(0, 180, 216, 0.1);
+}
+
+.btn-user.logged-in:hover {
+  background: rgba(0, 180, 216, 0.2);
+  border-color: #00b4d8;
+}
+
+.login-indicator {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background: #00b4d8;
+  border: 2px solid #000;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
 .btn-cart {
   background: transparent;
   padding: 0.6rem 0.8rem;
@@ -105,6 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .btn-cart:hover {
@@ -174,9 +209,4 @@
     height: 16px;
     font-size: 0.65rem;
   }
-}
-
-.btn-user {
-  text-decoration: none;
-  display: flex;
 }

@@ -18,6 +18,8 @@ import MaintenancePage from "./pages/Maintenance/MaintenancePage";
 import FAQPage from "./pages/FAQ/FAQPage"; 
 import TechAdvisoryPage from "./pages/TechAdvisory/TechAdvisoryPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
+import UserProfile from "./pages/Profile/UserProfile";
+import RecoveryPage from "./pages/Auth/RecoveryPage/RecoveryPage";
 
 export default function App() {
   return (
@@ -31,7 +33,9 @@ export default function App() {
           <Route path="/componentes" element={<CategoriesPage />} />
           
           <Route path="/catalogo" element={<CatalogPage />} />
-          
+          {/* 2. AGREGA ESTAS DOS LÍNEAS DE RUTA AQUÍ */}
+          <Route path="/perfil" element={<UserProfile />} />       {/* <--- NUEVO */}
+          <Route path="/recuperar-contrasena" element={<RecoveryPage />} /> {/* <--- NUEVO */}
           <Route path="/componentes/:category" element={<CatalogPage />} />
           
           <Route path="/componentes/:category/:productId" element={<ProductPage />} />

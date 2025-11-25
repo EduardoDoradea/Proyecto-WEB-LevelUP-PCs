@@ -1,3 +1,4 @@
+
 import { useCart } from "../../../contexts/CartContext";
 import "./navbar.css";
 
