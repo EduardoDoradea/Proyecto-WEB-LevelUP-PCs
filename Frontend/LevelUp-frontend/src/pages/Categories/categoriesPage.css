@@ -47,82 +47,6 @@
   padding: 0;
 }
 
-/* CTA Section */
-.categories-cta {
-  text-align: center;
-  padding: 6rem 2rem;
-  margin-top: 2rem;
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.05) 0%, rgba(0, 0, 0, 0.95) 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.categories-cta h2 {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-}
-
-.categories-cta p {
-  color: #888;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-  margin-bottom: 2.5rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.cta-btn {
-  display: inline-block;
-  background: transparent;
-  border: 2px solid #00b4d8;
-  color: #fff;
-  padding: 1rem 3rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.cta-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: #00b4d8;
-  transition: left 0.4s ease;
-  z-index: -1;
-}
-
-.cta-btn:hover::before {
-  left: 0;
-}
-
-.cta-btn:hover {
-  color: #000;
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Responsive */
 @media (max-width: 1200px) {
   .categories-grid {
@@ -148,32 +72,15 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-
-  .categories-cta {
-    padding: 4rem 1rem;
-  }
-
-  .cta-btn {
-    padding: 0.9rem 2rem;
-    font-size: 0.85rem;
-  }
 }
 
-@media (max-width: 480px) {
-  .categories-hero h1 {
-    font-size: 2rem;
-    letter-spacing: 2px;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-
-  .categories-hero p {
-    font-size: 0.95rem;
-  }
-
-  .categories-cta h2 {
-    font-size: 1.5rem;
-  }
-
-  .categories-cta p {
-    font-size: 0.95rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -242,7 +242,7 @@ export default function ShippingPage() {
             <div className="cta-content">
               <h2>¿Listo para hacer tu pedido?</h2>
               <p>Explora nuestro catálogo y recibe tus componentes en la puerta de tu casa</p>
-              <a href="/catalogo" className="cta-btn">
+              <a href="/componentes" className="cta-btn">
                 Ver Catálogo
               </a>
             </div>
