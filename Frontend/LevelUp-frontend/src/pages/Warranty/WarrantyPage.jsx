@@ -202,29 +202,6 @@ export default function WarrantyPage() {
           </div>
         </section>
 
-        {/* Process Steps */}
-        <section className="warranty-process">
-          <div className="warranty-container">
-            <div className="section-header">
-              <span className="section-label">Procedimiento</span>
-              <h2>Cómo Hacer Efectiva tu Garantía</h2>
-            </div>
-
-            <div className="process-timeline">
-              {steps.map((step, index) => (
-                <div key={index} className="process-step">
-                  <div className="step-number">{step.number}</div>
-                  <div className="step-content">
-                    <h3>{step.title}</h3>
-                    <p>{step.description}</p>
-                  </div>
-                  {index < steps.length - 1 && <div className="step-connector"></div>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Exclusions */}
         <section className="warranty-exclusions">
           <div className="warranty-container">

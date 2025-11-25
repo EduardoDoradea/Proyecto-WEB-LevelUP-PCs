@@ -225,11 +225,11 @@ export default function LocationPage() {
               <h2>¿Necesitas más información?</h2>
               <p>Contáctanos por WhatsApp o visítanos en cualquiera de nuestras sucursales</p>
               <div className="cta-buttons">
-                <a href="https://wa.me/50312345678" className="cta-btn whatsapp">
+                <a href="https://wa.me/50374104232" className="cta-btn whatsapp">
                   <span>💬</span>
                   WhatsApp
                 </a>
-                <a href="tel:+50322223333" className="cta-btn phone">
+                <a href="tel:+50374104232" className="cta-btn phone">
                   <span>📞</span>
                   Llamar
                 </a>

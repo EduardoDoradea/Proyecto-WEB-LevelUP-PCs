@@ -189,7 +189,7 @@ export default function AboutPage() {
             <div className="cta-content">
               <h2>¿Listo para potenciar tu experiencia?</h2>
               <p>Descubre nuestra selección de componentes premium</p>
-              <a href="/catalogo" className="cta-btn">Explorar Catálogo</a>
+              <a href="/componentes" className="cta-btn">Explorar Catálogo</a>
             </div>
           </div>
         </section>

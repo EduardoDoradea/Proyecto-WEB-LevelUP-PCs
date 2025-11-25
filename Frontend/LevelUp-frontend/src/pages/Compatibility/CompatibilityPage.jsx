@@ -383,10 +383,10 @@ export default function CompatibilityPage() {
               <h2>¿Necesitas Ayuda con tu Build?</h2>
               <p>Nuestro equipo de expertos puede asesorarte y verificar la compatibilidad de tus componentes</p>
               <div className="cta-buttons">
-                <a href="/contacto" className="cta-btn primary">
+                <a href="/nosotros/contacto" className="cta-btn primary">
                   Contactar Expertos
                 </a>
-                <a href="/catalogo" className="cta-btn secondary">
+                <a href="/componentes" className="cta-btn secondary">
                   Ver Catálogo
                 </a>
               </div>
