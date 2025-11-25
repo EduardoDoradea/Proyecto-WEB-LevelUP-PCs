@@ -59,6 +59,7 @@ export const inicioSesionCliente = async (req, res) => {
         res.status(500).json({ message: "Error en el servidor al iniciar sesión." });
     }
 }
+
 export const verificarCorreoExistente = async (req, res) => {
     const { correo } = req.body;
 
@@ -71,10 +72,7 @@ export const verificarCorreoExistente = async (req, res) => {
 
         if (resultado) {
             console.log(`Correo ${correo} encontrado.`);
-            return res.status(200).json({ 
-                message: "Instrucciones enviadas al teléfono asociado.",
-                telefono: resultado.telefono 
-            });
+            return res.status(200).json({message: "Correo existente."});
         } else {
             return res.status(404).json({ message: "Correo no registrado." });
         }
