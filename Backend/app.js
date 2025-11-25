@@ -18,6 +18,5 @@ app.use('/api/clientes', clienteRuta);
 app.use('/api/pedidos', pedidoRuta);
 app.use('/api/producto', productoRuta);
 
-
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`)
 );

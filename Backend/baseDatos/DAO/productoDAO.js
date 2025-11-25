@@ -1,7 +1,7 @@
 import { getConexion, sql } from "../configSQL.js"
 
 export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
-    const pool = await getConnection();
+    const pool = await getConexion();
     const request = pool.request();
     let query = `
         SELECT 
