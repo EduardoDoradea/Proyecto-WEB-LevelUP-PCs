@@ -13,7 +13,6 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState('specs');
   const [product, setProduct] = useState(null);
@@ -53,7 +52,6 @@ export default function ProductPage() {
         setRelatedProducts(related);
 
         // Reset de estados
-        setSelectedImage(0);
         setQuantity(1);
         setSelectedTab('specs');
 
@@ -130,10 +128,6 @@ export default function ProductPage() {
     );
   }
 
-  const productImages = Array.isArray(product.image) 
-    ? product.image 
-    : [product.image, product.image, product.image, product.image];
-
   const handleQuantityChange = (value) => {
     const newQty = quantity + value;
     if (newQty >= 1 && newQty <= product.stock) {
@@ -193,18 +187,7 @@ export default function ProductPage() {
         <div className="product-container">
           <div className="product-gallery">
             <div className="gallery-main">
-              <img src={productImages[selectedImage]} alt={product.name} />
-            </div>
-            <div className="gallery-thumbnails">
-              {productImages.map((img, index) => (
-                <button
-                  key={index}
-                  className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <img src={img} alt={`Vista ${index + 1}`} />
-                </button>
-              ))}
+              <img src={product.image} alt={product.name} />
             </div>
           </div>
 
