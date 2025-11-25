@@ -1,10 +1,11 @@
+// Frontend/LevelUp-frontend/src/pages/Product/ProductPage.jsx
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import Footer from "../../components/layout/Footer/Footer";
-import { getProductById, productsDatabase } from "../../data/productsData";
+import { getProductById, getProductsByCategory, getCategoryDisplayName } from "../../services/productService";
 import "./productpage.css";
 
 export default function ProductPage() {
@@ -12,48 +13,120 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState('specs');
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [showAddedMessage, setShowAddedMessage] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const foundProduct = getProductById(productId);
+    const fetchProductData = async () => {
+      setLoading(true);
+      setError(null);
 
-    if (!foundProduct) {
-      navigate('*');
-      return;
-    }
+      try {
+        // Obtener el producto
+        const foundProduct = await getProductById(productId);
 
-    if (foundProduct.category !== category) {
-      navigate(`/componentes/${foundProduct.category}/${productId}`);
-      return;
-    }
+        if (!foundProduct) {
+          navigate('/404');
+          return;
+        }
 
-    setProduct(foundProduct);
+        // Verificar que la categoría coincida
+        if (foundProduct.category !== category) {
+          navigate(`/componentes/${foundProduct.category}/${productId}`);
+          return;
+        }
 
-    const related = productsDatabase
-      .filter((p) => p.category === foundProduct.category && p.id !== foundProduct.id)
-      .slice(0, 3);
+        setProduct(foundProduct);
 
-    setRelatedProducts(related);
+        // Obtener productos relacionados de la misma categoría
+        const categoryProducts = await getProductsByCategory(foundProduct.category);
+        const related = categoryProducts
+          .filter((p) => p.id !== foundProduct.id)
+          .slice(0, 3);
 
-    setSelectedImage(0);
-    setQuantity(1);
-    setSelectedTab('specs');
+        setRelatedProducts(related);
 
-    window.scrollTo(0, 0);
+        // Reset de estados
+        setQuantity(1);
+        setSelectedTab('specs');
+
+        window.scrollTo(0, 0);
+      } catch (err) {
+        console.error('Error al cargar producto:', err);
+        setError('No se pudo cargar el producto');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductData();
   }, [productId, category, navigate]);
 
-  if (!product) {
-    return null;
+  if (loading) {
+    return (
+      <>
+        <Navbar onMenuToggle={() => setMenuOpen(true)} />
+        <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+        <main className="product-page">
+          <div style={{
+            textAlign: 'center',
+            padding: '100px 20px',
+            color: '#aaa',
+            minHeight: '60vh'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
+            <h3 style={{ fontSize: '24px', color: 'white' }}>
+              Cargando producto...
+            </h3>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
-  const productImages = Array.isArray(product.image) 
-    ? product.image 
-    : [product.image, product.image, product.image, product.image];
+  if (error || !product) {
+    return (
+      <>
+        <Navbar onMenuToggle={() => setMenuOpen(true)} />
+        <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+        <main className="product-page">
+          <div style={{
+            textAlign: 'center',
+            padding: '100px 20px',
+            color: '#ff6b6b',
+            minHeight: '60vh'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚠️</div>
+            <h3 style={{ fontSize: '24px', marginBottom: '10px', color: 'white' }}>
+              Producto no encontrado
+            </h3>
+            <p>{error || 'El producto que buscas no existe'}</p>
+            <button 
+              onClick={() => navigate('/componentes')}
+              style={{
+                marginTop: '20px',
+                padding: '10px 20px',
+                background: '#00b4d8',
+                border: 'none',
+                borderRadius: '4px',
+                color: 'white',
+                cursor: 'pointer'
+              }}
+            >
+              Ver Catálogo
+            </button>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   const handleQuantityChange = (value) => {
     const newQty = quantity + value;
@@ -66,7 +139,6 @@ export default function ProductPage() {
     addToCart(product, quantity);
     setShowAddedMessage(true);
     
-    // Ocultar mensaje después de 3 segundos
     setTimeout(() => {
       setShowAddedMessage(false);
     }, 3000);
@@ -75,20 +147,6 @@ export default function ProductPage() {
   const handleBuyNow = () => {
     addToCart(product, quantity);
     navigate('/carrito');
-  };
-
-  const getCategoryDisplayName = () => {
-    const categoryNames = {
-      'procesadores': 'Procesadores',
-      'tarjetas-graficas': 'Tarjetas Gráficas',
-      'memoria-ram': 'Memoria RAM',
-      'almacenamiento': 'Almacenamiento',
-      'placas-madre': 'Placas Madre',
-      'fuentes-poder': 'Fuentes de Poder',
-      'gabinetes': 'Gabinetes',
-      'refrigeracion': 'Refrigeración'
-    };
-    return categoryNames[product.category] || product.category;
   };
 
   return (
@@ -120,7 +178,7 @@ export default function ProductPage() {
             <span>/</span>
             <Link to="/componentes">Componentes</Link>
             <span>/</span>
-            <Link to={`/componentes/${product.category}`}>{getCategoryDisplayName()}</Link>
+            <Link to={`/componentes/${product.category}`}>{getCategoryDisplayName(product.category)}</Link>
             <span>/</span>
             <span className="current">{product.name}</span>
           </div>
@@ -129,18 +187,7 @@ export default function ProductPage() {
         <div className="product-container">
           <div className="product-gallery">
             <div className="gallery-main">
-              <img src={productImages[selectedImage]} alt={product.name} />
-            </div>
-            <div className="gallery-thumbnails">
-              {productImages.map((img, index) => (
-                <button
-                  key={index}
-                  className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <img src={img} alt={`Vista ${index + 1}`} />
-                </button>
-              ))}
+              <img src={product.image} alt={product.name} />
             </div>
           </div>
 
@@ -148,7 +195,7 @@ export default function ProductPage() {
             <div className="product-header">
               <span className="product-brand">{product.brand}</span>
               <h1 className="product-title">{product.name}</h1>
-              <p className="product-category">{getCategoryDisplayName()}</p>
+              <p className="product-category">{getCategoryDisplayName(product.category)}</p>
             </div>
 
             <div className="product-price-section">
@@ -165,7 +212,7 @@ export default function ProductPage() {
 
             <div className="product-description">
               <p>
-                {product.brand} {product.name} - Un componente de alta calidad para tu PC. 
+                {product.description || `${product.brand} ${product.name} - Un componente de alta calidad para tu PC.`}
                 {product.specs && Object.keys(product.specs).length > 0 && 
                   ` Con especificaciones premium que garantizan el mejor rendimiento.`
                 }

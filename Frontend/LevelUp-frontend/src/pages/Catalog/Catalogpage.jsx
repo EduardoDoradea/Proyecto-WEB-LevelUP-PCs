@@ -1,3 +1,4 @@
+// Frontend/LevelUp-frontend/src/pages/Catalog/CatalogPage.jsx
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
@@ -5,7 +6,7 @@ import SidebarMenu from "../../components/layout/SidebarMenu/SidebarMenu";
 import FilterComponent from "../../components/catalog/Filters/Filters";
 import Footer from "../../components/layout/Footer/Footer";
 import ProductOverview from "../../components/catalog/ProductOverview/ProductOverview";
-import { getProductsByCategory } from "../../data/productsData";
+import { getProductsByCategory, getBrandsByCategory, getCategoryDisplayName } from "../../services/productService";
 import "./catalogpage.css";
 
 export default function CatalogPage() {
@@ -17,14 +18,39 @@ export default function CatalogPage() {
     brands: []
   });
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [availableBrands, setAvailableBrands] = useState([]);
 
+  // Cargar productos cuando cambia la categoría
   useEffect(() => {
-    if (category) {
-      const categoryProducts = getProductsByCategory(category);
-      setProducts(categoryProducts);
-    } else {
-      setProducts([]);
-    }
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        if (category) {
+          const categoryProducts = await getProductsByCategory(category);
+          setProducts(categoryProducts);
+          
+          // Cargar marcas disponibles
+          const brands = await getBrandsByCategory(category);
+          setAvailableBrands(brands);
+        } else {
+          setProducts([]);
+          setAvailableBrands([]);
+        }
+      } catch (err) {
+        console.error('Error al cargar productos:', err);
+        setError('No se pudieron cargar los productos. Por favor intenta de nuevo.');
+        setProducts([]);
+        setAvailableBrands([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
 
     // Resetear filtros al cambiar de categoría
     setFilters({
@@ -34,39 +60,9 @@ export default function CatalogPage() {
     });
   }, [category]);
 
-  // Calcular marcas disponibles dinámicamente con su conteo
-  const availableBrands = useMemo(() => {
-    if (!products.length) return [];
-    
-    const brandCounts = {};
-    products.forEach(product => {
-      if (product.brand) {
-        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + 1;
-      }
-    });
-
-    return Object.entries(brandCounts)
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [products]);
-
   const handleFiltersChange = useCallback((newFilters) => {
     setFilters(newFilters);
   }, []);
-
-  const getCategoryTitle = () => {
-    const titles = {
-      'procesadores': 'Procesadores',
-      'tarjetas-graficas': 'Tarjetas Gráficas',
-      'memoria-ram': 'Memoria RAM',
-      'almacenamiento': 'Almacenamiento',
-      'placas-madre': 'Placas Madre',
-      'fuentes-poder': 'Fuentes de Poder',
-      'gabinetes': 'Gabinetes',
-      'refrigeracion': 'Refrigeración'
-    };
-    return titles[category] || 'Todos los Productos';
-  };
 
   return (
     <>
@@ -82,11 +78,11 @@ export default function CatalogPage() {
             {category && (
               <>
                 <span>/</span>
-                <span className="current">{getCategoryTitle()}</span>
+                <span className="current">{getCategoryDisplayName(category)}</span>
               </>
             )}
           </div>
-          <h1 className="catalog-title">{getCategoryTitle()}</h1>
+          <h1 className="catalog-title">{getCategoryDisplayName(category)}</h1>
         </div>
 
         <div className="catalog-content">
@@ -98,11 +94,50 @@ export default function CatalogPage() {
           </aside>
 
           <section className="catalog-products">
-            <ProductOverview 
-              filters={filters} 
-              products={products}
-              category={category}
-            />
+            {loading ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '60px 20px',
+                color: '#aaa'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
+                <h3 style={{ fontSize: '24px', marginBottom: '10px', color: 'white' }}>
+                  Cargando productos...
+                </h3>
+              </div>
+            ) : error ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '60px 20px',
+                color: '#ff6b6b'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚠️</div>
+                <h3 style={{ fontSize: '24px', marginBottom: '10px', color: 'white' }}>
+                  Error al cargar productos
+                </h3>
+                <p>{error}</p>
+                <button 
+                  onClick={() => window.location.reload()}
+                  style={{
+                    marginTop: '20px',
+                    padding: '10px 20px',
+                    background: '#00b4d8',
+                    border: 'none',
+                    borderRadius: '4px',
+                    color: 'white',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Reintentar
+                </button>
+              </div>
+            ) : (
+              <ProductOverview 
+                filters={filters} 
+                products={products}
+                category={category}
+              />
+            )}
           </section>
         </div>
       </main>

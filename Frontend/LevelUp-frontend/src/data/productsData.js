@@ -405,7 +405,7 @@ export const productsDatabase = [
     brand: "CORSAIR",
     category: "refrigeracion",
     price: 299.99,
-    image: "https://images.unsplash.com/photo-1573950940509-d924ee3fd345?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=300&fit=crop",
     stock: 15,
     specs: {
       type: "Líquida AIO",

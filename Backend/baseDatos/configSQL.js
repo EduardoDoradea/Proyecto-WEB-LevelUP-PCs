@@ -4,8 +4,8 @@ import sql from "mssql";
 const conexionConfig = {
     server: "localhost",
     database: "DB_ProyectoWebFinal3",
-    user: "admin_seguro", //cambiarlo dependiendo del usuario de la base
-    password: "12345678", //contrasenia del usuario 
+    user: "sa", //cambiarlo dependiendo del usuario de la base
+    password: "V3R6AZ0_", //contrasenia del usuario 
     options: {
         encrypt: true,
         trustServerCertificate: true
