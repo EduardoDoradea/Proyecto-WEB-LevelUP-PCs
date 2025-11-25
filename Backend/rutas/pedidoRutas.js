@@ -1,10 +1,9 @@
-
 import { Router } from "express";
-import { verifyToken } from "../middleware/token.js";
 import * as controladorPedido from "../controladores/pedidoControlador.js";
 
 const router = Router();
 
-router.post("/registroPedido/:idCliente", verifyToken, controladorPedido.compraFacturacion);
+// Ahora el controlador se encarga de verificar si viene el idCliente en el body.
+router.post("/registroPedido", controladorPedido.compraFacturacion);
 
 export default router;

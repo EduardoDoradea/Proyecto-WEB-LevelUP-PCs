@@ -1,7 +1,15 @@
 import "./ordersummary.css";
 import CartItem from "../CartItem/CartItem";
 
-export default function OrderSummary({ cartItems, isEditing, setIsEditing, updateQuantity, removeItem }) {
+export default function OrderSummary({ 
+  cartItems, 
+  isEditing, 
+  setIsEditing, 
+  updateQuantity, 
+  removeItem,
+  onPay,
+  loading 
+}) {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal;
 
@@ -37,8 +45,17 @@ export default function OrderSummary({ cartItems, isEditing, setIsEditing, updat
         </div>
       </div>
 
-      <button className="pay-btn">Pagar ahora</button>
-      <p className="secure-text">Todas las transacciones son seguras y están encriptadas</p>
+      <button 
+        className="pay-btn" 
+        onClick={onPay}
+        disabled={loading}
+      >
+        {loading ? "Procesando..." : "Pagar ahora"}
+      </button>
+      
+      <p className="secure-text">
+        Todas las transacciones son seguras y están encriptadas
+      </p>
     </div>
   );
 }
