@@ -15,7 +15,7 @@ export const compraFacturacion = async (req, res) => {
             return res.status(400).json({ message: "El carrito está vacío" });
         }
 
-        const resultado = await pedidoDAO.crearPedidoCompleto({
+        const resultado = await pedidoDAO.registroPedidoCompleto({
             idCliente,
             direccionEntrega: direccion,
             tarjeta,

@@ -61,15 +61,43 @@ export const inicioSesionCliente = async (req, res) => {
     }
 }
 
-export const actualizarCliente = async (req, res) => {
+export const actualizarContrasenia = async (req, res) => {
     try {
-        const idCliente = parseInt(req.params.idCliente);
-        const cliente = req.body;
+        console.log("--- DEBUG REGISTRO ---");
+        
+        const { password, ...restoDatos } = req.body;
 
-        await clienteDAO.actualizarClientePerfil(idCliente, cliente);
-        res.status(201).json({ mensaje: "Se ha actualizado con exito el cliente." })
+        console.log("Password recibida del front:", password);
+
+        const clienteParaDAO = {
+            ...restoDatos,
+            contrasenia: password 
+        };
+
+        await clienteDAO.actualizarContrasenia(clienteParaDAO);
+        
+        res.status(201).json({ mensaje: "La contraseña del cliente ha sido actualizada." });
+
     } catch (error) {
-        res.status(500).json({ errror: "No se pudo actualizar el cliente. " })
+        console.error("Error en actualizar:", error);
+        res.status(500).json({ error: "No se logro actualizar la contrasenia del cliente." });
     }
 }
 
+export const obtenerPerfil = async (req, res) => {
+    try {
+        const idDelUsuario = req.user.id; 
+
+        const cliente = await clienteDAO.obtenerClientePorId(idDelUsuario);
+
+        if (!cliente) {
+            return res.status(404).json({ message: "Cliente no encontrado" });
+        }
+
+        res.status(200).json(cliente);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener perfil" });
+    }
+};
