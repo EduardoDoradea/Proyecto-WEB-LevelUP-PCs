@@ -1,19 +1,13 @@
-import { useState } from "react";
 import "./paymentForm.css";
 
-export default function PaymentForm() {
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
-  const [cardHolder, setCardHolder] = useState('');
-
+export default function PaymentForm({ cardData, setCardData }) {
   const handleCardNumberChange = (e) => {
     const value = e.target.value.replace(/\s/g, ''); 
     const onlyNumbers = value.replace(/\D/g, ''); 
     
     if (onlyNumbers.length <= 16) {
       const formatted = onlyNumbers.match(/.{1,4}/g)?.join(' ') || onlyNumbers;
-      setCardNumber(formatted);
+      setCardData({ ...cardData, cardNumber: formatted });
     }
   };
 
@@ -22,9 +16,9 @@ export default function PaymentForm() {
     
     if (value.length <= 4) {
       if (value.length >= 3) {
-        setExpiryDate(value.slice(0, 2) + '/' + value.slice(2));
+        setCardData({ ...cardData, expiryDate: value.slice(0, 2) + '/' + value.slice(2) });
       } else {
-        setExpiryDate(value);
+        setCardData({ ...cardData, expiryDate: value });
       }
     }
   };
@@ -32,13 +26,13 @@ export default function PaymentForm() {
   const handleCvvChange = (e) => {
     const value = e.target.value.replace(/\D/g, ''); 
     if (value.length <= 3) {
-      setCvv(value);
+      setCardData({ ...cardData, cvv: value });
     }
   };
 
   const handleCardHolderChange = (e) => {
     const value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''); 
-    setCardHolder(value);
+    setCardData({ ...cardData, cardHolder: value });
   };
 
   return (
@@ -50,9 +44,10 @@ export default function PaymentForm() {
         <input 
           type="text" 
           placeholder="#### #### #### ####" 
-          value={cardNumber}
+          value={cardData.cardNumber}
           onChange={handleCardNumberChange}
           maxLength={19}
+          required
         />
       </div>
 
@@ -62,9 +57,10 @@ export default function PaymentForm() {
           <input 
             type="text" 
             placeholder="MM/AA"
-            value={expiryDate}
+            value={cardData.expiryDate}
             onChange={handleExpiryDateChange}
             maxLength={5}
+            required
           />
         </div>
         <div>
@@ -72,9 +68,10 @@ export default function PaymentForm() {
           <input 
             type="text"
             placeholder="###"
-            value={cvv}
+            value={cardData.cvv}
             onChange={handleCvvChange}
             maxLength={3}
+            required
           />
         </div>
       </div>
@@ -84,8 +81,9 @@ export default function PaymentForm() {
         <input 
           type="text"
           placeholder="Juan Pérez"
-          value={cardHolder}
+          value={cardData.cardHolder}
           onChange={handleCardHolderChange}
+          required
         />
       </div>
     </div>
