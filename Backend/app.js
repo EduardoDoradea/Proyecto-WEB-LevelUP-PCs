@@ -4,6 +4,7 @@ import cors from "cors";
 import clienteRuta from './rutas/clienteRutas.js';
 import pedidoRuta from './rutas/pedidoRutas.js';
 import detalleCarritoRuta from './rutas/detalleCarritoRutas.js';
+import detalleCarritoRuta from './rutas/productoRutas.js';
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/clientes', clienteRuta);
 app.use('/api/pedidos', pedidoRuta);
 app.use('/api/detalleCarrito', detalleCarritoRuta);
+app.use('/api/producto', productoRuta);
+
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`)
 );

@@ -1,29 +1,34 @@
 
 import { getConexion, sql } from "../configSQL.js"
 
-// MOSTRAR TODOS LOS PRODUCTOS
-export const obtenerTodosProductos = async () => {
-    try {
-        const pool = await getConexion();
-        const resultado = await pool.request()
-        .query(`SELECT * FROM Producto`);
-
-        return resultado.recordset;
-    } catch (error) {
-        console.error("No se ha logrado actualizar el stock del producto. " + error);
+export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
+    const pool = await getConnection();
+    const request = pool.request();
+    let query = `
+        SELECT 
+            p.idProducto,
+            p.nombre,
+            p.descripcion,
+            p.precio,
+            p.tipo,
+            m.nombre as marca,
+            i.url as imagen
+        FROM Producto p
+        JOIN Marca m ON p.idMarca = m.idMarca
+        LEFT JOIN ImagenProducto i ON p.idProducto = i.idProducto
+        WHERE 1 = 1 
+    `;
+    
+    if (tipo) {
+        request.input("tipo", sql.VarChar, tipo);
+        query += " AND p.tipo = @tipo";
     }
-}
 
-// MOSTRAR PRODUCTO POR NOMBRE
-export const obtenerProductoPorNombre = async (nombreProducto) => {
-    try {
-        const pool = await getConexion();
-        const resultado = await pool.request()
-        .input("nombre", sql.NVarChar, nombreProducto)
-        .query(`SELECT * FROM Producto WHERE nombre = @nombre`);
-
-        return resultado.recordset;
-    } catch (error) {
-        console.error("No se ha encontrado el producto con ese nombre. " + error);
+    if (idMarca) {
+        request.input("idMarca", sql.Int, idMarca);
+        query += " AND p.idMarca = @idMarca";
     }
-}
+
+    const result = await request.query(query);
+    return result.recordset;
+};
