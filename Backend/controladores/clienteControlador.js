@@ -6,14 +6,14 @@ import contraseniaUtil from "../utils/funcionHash.js";
 
 export const registroCliente = async (req, res) => {
     try {
-        console.log("DEBUG");
+        console.log("--- DEBUG REGISTRO ---");
         
-        const { password, restoDatos } = req.body;
+        const { password, ...restoDatos } = req.body;
 
-        console.log("Password recibida del front:", password); 
+        console.log("Password recibida del front:", password);
 
         const clienteParaDAO = {
-            restoDatos,
+            ...restoDatos,
             contrasenia: password 
         };
 
@@ -38,6 +38,7 @@ export const inicioSesionCliente = async (req, res) => {
         }
 
         const contraseniaValida = await contraseniaUtil.comparePassword(password, clienteEncontrado.contrasenia);
+
 
         if (!contraseniaValida) {
             return res.status(401).json({ message: "Contraseña incorrecta" });
