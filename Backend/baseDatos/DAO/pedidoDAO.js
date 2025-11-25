@@ -24,7 +24,6 @@ export const registroPedidoCompleto = async (datos) => {
             .query(`
                 INSERT INTO TarjetaCredito (numTarjeta, fechaVencimiento, ccv, titular)
                 VALUES (@numTarjeta, @fechaVencimiento, @ccv, @titular);
-                SELECT SCOPE_IDENTITY() as idTarjeta;
             `);
         
         const idTarjetaNueva = resultTarjeta.recordset[0].idTarjeta;
@@ -37,7 +36,6 @@ export const registroPedidoCompleto = async (datos) => {
             .query(`
                 INSERT INTO Pedido (direccionEntrega, idCliente, idTarjeta, fechaPedido)
                 VALUES (@direccionEntrega, @idCliente, @idTarjeta, GETDATE());
-                SELECT SCOPE_IDENTITY() as idPedido;
             `);
 
         const idPedidoNuevo = resultPedido.recordset[0].idPedido;
