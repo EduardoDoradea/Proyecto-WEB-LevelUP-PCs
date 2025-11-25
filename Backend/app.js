@@ -3,8 +3,7 @@ import express from "express";
 import cors from "cors";
 import clienteRuta from './rutas/clienteRutas.js';
 import pedidoRuta from './rutas/pedidoRutas.js';
-import detalleCarritoRuta from './rutas/detalleCarritoRutas.js';
-import detalleCarritoRuta from './rutas/productoRutas.js';
+import productoRuta from './rutas/productoRutas.js';
 
 const app = express();
 const PORT = 3000;
@@ -17,7 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 // para mandar a llamar las rutas y sus metodos http
 app.use('/api/clientes', clienteRuta);
 app.use('/api/pedidos', pedidoRuta);
-app.use('/api/detalleCarrito', detalleCarritoRuta);
 app.use('/api/producto', productoRuta);
 
 
