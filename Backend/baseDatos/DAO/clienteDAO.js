@@ -53,39 +53,14 @@ export const inicioSesionCliente = async (datos) => {
 //ACTUALIZAR CONTRASENIA
 export const verificarCorreoExistenteDAO = async (correo) => {
     try {
+        const pool = await getConexion();
+        
         const resultado = await pool.request()
             .input("correo", sql.NVarChar, correo)
-            .query("SELECT telefono FROM Cliente WHERE correo = @correo");
+            .query("SELECT correo FROM Cliente WHERE correo = @correo");
 
-        return resultado.recordset.length > 0 ? resultado.recordset[0] : null; 
+        return resultado.recordset.length > 0 ? resultado.recordset[0] : null;
     } catch (error) {
         throw new Error("Error al consultar la base de datos.");
     }
 };
-
-
-//MOSTRAR LOS DATOS DEL CLIENTE LOGEADO
-export const mostrarDatosCliente = async (idCliente) => {
-    try {
-        const pool = await getConexion();
-
-        const resultado = await pool.request()
-            .input("idCliente", sql.Int, idCliente)
-            .query(`
-                SELECT idCliente, nombre, nombreUsuario, correo, telefono 
-                FROM Cliente 
-                WHERE idCliente = @idCliente
-            `);
-
-        if (resultado.recordset.length === 0) {
-            return null;
-        }
-
-        console.log("Se ha encontrado el cliente para el perfil.");
-        return resultado.recordset[0];
-
-    } catch (error) {
-        console.error("Error al buscar cliente en DAO: " + error);
-        throw error;
-    }
-}
