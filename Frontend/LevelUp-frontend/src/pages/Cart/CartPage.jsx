@@ -43,33 +43,59 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      // Validaciones del frontend
-      if (!address.trim()) {
+      // ===== VALIDACIONES DEL FRONTEND =====
+      
+      // 1. Validar dirección
+      if (!address || !address.trim()) {
         setError("Por favor ingresa una dirección de entrega");
         setLoading(false);
         return;
       }
 
+      // 2. Validar datos de tarjeta completos
       if (!cardData.cardNumber || !cardData.expiryDate || !cardData.cvv || !cardData.cardHolder) {
         setError("Por favor completa todos los datos de la tarjeta");
         setLoading(false);
         return;
       }
 
+      // 3. Validar longitud de tarjeta (debe ser 16 dígitos sin espacios)
+      const cleanCardNumber = cardData.cardNumber.replace(/\s/g, '');
+      if (cleanCardNumber.length !== 16) {
+        setError("El número de tarjeta debe tener 16 dígitos");
+        setLoading(false);
+        return;
+      }
+
+      // 4. Validar CVV (debe ser 3 dígitos)
+      if (cardData.cvv.length !== 3) {
+        setError("El CVV debe tener 3 dígitos");
+        setLoading(false);
+        return;
+      }
+
+      // 5. Validar formato de fecha (MM/AA)
+      if (!/^\d{2}\/\d{2}$/.test(cardData.expiryDate)) {
+        setError("Formato de fecha inválido (debe ser MM/AA)");
+        setLoading(false);
+        return;
+      }
+
+      // 6. Validar carrito no vacío
       if (cartItems.length === 0) {
         setError("El carrito está vacío");
         setLoading(false);
         return;
       }
 
-      // Preparar datos para el backend
+      // ===== PREPARAR DATOS PARA EL BACKEND =====
       const pedidoData = {
-        direccion: address,
+        direccion: address.trim(), // Campo que espera el backend
         tarjeta: {
-          numTarjeta: cardData.cardNumber.replace(/\s/g, ''), // Quitar espacios
+          numTarjeta: cleanCardNumber, // Sin espacios
           fechaVencimiento: cardData.expiryDate,
           ccv: cardData.cvv,
-          titular: cardData.cardHolder
+          titular: cardData.cardHolder.trim()
         },
         carrito: cartItems.map(item => ({
           idProducto: item.id,
@@ -77,19 +103,24 @@ export default function CheckoutPage() {
         }))
       };
 
-      console.log("Enviando pedido:", pedidoData);
+      console.log(" Enviando pedido al backend:", pedidoData);
 
-      // Enviar al backend
+      // ===== ENVIAR AL BACKEND =====
       const response = await api.post("/api/pedidos/registroPedido", pedidoData);
 
-      console.log("Respuesta del servidor:", response.data);
+      console.log(" Respuesta del servidor:", response.data);
 
+      // ===== VERIFICAR RESPUESTA =====
       if (response.data.success) {
-        // Éxito
-        setShowSuccess(true);
-        clearCart(); // Limpiar el carrito
+        console.log(" Pedido procesado exitosamente");
         
-        // Esperar 3 segundos y redirigir
+        // Mostrar mensaje de éxito
+        setShowSuccess(true);
+        
+        // Limpiar el carrito
+        clearCart();
+        
+        // Redirigir después de 3 segundos
         setTimeout(() => {
           navigate("/");
         }, 3000);
@@ -98,12 +129,21 @@ export default function CheckoutPage() {
       }
 
     } catch (err) {
-      console.error("Error al procesar el pago:", err);
+      console.error(" Error al procesar el pago:", err);
       
-      const errorMsg = err.response?.data?.message || 
-                       err.response?.data?.error || 
-                       err.message || 
-                       "Error al procesar el pago. Por favor intenta nuevamente.";
+      // ===== MANEJO DE ERRORES MEJORADO =====
+      let errorMsg = "Error al procesar el pago. Por favor intenta nuevamente.";
+      
+      if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      } else if (err.response?.status === 400) {
+        errorMsg = "Datos inválidos. Verifica todos los campos.";
+      } else if (err.response?.status === 401) {
+        errorMsg = "Tu sesión ha expirado. Por favor inicia sesión nuevamente.";
+        setTimeout(() => navigate("/login"), 2000);
+      } else if (err.response?.status === 500) {
+        errorMsg = "Error del servidor. Por favor contacta soporte.";
+      }
       
       setError(errorMsg);
     } finally {
@@ -128,7 +168,8 @@ export default function CheckoutPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 9999
+          zIndex: 9999,
+          animation: 'fadeIn 0.3s ease-out'
         }}>
           <div style={{
             background: 'linear-gradient(135deg, #00b4d8 0%, #0077b6 100%)',
@@ -136,7 +177,8 @@ export default function CheckoutPage() {
             borderRadius: '16px',
             textAlign: 'center',
             maxWidth: '500px',
-            boxShadow: '0 20px 60px rgba(0,180,216,0.4)'
+            boxShadow: '0 20px 60px rgba(0,180,216,0.4)',
+            animation: 'slideIn 0.5s ease-out'
           }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✓</div>
             <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'white' }}>
@@ -181,7 +223,10 @@ export default function CheckoutPage() {
           ) : (
             <div className="checkout-grid">
               <div className="forms-column">
+                {/* Componente BillingForm - Pasar address y setAddress */}
                 <BillingForm address={address} setAddress={setAddress} />
+                
+                {/* Componente PaymentForm */}
                 <PaymentForm cardData={cardData} setCardData={setCardData} />
                 
                 {/* Mostrar errores */}
@@ -192,9 +237,10 @@ export default function CheckoutPage() {
                     padding: '1rem',
                     borderRadius: '8px',
                     marginTop: '1rem',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    fontWeight: '500'
                   }}>
-                    {error}
+                    ⚠️ {error}
                   </div>
                 )}
               </div>
@@ -214,6 +260,23 @@ export default function CheckoutPage() {
       </main>
 
       <Footer />
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </>
   );
 }
