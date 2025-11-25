@@ -19,9 +19,6 @@ import FAQPage from "./pages/FAQ/FAQPage";
 import TechAdvisoryPage from "./pages/TechAdvisory/TechAdvisoryPage";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
-// 🧪 COMPONENTE DE PRUEBA TEMPORAL - ELIMINAR DESPUÉS DE VERIFICAR API
-import TestAPI from "./pages//TestApi";
-
 export default function App() {
   return (
     <CartProvider>
@@ -30,9 +27,6 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
-
-           {/* 🧪 RUTA DE PRUEBA TEMPORAL */}
-          <Route path="/test-api" element={<TestAPI />} />
           
           <Route path="/componentes" element={<CategoriesPage />} />
           
