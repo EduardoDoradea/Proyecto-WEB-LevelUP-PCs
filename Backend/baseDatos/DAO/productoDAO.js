@@ -1,4 +1,3 @@
-
 import { getConexion, sql } from "../configSQL.js"
 
 export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
@@ -16,8 +15,7 @@ export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
         FROM Producto p
         JOIN Marca m ON p.idMarca = m.idMarca
         LEFT JOIN ImagenProducto i ON p.idProducto = i.idProducto
-        WHERE 1 = 1 
-    `;
+        WHERE 1 = 1`;
     
     if (tipo) {
         request.input("tipo", sql.VarChar, tipo);

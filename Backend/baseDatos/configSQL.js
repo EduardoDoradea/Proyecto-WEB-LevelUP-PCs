@@ -3,7 +3,7 @@ import sql from "mssql";
 
 const conexionConfig = {
     server: "localhost",
-    database: "DB_ProyectoWeb",
+    database: "DB_ProyectoWebFinal3",
     user: "admin_seguro", //cambiarlo dependiendo del usuario de la base
     password: "12345678", //contrasenia del usuario 
     options: {
