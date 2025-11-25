@@ -180,3 +180,28 @@
   text-decoration: none;
   display: flex;
 }
+
+.btn-user.logged-in {
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(0, 180, 216, 0.1);
+  border-color: rgba(0, 180, 216, 0.3);
+}
+
+.btn-user.logged-in:hover {
+  background: rgba(0, 180, 216, 0.2);
+  border-color: #00b4d8;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .user-name {
+    display: inline;
+  }
+}

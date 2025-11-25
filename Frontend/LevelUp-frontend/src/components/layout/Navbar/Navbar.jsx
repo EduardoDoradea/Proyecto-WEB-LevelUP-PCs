@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useCart } from "../../../contexts/CartContext";
 import "./navbar.css";
 
@@ -6,6 +7,24 @@ const logoURL = "https://i.ibb.co/S4WhTBDd/Logo.png";
 export default function Navbar({ onMenuToggle }) {
   const { getTotalItems } = useCart();
   const totalItems = getTotalItems();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    // Verificar si hay sesión activa
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("userData");
+    
+    if (token && userData) {
+      setIsLoggedIn(true);
+      try {
+        const user = JSON.parse(userData);
+        setUserName(user.nombre?.split(' ')[0] || user.apodo || "Usuario");
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
 
   return (
     <header className="navbar">
@@ -21,12 +40,23 @@ export default function Navbar({ onMenuToggle }) {
         </a>
         
         <div className="navbar-actions">
-          <a href="/login" className="btn-user" title="Iniciar Sesión">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </a>
+          {isLoggedIn ? (
+            <a href="/perfil" className="btn-user logged-in" title="Mi Perfil">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span className="user-name">{userName}</span>
+            </a>
+          ) : (
+            <a href="/login" className="btn-user" title="Iniciar Sesión">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </a>
+          )}
+          
           <a href="/carrito" className="btn-cart" title="Carrito de compras">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1"/>

@@ -3,6 +3,7 @@ import { CartProvider } from "./contexts/CartContext";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Auth/LoginPage/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage/RegisterPage";
+import UserProfilePage from "./pages/UserProfile/UserProfilePage";
 import CategoriesPage from "./pages/Categories/CategoriesPage";
 import CatalogPage from "./pages/Catalog/CatalogPage";
 import CartPage from "./pages/Cart/CartPage";
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/perfil" element={<UserProfilePage />} />
           
           <Route path="/componentes" element={<CategoriesPage />} />
           
