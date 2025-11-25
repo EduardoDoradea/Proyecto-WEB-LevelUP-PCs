@@ -59,22 +59,3 @@ export const actualizarCantidadCarrito = async (idPedido, cantidadActualizar) =>
         console.error("Error en actualizar el campo cantidad por el idPedido" + error);
     }
 }
-
-//ELIMINAR DETALLE CARRITO
-export const eliminarCarrito = async (idDetalleCarrito) => {
-    try {
-        //Objeto para poder utilizar la base de datos
-        const pool = await getConexion();
-
-        //Insertando los datos del objeto en la base de datos
-        const resultado = await pool.request()
-            .input("idDetalleCarrito", sql.BigInt, idDetalleCarrito)
-            .query(`DELETE FROM DetalleCarrito 
-                WHERE idDetalleCarrito = @idDetalleCarrito`);
-        //Mostrando las lineas afectadas 
-        console.log("Se ha logrado eliminar el carrito " + resultado.rowsAffected);
-    } catch (error) {
-        console.error("Error en eliminar el carrito " + error);
-    }
-}
-

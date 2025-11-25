@@ -1,52 +1,67 @@
 
-import clienteDAO from "../baseDatos/DAO/clienteDAO.js";
+import * as clienteDAO from "../baseDatos/DAO/clienteDAO.js";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../middleware/token.js"
+import contraseniaUtil from "../utils/funcionHash.js";
 
-export const crearNuevoCliente = async (req, res) => {
+export const registroCliente = async (req, res) => {
     try {
-        const nuevoCliente = req.body;
+        console.log("--- DEBUG REGISTRO ---");
         
-        await clienteDAO.registroCliente(nuevoCliente);
+        const { password, ...restoDatos } = req.body;
+
+        console.log("Password recibida del front:", password);
+
+        const clienteParaDAO = {
+            ...restoDatos,
+            contrasenia: password 
+        };
+
+        await clienteDAO.registroCliente(clienteParaDAO);
+        
         res.status(201).json({ mensaje: "Cliente registrado exitosamente." });
 
     } catch (error) {
+        console.error("Error en registro:", error);
         res.status(500).json({ error: "No se pudo registrar el cliente." });
     }
 }
 
-export const mostrarClientes = async (req, res) => {
+export const inicioSesionCliente = async (req, res) => {
     try {
-        const clientes = await clienteDAO.mostrarClientes();
-        res.json({ clientes })
+        const { correo, password } = req.body;
+
+        const clienteEncontrado = await clienteDAO.inicioSesionCliente({ correo });
+
+        if (!clienteEncontrado) {
+            return res.status(404).json({ message: "Cliente no encontrado" });
+        }
+
+        const contraseniaValida = await contraseniaUtil.comparePassword(password, clienteEncontrado.contrasenia);
+
+
+        if (!contraseniaValida) {
+            return res.status(401).json({ message: "Contraseña incorrecta" });
+        }
+
+        const token = jwt.sign(
+            {
+                id: clienteEncontrado.idCliente,
+                email: clienteEncontrado.correo
+            },
+            JWT_SECRET,
+            { expiresIn: "5h" }
+        );
+
+        res.status(200).json({ token });
+
     } catch (error) {
-        res.status(500).json({ errror: "No se pudo mostrar todos los clientes. " })
+        console.error("Error en el login backend:", error);
+        res.status(500).json({ message: "Error en el servidor al iniciar sesión." });
     }
 }
 
-export const mostrarClientePorId = async (req, res) => {
-    try {
-        const idCliente = parseInt(req.params.idCliente);
-
-        const clientes = await clienteDAO.obtenerClienteId(idCliente);
-        res.json(clientes);
-    } catch (error) {
-        res.status(500).json({ errror: "No se pudo mostrar los clientes por id. " })
-    }
-}
-
-//login no finalizado
-export const mostrarClienteCorreo = async (req, res) => {
-    try {
-        const correo = req.body.correo;
-        const contrasenia = req.body.contrasenia;
-
-        await clienteDAO.obtenerClienteCorreo(correo, contrasenia);
-        res.status(200).json({ mensaje: "Ha iniciado sesion con exito. " });
-    } catch (error) {
-        res.status(500).json({ errror: "No se pudo mostrar los clientes por correo. " })
-    }
-}
-
-export const actualizarClientePerfil = async (req, res) => {
+export const actualizarCliente = async (req, res) => {
     try {
         const idCliente = parseInt(req.params.idCliente);
         const cliente = req.body;
@@ -58,13 +73,3 @@ export const actualizarClientePerfil = async (req, res) => {
     }
 }
 
-export const eliminarClienteNombreUsuario = async (req, res) => {
-    try {
-        const nombreUsuario = req.params.nombreUsuario;
-
-        await clienteDAO.eliminarCliente(nombreUsuario);
-        res.status(201).json({ mensaje: "Se ha eliminado con exito el cliente." })
-    } catch (error) {
-        res.status(500).json({ errror: "No se pudo eliminar el cliente. " })
-    }
-}

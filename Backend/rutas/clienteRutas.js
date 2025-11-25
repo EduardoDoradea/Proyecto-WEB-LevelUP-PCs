@@ -1,14 +1,13 @@
 
 import { Router } from "express";
+import { verifyToken } from "../middleware/token.js"
 import * as controladorCliente from "../controladores/clienteControlador.js";
 
 const router = Router();
 
 // rutas para poder realizar operaciones http con el cliente-servidor (rutas para Cliente)
-router.post('/registroCliente', controladorCliente.crearNuevoCliente);
-router.post('/iniciarSesionCliente', controladorCliente.mostrarClienteCorreo);
-router.get('/mostrarClientes', controladorCliente.mostrarClientes);
-router.put('/actualizarCliente/:idCliente', controladorCliente.actualizarClientePerfil);
-router.delete('/eliminarCliente/:nombreUsuario', controladorCliente.eliminarClienteNombreUsuario);
+router.post('/registroCliente', controladorCliente.registroCliente);
+router.post('/iniciarSesionCliente', controladorCliente.inicioSesionCliente);
+router.put('/actualizarCliente/:idCliente', verifyToken, controladorCliente.actualizarCliente);
 
 export default router;
