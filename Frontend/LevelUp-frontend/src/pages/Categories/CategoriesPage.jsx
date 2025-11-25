@@ -98,7 +98,7 @@ export default function CategoriesPage() {
         <section className="categories-cta">
           <h2>¿No sabes qué elegir?</h2>
           <p>Nuestros expertos pueden ayudarte a armar el PC perfecto para tus necesidades</p>
-          <a className="cta-btn" href="http://localhost:5173/soporte/asesoría-técnica" >
+          <a className="cta-btn" href="/soporte/asesoría-técnica">
             Contactar Asesor
           </a>
         </section>

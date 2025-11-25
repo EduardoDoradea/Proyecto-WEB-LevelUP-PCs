@@ -1,80 +1,84 @@
-/* Categories Page Styles */
-
 .categories-page {
   background: #000;
   min-height: 100vh;
   color: white;
-  padding-top: 100px;
-  padding-bottom: 4rem;
+  padding-top: 80px;
 }
 
 /* Hero Section */
 .categories-hero {
-  text-align: center;
-  padding: 4rem 2rem 3rem;
-  background: linear-gradient(180deg, rgba(0, 180, 216, 0.1) 0%, transparent 100%);
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  background: linear-gradient(180deg, rgba(0, 180, 216, 0.08) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .categories-hero h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 1rem;
-  animation: fadeInUp 1s ease-out;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .categories-hero p {
+  text-align: center;
   font-size: clamp(1rem, 2vw, 1.2rem);
-  color: #aaa;
+  color: #888;
   letter-spacing: 1px;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
+  animation: fadeInUp 1s ease-out;
 }
 
 /* Categories Section */
 .categories-section {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 4rem 2rem;
 }
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 2rem 0;
+  padding: 0;
 }
 
 /* CTA Section */
 .categories-cta {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   margin-top: 2rem;
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.05) 0%, rgba(0, 0, 0, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.05) 0%, rgba(0, 0, 0, 0.95) 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .categories-cta h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 300;
   letter-spacing: 2px;
   margin-bottom: 1rem;
+  text-transform: uppercase;
 }
 
 .categories-cta p {
-  color: #aaa;
+  color: #888;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin: 0 auto 2rem;
+  margin-bottom: 2.5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta-btn {
+  display: inline-block;
   background: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid #00b4d8;
+  color: #fff;
   padding: 1rem 3rem;
   font-size: 0.9rem;
   font-weight: 600;
@@ -84,6 +88,7 @@
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .cta-btn::before {
@@ -93,7 +98,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: white;
+  background: #00b4d8;
   transition: left 0.4s ease;
   z-index: -1;
 }
@@ -103,7 +108,8 @@
 }
 
 .cta-btn:hover {
-  color: white;
+  color: #000;
+  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
 }
 
 @keyframes fadeInUp {
@@ -117,9 +123,11 @@
   }
 }
 
+/* Responsive */
 @media (max-width: 1200px) {
   .categories-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 }
 
@@ -129,11 +137,11 @@
   }
 
   .categories-hero {
-    padding: 3rem 1rem 2rem;
+    padding: 4rem 1rem 3rem;
   }
 
   .categories-section {
-    padding: 0 1rem;
+    padding: 3rem 1rem;
   }
 
   .categories-grid {
@@ -142,7 +150,7 @@
   }
 
   .categories-cta {
-    padding: 3rem 1rem;
+    padding: 4rem 1rem;
   }
 
   .cta-btn {
@@ -153,7 +161,7 @@
 
 @media (max-width: 480px) {
   .categories-hero h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     letter-spacing: 2px;
   }
 
