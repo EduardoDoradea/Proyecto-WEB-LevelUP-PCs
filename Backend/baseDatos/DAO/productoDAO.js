@@ -1,8 +1,11 @@
+// Backend/baseDatos/DAO/productoDAO.js
 import { getConexion, sql } from "../configSQL.js"
 
 export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
     const pool = await getConexion();
     const request = pool.request();
+    
+    // Query SIN la columna stock (porque no existe en tu tabla)
     let query = `
         SELECT 
             p.idProducto,
@@ -18,7 +21,9 @@ export const obtenerProductosConFiltros = async ({ tipo, idMarca }) => {
         WHERE 1 = 1`;
     
     if (tipo) {
-        request.input("tipo", sql.VarChar, tipo);
+        // Limpiar el tipo por si viene con saltos de línea
+        const tipoLimpio = tipo.trim();
+        request.input("tipo", sql.VarChar, tipoLimpio);
         query += " AND p.tipo = @tipo";
     }
 
