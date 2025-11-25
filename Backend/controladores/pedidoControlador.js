@@ -1,5 +1,6 @@
 import * as pedidoDAO from "../baseDatos/DAO/pedidoDAO.js"
 
+
 export const compraFacturacion = async (req, res) => {
     try { 
         // Obtener el ID del cliente desde el token JWT
